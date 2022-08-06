@@ -1,0 +1,5 @@
+{
+  "Message": "Tag ID 9999 not found.If already unassociated, please refresh the screen or move focus to another tag.",
+  "StackTrace": "   at MyTagList.ethClient.TagListCached.Find(Int32 id)\r\n   at MyTagList.ethLogs.MultiTagStats.Load(TagListCached taglist, List`1 ids, Int32 dbid)\r\n   at MyTagList.ethLogs.StatsSpan.Load(TagListCached taglist, List`1 ids, String type, Boolean sinceLastCalibration, Int32 dbid)\r\n   at MyTagList.ethLogs.GetMultiTagStatsSpan2(Object[] ids, String type, Boolean sinceLastCalibration)",
+  "ExceptionType": "MyTagList.TagNotFoundFromDBException"
+}
