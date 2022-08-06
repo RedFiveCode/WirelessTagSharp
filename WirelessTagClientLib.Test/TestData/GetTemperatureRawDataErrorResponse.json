@@ -1,0 +1,5 @@
+{
+  "Message": "Invalid tag ID. If the tag have already been unassociated, please undelete it to view its data.",
+  "StackTrace": "   at MyTagList.ethLogs.CheckTagType(Int32 id, DateTime min, DateTime max, Boolean\u0026 hasLux, Boolean\u0026 hasZmod, Byte\u0026 version1, SqlConnection conn, String api)\r\n   at MyTagList.ethLogs.GetTemperatureRawData(Int32 id, String fromDate, String toDate)",
+  "ExceptionType": "System.ArgumentException"
+}

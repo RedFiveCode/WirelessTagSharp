@@ -1,0 +1,15 @@
+﻿{
+  "d": {
+    "__type": "MyTagList.ethLogs+StatsSpan",
+    "from": 132223104010000000,
+    "to": 133017084010000000,
+    "tempBL": null,
+    "capBL": null,
+    "luxBL": null,
+    "temp_unit": 0,
+    "tzo": -60,
+    "ids": [ 1, 2, 3 ],
+    "names": [ "House", "Garden", "Garage" ],
+    "discons": [ null, null, null ]
+  }
+}

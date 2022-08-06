@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WirelessTagClientConsole", "WirelessTagClientConsole\WirelessTagClientConsole.csproj", "{A1301D03-A592-44D2-8B45-57C197369F06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WirelessTagClientLib", "WirelessTagClientLib\WirelessTagClientLib.csproj", "{ACBF5E08-4582-4980-BCB1-60BCF93BBF93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WirelessTagClientLib.Test", "WirelessTagClientLib.Test\WirelessTagClientLib.Test.csproj", "{2A0048DD-4B06-450B-A3A8-40B908D9E661}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ACBF5E08-4582-4980-BCB1-60BCF93BBF93} = {ACBF5E08-4582-4980-BCB1-60BCF93BBF93}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1301D03-A592-44D2-8B45-57C197369F06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1301D03-A592-44D2-8B45-57C197369F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1301D03-A592-44D2-8B45-57C197369F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1301D03-A592-44D2-8B45-57C197369F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACBF5E08-4582-4980-BCB1-60BCF93BBF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACBF5E08-4582-4980-BCB1-60BCF93BBF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACBF5E08-4582-4980-BCB1-60BCF93BBF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACBF5E08-4582-4980-BCB1-60BCF93BBF93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A0048DD-4B06-450B-A3A8-40B908D9E661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A0048DD-4B06-450B-A3A8-40B908D9E661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A0048DD-4B06-450B-A3A8-40B908D9E661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A0048DD-4B06-450B-A3A8-40B908D9E661}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {216BCBD9-8A3C-4CC8-A778-437FBA4A1C36}
+	EndGlobalSection
+EndGlobal

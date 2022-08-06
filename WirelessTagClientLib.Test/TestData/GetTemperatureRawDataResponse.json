@@ -1,0 +1,28 @@
+﻿{
+  "d": [
+    {
+      "__type": "MyTagList.ethLogs+TemperatureDataPoint",
+      "time": "2022-07-09T00:16:07+01:00",
+      "temp_degC": 16.9214306640625,
+      "cap": 96.4322509765625,
+      "lux": -1,
+      "battery_volts": 2.97233510017395
+    },
+    {
+      "__type": "MyTagList.ethLogs+TemperatureDataPoint",
+      "time": "2022-07-09T14:30:36+01:00",
+      "temp_degC": 19.838657226562496,
+      "cap": 65.40350341796875,
+      "lux": -1,
+      "battery_volts": 2.97233510017395
+    },
+    {
+      "__type": "MyTagList.ethLogs+TemperatureDataPoint",
+      "time": "2022-07-09T15:03:10+01:00",
+      "temp_degC": 20.364187011718748,
+      "cap": 64.0531005859375,
+      "lux": -1,
+      "battery_volts": 2.97233510017395
+    }
+  ]
+}
