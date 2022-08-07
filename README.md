@@ -1,7 +1,7 @@
 ## Introduction
 Wireless Sensor Tags are produced by Cao Gadgets LLC (https://www.wirelesstag.net) and monitor temperature, humidity, light etc.
 
-This project provides a C# API to a subset of the available REST json endpoints,
+This project provides a C# API running on Windows to a subset of the available REST json endpoints,
 and an example console application to fetch and display temperature sensor information.
 
 ## Scope
@@ -27,6 +27,8 @@ It uses the following NuGet packages/files:
 Includes unit tests (MSTest).
 
 ## Examples
+![Example output](docs/Example.png)
+
 Three client APIs are provided:
 * `WirelessTagJsonClient` - simple synchronous calls to REST API endpoints returning json response string
 * `WirelessTagClient` - synchronous calls to REST API endpoints returning strongly typed C# DTO objects

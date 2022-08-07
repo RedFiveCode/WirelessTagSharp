@@ -1,0 +1,12 @@
+C:\WirelessTagSharp\WirelessTagClientConsole\bin\Debug>WirelessTagClientConsole -u USER -p SECRET
+Connecting to https://www.mytaglist.com...
+RanToCompletion
+3 tag(s):
+  1 (b4094cbb-5460-4a4b-9afa-83b9ea1a739e) (13) : House : 06-Aug-2022 18:03:04, Temperature 20.5 C, Humidity 54 %
+  2 (5a2d4077-0372-41b0-b1a9-ae9491cc8189) (12) : Garage : 06-Aug-2022 18:00:39, Temperature 22.8 C, Humidity 0 %
+  3 (f15ac714-a28e-4721-9305-450501698915) (13) : Garden : 06-Aug-2022 17:59:27, Temperature 19.6 C, Humidity 40 %
+Today:
+  Tag 1 (House) : Min: 10.3, Max: 20.5 C of 34 readings
+  Tag 2 (Garage) : Min: 8.6, Max: 23.2 C of 164 readings
+  Tag 3 (Garden) : Min: 10.2, Max: 25.7 C of 146 readings
+
