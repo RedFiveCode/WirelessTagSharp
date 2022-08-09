@@ -7,7 +7,7 @@ using WirelessTagClientLib.Test.TestHelpers;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace WirelessTagClientLib.Test.Client
+namespace WirelessTagClientLib.Test
 {
     [TestClass]
     [DeploymentItem(@"TestData\AuthenticationFailedResponse.json")]
