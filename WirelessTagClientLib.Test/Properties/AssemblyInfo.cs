@@ -1,13 +1,12 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("WirelessTagClientLib.Test")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("WirelessTagClientLib unit tests")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WirelessTagClientLib.Test")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCopyright("Copyright © 2014-2022 RedFiveCode (https://github.com/RedFiveCode)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -15,6 +14,5 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("2a0048dd-4b06-450b-a3a8-40b908d9e661")]
 
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
