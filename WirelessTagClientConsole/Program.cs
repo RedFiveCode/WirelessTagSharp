@@ -111,29 +111,33 @@ namespace WirelessTagClientConsole
                 return;
             }
 
-            var tagList = client.GetTagListAsync();
+            var tagListTask = client.GetTagListAsync();
 
-            Task.WaitAll(tagList);
+            Task.WaitAll(tagListTask);
 
-            Console.WriteLine($"{tagList.Status}");
+            Console.WriteLine($"{tagListTask.Status}");
 
-            Console.WriteLine($"{tagList.Result.Count} tag(s):");
+            var tagList = tagListTask.Result;
 
-            foreach (var tag in tagList.Result.OrderByDescending(t => t.LastCommunication))
+            Console.WriteLine($"{tagList.Count} tag(s):");
+
+            foreach (var tag in tagList.OrderByDescending(t => t.LastCommunication))
             {
                 Console.WriteLine($"  {tag.SlaveId} ({tag.Uuid}) ({tag.TagType}) : {tag.Name} : {tag.LastCommunication}, Temperature {tag.Temperature:n1} C, Humidity {tag.RelativeHumidity:n0} %");
             }
 
             Console.WriteLine("Today:");
 
-            foreach (var tag in tagList.Result)
+            foreach (var tag in tagList.OrderBy(t => t.SlaveId))
             {
-                var infoList = client.GetTemperatureRawDataAsync(tag.SlaveId, DateTime.Today, DateTime.Today);
-                Task.WaitAll(infoList);
+                var infoListTask = client.GetTemperatureRawDataAsync(tag.SlaveId, DateTime.Today, DateTime.Today);
+                Task.WaitAll(infoListTask);
 
-                if (infoList.Result.Count > 0)
+                var infoList = infoListTask.Result;
+
+                if (infoList.Count > 0)
                 {
-                    Console.WriteLine($"  Tag {tag.SlaveId} ({tag.Name}) : Min: {infoList.Result.Min(r => r.Temperature):n1}, Max: {infoList.Result.Max(r => r.Temperature):n1} C of {infoList.Result.Count} readings");
+                    Console.WriteLine($"  Tag {tag.SlaveId} ({tag.Name}) : Min: {infoList.Min(r => r.Temperature):n1}, Max: {infoList.Max(r => r.Temperature):n1} C of {infoList.Count} readings");
                 }
                 else
                 {
@@ -142,18 +146,18 @@ namespace WirelessTagClientConsole
             }
 
             // send a request for each tag and wait for all responses to return
-            var pendingResults = new List<Task<List<TemperatureDataPoint>>>();
+            var pendingTasks = new List<Task<List<TemperatureDataPoint>>>();
 
-            foreach (var tag in tagList.Result)
+            foreach (var tag in tagListTask.Result)
             {
                 var infoList = client.GetTemperatureRawDataAsync(tag.SlaveId, DateTime.Today, DateTime.Today);
 
-                pendingResults.Add(infoList);
+                pendingTasks.Add(infoList);
             }
 
-            Task.WaitAll(pendingResults.ToArray());
+            Task.WaitAll(pendingTasks.ToArray());
 
-            foreach (var item in pendingResults)
+            foreach (var item in pendingTasks)
             {
                 // TODO - correlate response to request
                 var readings = item.Result;
