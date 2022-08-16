@@ -8,7 +8,7 @@ using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientConsole
 {
-    class Program
+    partial class Program
     {
         static void Main(string[] args)
         {
@@ -126,46 +126,40 @@ namespace WirelessTagClientConsole
                 Console.WriteLine($"  {tag.SlaveId} ({tag.Uuid}) ({tag.TagType}) : {tag.Name} : {tag.LastCommunication}, Temperature {tag.Temperature:n1} C, Humidity {tag.RelativeHumidity:n0} %");
             }
 
-            Console.WriteLine("Today:");
+            var today = DateTime.Today;
 
-            foreach (var tag in tagList.OrderBy(t => t.SlaveId))
+            DisplayRecentTemperatures(client, "Today:", tagList, today, today);
+
+            DisplayRecentTemperatures(client, "This week:", tagList, today.AddDays(-7), today);
+
+            DisplayRecentTemperatures(client, "This month:", tagList, today.AddDays(-today.Day + 1), DateTime.Today);
+
+            DisplayRecentTemperatures(client, "This year:", tagList, today.AddDays(-today.DayOfYear + 1), DateTime.Today);
+         }
+
+        private static void DisplayRecentTemperatures(IWirelessTagAsyncClient client, string caption, List<TagInfo> tags, DateTime from, DateTime to)
+        {
+            var endTime = to.AddDays(1).AddSeconds(-1); // 23:59:59 today
+
+            Console.WriteLine($"{caption} ({from} to {endTime}):");
+
+            var results = ClientUtils.GetRecentTemperatures(client, tags, from, to);
+
+            // get tag name with longest length for pretty alignment
+            var longestTagName = tags.Max(t => t.Name.Length);
+            longestTagName += 2; // for leading and trailing brackets
+            var fmt = "{0,-" + longestTagName.ToString() + "}"; // for example "{0,-12}"
+
+            foreach (var result in results)
             {
-                var infoListTask = client.GetTemperatureRawDataAsync(tag.SlaveId, DateTime.Today, DateTime.Today);
-                Task.WaitAll(infoListTask);
+                var tagName = "(" + result.Tag.Name + ")"; // want tag name in brackets then right padded with spaces to width of longest tag name
 
-                var infoList = infoListTask.Result;
-
-                if (infoList.Count > 0)
-                {
-                    Console.WriteLine($"  Tag {tag.SlaveId} ({tag.Name}) : Min: {infoList.Min(r => r.Temperature):n1}, Max: {infoList.Max(r => r.Temperature):n1} C of {infoList.Count} readings");
-                }
-                else
-                {
-                    // some tag may not have results for today, for example if they are broken and have not sent any data recently
-                }
-            }
-
-            // send a request for each tag and wait for all responses to return
-            var pendingTasks = new List<Task<List<TemperatureDataPoint>>>();
-
-            foreach (var tag in tagListTask.Result)
-            {
-                var infoList = client.GetTemperatureRawDataAsync(tag.SlaveId, DateTime.Today, DateTime.Today);
-
-                pendingTasks.Add(infoList);
-            }
-
-            Task.WaitAll(pendingTasks.ToArray());
-
-            foreach (var item in pendingTasks)
-            {
-                // TODO - correlate response to request
-                var readings = item.Result;
-
-                if (readings.Count > 0)
-                {
-                    Console.WriteLine($"  Min: {readings.Min(r => r.Temperature):n1}, Max: {readings.Max(r => r.Temperature):n1} C of {readings.Count} readings");
-                }
+                Console.WriteLine("  {0} {1} : Min: {2,4:n1}, Max: {3,4:n1}, Current {4,4:n1} °C",
+                                            result.Tag.SlaveId,
+                                            tagName.PadRight(longestTagName, ' '),
+                                            result.Min,
+                                            result.Max,
+                                            result.Tag.Temperature);
             }
         }
     }
