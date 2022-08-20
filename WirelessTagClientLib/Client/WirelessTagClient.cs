@@ -28,6 +28,7 @@ namespace WirelessTagClientLib
         public WirelessTagClient(IRestClient restClient)
         {
             client = restClient;
+            Url = WirelessTagConstants.Url;
         }
 
         public string Url { get; private set; }

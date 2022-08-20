@@ -24,6 +24,24 @@ namespace WirelessTagClientLib.Test
     {
         public TestContext TestContext { get; set; }
 
+        [TestMethod]
+        public void Ctor_Sets_Url_Property()
+        {
+            var target = new WirelessTagAsyncClient();
+
+            Assert.AreEqual(WirelessTagConstants.Url, target.Url);
+        }
+
+        [TestMethod]
+        public void Ctor_IRestClient_Sets_Url_Property()
+        {
+            var clientMock = new Mock<IRestClient>();
+
+            var target = new WirelessTagAsyncClient(clientMock.Object);
+
+            Assert.AreEqual(WirelessTagConstants.Url, target.Url);
+        }
+
         #region LoginAsync
         [TestMethod]
         public void LoginAsync_Response_Ok_Should_Return_Valid_Response()
