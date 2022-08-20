@@ -20,6 +20,24 @@ namespace WirelessTagClientLib.Test
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        public void Ctor_Sets_Url_Property()
+        {
+            var target = new WirelessTagClient();
+
+            Assert.AreEqual(WirelessTagConstants.Url, target.Url);
+        }
+
+        [TestMethod]
+        public void Ctor_IRestClient_Sets_Url_Property()
+        {
+            var clientMock = new Mock<IRestClient>();
+
+            var target = new WirelessTagClient(clientMock.Object);
+
+            Assert.AreEqual(WirelessTagConstants.Url, target.Url);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(HttpStatusException))]
         public void Execute_Response_Not_Ok_Should_Throw_HttpStatusException()
         {

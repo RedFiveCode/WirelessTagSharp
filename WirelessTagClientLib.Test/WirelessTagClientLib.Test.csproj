@@ -97,6 +97,7 @@
     <Compile Include="Client\WirelessTagClientTest.cs" />
     <Compile Include="Client\WirelessTagJsonClientTest.cs" />
     <Compile Include="TestHelpers\TestHelper.cs" />
+    <Compile Include="Utils\HttpStatusExceptionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
