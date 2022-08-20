@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WirelessTagClientLib.DTO
 {
+    [DebuggerDisplay("Readings={HourlyReadings.Count")]
     public class HourlyReadingInfo
     {
         public List<HourlyReading> HourlyReadings { get; internal set; } = new List<HourlyReading>();
@@ -13,6 +15,7 @@ namespace WirelessTagClientLib.DTO
     /// <summary>
     /// Hourly temperature and humidity readings for a given day
     /// </summary>
+    [DebuggerDisplay("Date={Date}, Temperatures={Temperatures.Count}")]
     public class HourlyReading
     {
         /// <summary>

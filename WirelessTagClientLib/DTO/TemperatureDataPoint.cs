@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WirelessTagClientLib.DTO
 {
+    [DebuggerDisplay("Data={Data.Count}")]
     public class TemperatureDataPointList
     {
         public List<TemperatureDataPoint> Data { get; internal set; } = new List<TemperatureDataPoint>();
     }
 
+    [DebuggerDisplay("Time={Time}, Temperature={Temperature}, Humidity={Humidity}, Lux={Lux}, Battery={Battery}")]
     public class TemperatureDataPoint
     {
         /// <summary>
