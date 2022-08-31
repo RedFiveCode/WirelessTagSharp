@@ -23,7 +23,7 @@ namespace WirelessTagClientApp.Common
                 Temperature = tag.Temperature,
                 SignalStrength = tag.SignalStrength,
                 BatteryVoltage = tag.BatteryVoltage,
-                BatteryRemaining = tag.BatteryRemaining,
+                BatteryRemaining = 100d * tag.BatteryRemaining, // convert to percentage 0 to 100, not 0 to 1
                 RelativeHumidity = tag.RelativeHumidity
             };
 
