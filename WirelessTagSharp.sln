@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WirelessTagClientLib.Test",
 		{ACBF5E08-4582-4980-BCB1-60BCF93BBF93} = {ACBF5E08-4582-4980-BCB1-60BCF93BBF93}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WirelessTagClientApp", "WirelessTagClientApp\WirelessTagClientApp.csproj", "{DBA8D2C4-B8F9-452F-9FF8-B5B304735787}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WirelessTagClientApp.Test", "WirelessTagClientAppTest\WirelessTagClientApp.Test.csproj", "{2CE11CCD-4310-4FC1-8936-92C2E7BD114B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +34,14 @@ Global
 		{2A0048DD-4B06-450B-A3A8-40B908D9E661}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A0048DD-4B06-450B-A3A8-40B908D9E661}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A0048DD-4B06-450B-A3A8-40B908D9E661}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBA8D2C4-B8F9-452F-9FF8-B5B304735787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBA8D2C4-B8F9-452F-9FF8-B5B304735787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBA8D2C4-B8F9-452F-9FF8-B5B304735787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBA8D2C4-B8F9-452F-9FF8-B5B304735787}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CE11CCD-4310-4FC1-8936-92C2E7BD114B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CE11CCD-4310-4FC1-8936-92C2E7BD114B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CE11CCD-4310-4FC1-8936-92C2E7BD114B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CE11CCD-4310-4FC1-8936-92C2E7BD114B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
