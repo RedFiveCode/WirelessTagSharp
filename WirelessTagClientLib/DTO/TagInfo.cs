@@ -18,7 +18,7 @@ namespace WirelessTagClientLib.DTO
         /// Name.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Unique id.
@@ -26,58 +26,58 @@ namespace WirelessTagClientLib.DTO
         /// <remarks>
         /// Image Url is https://www.mytaglist.com/eth/tags/u-u-i-d.jpg
         /// </remarks>
-        public Guid Uuid { get; internal set; }
+        public Guid Uuid { get; set; }
 
         /// <summary>
         /// Comment text.
         /// </summary>
-        public string Comment { get; internal set; }
+        public string Comment { get; set; }
 
         /// <summary>
         /// Id number
         /// </summary>
-        public int SlaveId { get; internal set; }
+        public int SlaveId { get; set; }
 
         /// <summary>
         /// Tag type;
         /// 12 = Temperature, 13 = Temperature and Relative Humidity.
         /// </summary>
-        public int TagType { get; internal set; }
+        public int TagType { get; set; }
 
         /// <summary>
         /// Date and time of last communication.
         /// </summary>
-        public DateTime LastCommunication { get; internal set; }
+        public DateTime LastCommunication { get; set; }
 
         /// <summary>
         /// RF signal strength (dBm).
         /// </summary>
-        public int SignalStrength { get; internal set; }
+        public int SignalStrength { get; set; }
 
         /// <summary>
         /// Battery voltage (V).
         /// </summary>
-        public double BatteryVoltage { get; internal set; }
+        public double BatteryVoltage { get; set; }
 
         /// <summary>
         /// Temperature (degrees C).
         /// </summary>
-        public double Temperature { get; internal set; }
+        public double Temperature { get; set; }
 
         /// <summary>
         /// Image MD5 hash.
         /// </summary>
-        public string ImageMD5 { get; internal set; }
+        public string ImageMD5 { get; set; }
 
         /// <summary>
         /// Relative Humidity (%).
         /// </summary>
-        public double RelativeHumidity { get; internal set; }
+        public double RelativeHumidity { get; set; }
 
         /// <summary>
         /// Percentage battery capacity remaining.
         /// </summary>
-        public double BatteryRemaining { get; internal set; }
+        public double BatteryRemaining { get; set; }
 
         /// <summary>
         /// Returns true if the tag measures temperature.
@@ -101,7 +101,7 @@ namespace WirelessTagClientLib.DTO
         /// <summary>
         /// Out of range flag.
         /// </summary>
-        public bool IsOutOfRange { get; internal set; }
+        public bool IsOutOfRange { get; set; }
 
         // further properties are possible; see TagListData
     }
