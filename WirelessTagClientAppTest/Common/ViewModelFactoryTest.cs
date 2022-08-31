@@ -60,7 +60,7 @@ namespace WirelessTagClientApp.Test.Common
             Assert.AreEqual(21.5, result[0].Temperature);
             Assert.AreEqual(50, result[0].RelativeHumidity);
             Assert.AreEqual(1.5, result[0].BatteryVoltage);
-            Assert.AreEqual(75, result[0].BatteryRemaining);
+            Assert.AreEqual(75, result[0].BatteryRemaining); // should multiply by 100 so scaled 0 to 100
             Assert.AreEqual(42, result[0].SignalStrength);
             Assert.AreEqual(new DateTime(2022, 1, 1), result[0].LastCommunication);
         }
@@ -77,7 +77,7 @@ namespace WirelessTagClientApp.Test.Common
                 Temperature = 21.5,
                 RelativeHumidity = 50,
                 BatteryVoltage = 1.5,
-                BatteryRemaining = 75,
+                BatteryRemaining = 0.75,
                 SignalStrength = 42,
                 LastCommunication = new DateTime(2022, 1, 1)
             };
