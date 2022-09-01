@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 using WirelessTagClientApp.ViewModels;
 
@@ -27,6 +28,9 @@ namespace WirelessTagClientApp
             DataContext = viewModel;
 
             Loaded += OnLoaded;
+            MouseDown += OnMouseDown;
+            KeyDown += OnKeyDown;
+
             // Persist window state; using the name of type as key
             ((App)Application.Current).WindowPlace.Register(this);
         }
@@ -36,5 +40,22 @@ namespace WirelessTagClientApp
             // refresh view model
             Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => { viewModel.Refresh(); }), DispatcherPriority.Background, null);
         }
+
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
+        }
+
     }
 }
