@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using RestoreWindowPlace;
 using System.Windows;
 
 namespace WirelessTagClientApp
@@ -13,5 +8,18 @@ namespace WirelessTagClientApp
     /// </summary>
     public partial class App : Application
     {
+        public WindowPlace WindowPlace { get; }
+
+        public App()
+        {
+            // Set a name of config file; see https://github.com/Boredbone/RestoreWindowPlace
+            this.WindowPlace = new WindowPlace("placement.config");
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            this.WindowPlace.Save();
+        }
     }
 }

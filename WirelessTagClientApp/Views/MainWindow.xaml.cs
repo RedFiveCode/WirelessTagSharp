@@ -27,6 +27,8 @@ namespace WirelessTagClientApp
             DataContext = viewModel;
 
             Loaded += OnLoaded;
+            // Persist window state; using the name of type as key
+            ((App)Application.Current).WindowPlace.Register(this);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
