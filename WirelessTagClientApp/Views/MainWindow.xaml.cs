@@ -28,8 +28,12 @@ namespace WirelessTagClientApp
             DataContext = viewModel;
 
             Loaded += OnLoaded;
-            MouseDown += OnMouseDown;
             KeyDown += OnKeyDown;
+
+            // allow user to click and drag to move main window around
+            // by clicking anywhere on man window, including child controls
+            // https://stackoverflow.com/questions/34581188/draggable-wpf-window-with-no-border
+            PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;           
 
             // Persist window state; using the name of type as key
             ((App)Application.Current).WindowPlace.Register(this);
@@ -41,12 +45,9 @@ namespace WirelessTagClientApp
             Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => { viewModel.Refresh(); }), DispatcherPriority.Background, null);
         }
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
+            DragMove();
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
