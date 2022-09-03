@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:WirelessTagClientApp.Views"
         mc:Ignorable="d"
         WindowStyle="None"
-        AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip"
         Background="GhostWhite"
         Title="WirelessTag App"
