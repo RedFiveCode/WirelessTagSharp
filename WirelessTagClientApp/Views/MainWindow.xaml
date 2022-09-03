@@ -15,6 +15,7 @@
     
     <Window.InputBindings>
         <KeyBinding Command="{Binding Path=RefreshCommand}" Key="F5" CommandParameter="{Binding}"/>
+        <KeyBinding Command="{Binding Path=ToggleViewCommand}" Key="F9" CommandParameter="{Binding}"/>
     </Window.InputBindings>
     
     <Grid>

@@ -26,16 +26,32 @@ namespace WirelessTagClientAppTest.ViewModel
             var target = new TagViewModel();
 
             // assert
+            Assert.AreEqual(TagViewModel.ViewMode.Temperature, target.Mode);
             Assert.AreEqual(0, target.Id);
             Assert.AreEqual(String.Empty, target.Name);
             Assert.AreEqual(String.Empty, target.Description);
             Assert.AreEqual(Guid.Empty, target.Uuid);
             Assert.AreEqual(0d, target.Temperature);
+            Assert.AreEqual(32d, target.TemperatureFahrenheit);
             Assert.AreEqual(0d, target.RelativeHumidity);
             Assert.AreEqual(DateTime.MinValue, target.LastCommunication);
             Assert.AreEqual(0, target.SignalStrength);
             Assert.AreEqual(0d, target.BatteryVoltage);
             Assert.AreEqual(0d, target.BatteryRemaining);
+        }
+
+        [TestMethod]
+        public void Mode_Setter_Should_Fire_PropertyChanged_Event()
+        {
+            // arrange
+            var target = new TagViewModel();
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.Mode = TagViewModel.ViewMode.Humidity;
+
+            // assert
+            observer.AssertPropertyChangedEvent("Mode");
         }
 
         [TestMethod]
@@ -95,7 +111,7 @@ namespace WirelessTagClientAppTest.ViewModel
         }
 
         [TestMethod]
-        public void Temperature_Setter_Should_Fire_PropertyChanged_Event()
+        public void Temperature_Setter_Should_Fire_PropertyChanged_Events()
         {
             // arrange
             var target = new TagViewModel();
@@ -106,6 +122,7 @@ namespace WirelessTagClientAppTest.ViewModel
 
             // assert
             observer.AssertPropertyChangedEvent("Temperature");
+            observer.AssertPropertyChangedEvent("TemperatureFahrenheit");
         }
 
         [TestMethod]
@@ -176,6 +193,20 @@ namespace WirelessTagClientAppTest.ViewModel
 
             // assert
             observer.AssertPropertyChangedEvent("BatteryRemaining");
+        }
+
+        [TestMethod]
+        public void Temperature_Setter_Should_Set_TemperatureFahrenheit_Property()
+        {
+            // arrange
+            var target = new TagViewModel();
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.Temperature = 100;
+
+            // assert
+            Assert.AreEqual(212d, target.TemperatureFahrenheit);
         }
     }
 }

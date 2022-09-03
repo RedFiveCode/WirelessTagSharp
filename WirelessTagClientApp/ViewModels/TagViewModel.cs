@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WirelessTagClientApp.Common;
+using WirelessTagClientApp.Utils;
 
 namespace WirelessTagClientApp.ViewModels
 {
@@ -14,6 +11,7 @@ namespace WirelessTagClientApp.ViewModels
     [DebuggerDisplay("Tag={Name}, Temperature={Temperature}")]
     public class TagViewModel : ViewModelBase
     {
+        private ViewMode mode;
         private string name;
         private string description;
         private int id;
@@ -25,10 +23,28 @@ namespace WirelessTagClientApp.ViewModels
         private double batteryVoltage;
         private double batteryRemaining;
 
+        public enum ViewMode { Temperature = 0, TemperatureF, Humidity, BatteryVoltage, BatteryPercent }
+
         public TagViewModel()
         {
             Name = String.Empty;
             Description = String.Empty;
+            Mode = ViewMode.Temperature;
+        }
+
+        /// <summary>
+        /// Get/set the view mode (temperature, humidity, etc)
+        /// </summary>
+        public ViewMode Mode
+        {
+            get { return mode; }
+
+            set
+            {
+                mode = value;
+
+                NotifyPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -97,7 +113,16 @@ namespace WirelessTagClientApp.ViewModels
             {
                 temperature = value;
                 NotifyPropertyChanged();
+                NotifyPropertyChanged("TemperatureFahrenheit");
             }
+        }
+
+        /// <summary>
+        /// Get/set the temperature (degrees Fahrenheit)
+        /// </summary>
+        public double TemperatureFahrenheit
+        {
+            get { return TemperatureConvertor.ConvertToFarenheit(temperature); }
         }
 
         /// <summary>
