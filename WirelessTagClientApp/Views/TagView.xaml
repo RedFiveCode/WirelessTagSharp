@@ -4,15 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WirelessTagClientApp.Views"
+             xmlns:localConv="clr-namespace:WirelessTagClientApp.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="300"
+             d:DesignWidth="200">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <localConv:EnumToVisibilityConverter x:Key="enumVisibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <!-- Data context is TagViewModel -->
     <GroupBox Padding="6">
         <GroupBox.Header>
             <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" FontSize="14">
                 <TextBlock.Text>
-                    <Binding Path="Name" />
+                    <Binding Path="Name" FallbackValue="???" />
                 </TextBlock.Text>
                 <TextBlock.ToolTip>
                     <TextBlock
@@ -24,20 +32,104 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- current temperature -->
-            <TextBlock 
+            <!-- current temperature (°C) -->
+            <StackPanel
                 Grid.Row="0" 
                 Grid.Column="0"
-                FontSize="36">
-                <TextBlock.Text>
-                    <Binding Path="Temperature" StringFormat="{}{0:n1} °C" />
-                </TextBlock.Text>
-            </TextBlock>
+                Orientation="Horizontal"
+                Visibility="{Binding Path=Mode, Mode=OneWay, ConverterParameter=Temperature, Converter={StaticResource ResourceKey=enumVisibilityConverter}}">
+                
+                <TextBlock 
+                    FontSize="36"
+                    Text="{Binding Path=Temperature, FallbackValue=99.9, StringFormat={}{0:n1}}"/>
+                <TextBlock
+                    Padding="6,0,0,6"
+                    FontSize="24"
+                    VerticalAlignment="Bottom"
+                    Foreground="#404040"
+                    Text="°C" />
+            </StackPanel>
+
+            <!-- current temperature (°F) -->
+            <StackPanel
+                Grid.Row="1" 
+                Grid.Column="0"
+                Orientation="Horizontal"
+                Visibility="{Binding Path=Mode, Mode=OneWay, ConverterParameter=TemperatureF, Converter={StaticResource ResourceKey=enumVisibilityConverter}}">
+
+                <TextBlock 
+                    FontSize="36"
+                    Text="{Binding Path=TemperatureFahrenheit, FallbackValue=32.0, StringFormat={}{0:n1}}"/>
+                <TextBlock
+                    Padding="6,0,0,6"
+                    FontSize="24"
+                    VerticalAlignment="Bottom"
+                    Foreground="#404040"
+                    Text="°F" />
+            </StackPanel>
+
+            <!-- relative humidity (%) -->
+            <StackPanel
+                Grid.Row="2" 
+                Grid.Column="0"
+                Orientation="Horizontal"
+                Visibility="{Binding Path=Mode, Mode=OneWay, ConverterParameter=Humidity, Converter={StaticResource ResourceKey=enumVisibilityConverter}}">
+
+                <TextBlock 
+                    FontSize="36"
+                    Text="{Binding Path=RelativeHumidity, FallbackValue=99.9, StringFormat={}{0:n1}}"/>
+                <TextBlock
+                    Padding="6,0,0,6"
+                    FontSize="24"
+                    VerticalAlignment="Bottom"
+                    Foreground="#404040"
+                    Text="%" />
+            </StackPanel>
+
+            <!-- battery voltage -->
+            <StackPanel
+                Grid.Row="3" 
+                Grid.Column="0"
+                Orientation="Horizontal"
+                Visibility="{Binding Path=Mode, Mode=OneWay, ConverterParameter=BatteryVoltage, Converter={StaticResource ResourceKey=enumVisibilityConverter}}">
+
+                <TextBlock 
+                    FontSize="36"
+                    Text="{Binding Path=BatteryVoltage, FallbackValue=1.2, StringFormat={}{0:n1}}"/>
+                <TextBlock
+                    Padding="6,0,0,6"
+                    FontSize="24"
+                    VerticalAlignment="Bottom"
+                    Foreground="#404040"
+                    Text="V" />
+            </StackPanel>
+            
+            <!-- battery percentage -->
+            <StackPanel
+                Grid.Row="4" 
+                Grid.Column="0"
+                Orientation="Horizontal"
+                Visibility="{Binding Path=Mode, Mode=OneWay, ConverterParameter=BatteryPercent, Converter={StaticResource ResourceKey=enumVisibilityConverter}}">
+
+                <TextBlock 
+                    FontSize="36"
+                    Text="{Binding Path=BatteryRemaining, FallbackValue=10.1, StringFormat={}{0:n0}}"/>
+                <TextBlock
+                    Padding="6,0,0,6"
+                    FontSize="24"
+                    VerticalAlignment="Bottom"
+                    Foreground="#404040"
+                    Text="%" />
+            </StackPanel>
         </Grid>
     </GroupBox>
     

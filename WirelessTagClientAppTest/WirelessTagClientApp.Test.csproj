@@ -19,7 +19,7 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <NuGetPackageImportStamp>
-	<Deterministic>false</Deterministic>
+      <Deterministic>false</Deterministic>
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -52,6 +52,7 @@
     <Reference Include="Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.18.2\lib\net462\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -64,9 +65,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ToggleViewCommandTest.cs" />
     <Compile Include="Common\ViewModelFactoryTest.cs" />
+    <Compile Include="Converters\EnumToVisibilityConverterTest.cs" />
     <Compile Include="TestHelpers\PropertyChangedObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\EnumHelperTest.cs" />
+    <Compile Include="Utils\TemperatureConvertorTest.cs" />
     <Compile Include="ViewModel\TagViewModelTest.cs" />
     <Compile Include="ViewModel\AllTagsViewModelTest.cs" />
   </ItemGroup>
