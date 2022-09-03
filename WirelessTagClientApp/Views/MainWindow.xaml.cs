@@ -31,7 +31,7 @@ namespace WirelessTagClientApp
             KeyDown += OnKeyDown;
 
             // allow user to click and drag to move main window around
-            // by clicking anywhere on man window, including child controls
+            // by clicking anywhere on main window, including child controls
             // https://stackoverflow.com/questions/34581188/draggable-wpf-window-with-no-border
             PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;           
 
