@@ -12,7 +12,7 @@ namespace WirelessTagClientApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly AllTagsViewModel viewModel;
+        private readonly MainWindowViewModel viewModel;
         private readonly Options options;
 
         public MainWindow()
@@ -23,7 +23,7 @@ namespace WirelessTagClientApp
             var args = Environment.GetCommandLineArgs();
             options = Parser.Default.ParseArguments<Options>(args).Value;
 
-            viewModel = new AllTagsViewModel(options);
+            viewModel = new MainWindowViewModel(options);
 
             DataContext = viewModel;
 

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WirelessTagClientApp.Views"
+        xmlns:converters="clr-namespace:ValueConverters;assembly=ValueConverters"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -12,14 +13,16 @@
         Title="WirelessTag App"
         Height="450"
         Width="800">
-    
+
     <Window.InputBindings>
         <KeyBinding Command="{Binding Path=RefreshCommand}" Key="F5" CommandParameter="{Binding}"/>
-        <KeyBinding Command="{Binding Path=ToggleViewCommand}" Key="F9" CommandParameter="{Binding}"/>
+        <!--<KeyBinding Command="{Binding Path=ToggleViewCommand}" Key="F9" CommandParameter="{Binding}"/>-->
         <KeyBinding Command="{Binding Path=CloseCommand}" Key="F4" Modifiers="Ctrl" CommandParameter="{Binding}"/>
     </Window.InputBindings>
 
     <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
+       
         <ContextMenu x:Key="contextMenu" >
             <MenuItem 
                 Header="Refresh"
@@ -31,15 +34,15 @@
                 </MenuItem.Icon>-->
             </MenuItem>
 
-            <MenuItem 
+            <!--<MenuItem 
                 Header="Toggle View"
                 CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                 Command="{Binding Path=ToggleViewCommand}"
                 CommandParameter="{Binding}" >
-                <!--<MenuItem.Icon>
+                --><!--<MenuItem.Icon>
                     <Image Source="/WirelessTagUI;component/Images/CopyHS.png" Width="16" Height="16" SnapsToDevicePixels="True" />
-                </MenuItem.Icon>-->
-            </MenuItem>
+                </MenuItem.Icon>--><!--
+            </MenuItem>-->
 
             <Separator />
 
@@ -53,11 +56,53 @@
                 </MenuItem.Icon>-->
             </MenuItem>
 
-        </ContextMenu>        
+        </ContextMenu>
     </Window.Resources>
-    
+
     <Grid
         ContextMenu="{StaticResource contextMenu}">
-        <local:AllTagsView />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        
+
+        <local:AllTagsView
+             Grid.Row="0" 
+            DataContext="{Binding Path=ActiveViewModel}"/>
+
+        <TextBlock
+            Grid.Row="0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            FontSize="36"
+            FontStyle="Italic"
+            Foreground="DarkSlateBlue"
+            Visibility="{Binding Path=IsBusy, Converter={StaticResource visibilityConverter}}" >
+            <TextBlock.Text>Busy...</TextBlock.Text>
+        </TextBlock>
+
+        <StackPanel
+            Grid.Row="1" Orientation="Horizontal">
+
+            <TextBlock
+                Padding="6,0,6,0"
+                Text="Last Updated:"/>
+            <TextBlock
+                TextTrimming="CharacterEllipsis"
+                Text="{Binding Path=LastUpdated, StringFormat={}{0:ddd dd-MMM-yyyy HH:mm:ss} }" />
+        </StackPanel>
+
+        <TextBlock
+            Grid.Row="2"
+            FontSize="24"
+            Padding="6"
+            FontStyle="Italic"
+            Foreground="Crimson"
+            Background="LightPink"
+            TextTrimming="CharacterEllipsis"
+            Text="{Binding Path=ErrorMessage}"
+            Visibility="{Binding Path=IsError, Converter={StaticResource visibilityConverter}}" />
     </Grid>
 </Window>
