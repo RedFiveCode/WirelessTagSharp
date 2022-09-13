@@ -111,13 +111,13 @@
     <Compile Include="Utils\TemperatureConvertor.cs" />
     <Compile Include="ViewModels\AllTagsViewModel.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />
-    <Compile Include="Views\TagCurrentView.xaml.cs">
-      <DependentUpon>TagCurrentView.xaml</DependentUpon>
+    <Compile Include="Views\AllTagsView.cs">
+      <DependentUpon>AllTagsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TagView.xaml.cs">
       <DependentUpon>TagView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\TagCurrentView.xaml">
+    <Page Include="Views\AllTagsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
