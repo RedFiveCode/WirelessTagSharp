@@ -19,6 +19,7 @@ namespace WirelessTagClientApp.ViewModels
 
         private RefreshCommand refreshCommand;
         private ToggleViewCommand toggleViewCommand;
+        private CloseCommand closeCommand;
         private ObservableCollection<TagViewModel> tagList;
         private DateTime lastUpdated;
         private bool isBusy;
@@ -34,6 +35,7 @@ namespace WirelessTagClientApp.ViewModels
 
             refreshCommand = new RefreshCommand();
             toggleViewCommand = new ToggleViewCommand();
+            closeCommand = new CloseCommand();
 
             client = new WirelessTagAsyncClient();
 
@@ -178,6 +180,14 @@ namespace WirelessTagClientApp.ViewModels
         public ICommand ToggleViewCommand
         {
             get { return toggleViewCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the command to close the app
+        /// </summary>
+        public ICommand CloseCommand
+        {
+            get { return closeCommand.Command; }
         }
 
         private void SetError(string message)

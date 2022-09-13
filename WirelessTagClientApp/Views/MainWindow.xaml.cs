@@ -28,7 +28,7 @@ namespace WirelessTagClientApp
             DataContext = viewModel;
 
             Loaded += OnLoaded;
-            KeyDown += OnKeyDown;
+            //KeyDown += OnKeyDown;
 
             // allow user to click and drag to move main window around
             // by clicking anywhere on main window, including child controls
