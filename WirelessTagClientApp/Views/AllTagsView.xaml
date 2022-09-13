@@ -13,6 +13,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding Path=ToggleViewCommand}" Key="F9" CommandParameter="{Binding}"/>
+    </UserControl.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
