@@ -45,38 +45,7 @@
         
         </ScrollViewer>
 
-        <TextBlock
-            Grid.Row="0"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            FontSize="36"
-            FontStyle="Italic"
-            Foreground="DarkSlateBlue"
-            Visibility="{Binding Path=IsBusy, Converter={StaticResource visibilityConverter}}" >
-            <TextBlock.Text>Busy...</TextBlock.Text>
-        </TextBlock>
 
-        <StackPanel
-            Grid.Row="1" Orientation="Horizontal">
-
-            <TextBlock
-                Padding="6,0,6,0"
-                Text="Last Updated:"/>
-            <TextBlock
-                TextTrimming="CharacterEllipsis"
-                Text="{Binding Path=LastUpdated, StringFormat={}{0:ddd dd-MMM-yyyy HH:mm:ss} }" />
-        </StackPanel>
-        
-        <TextBlock
-            Grid.Row="2"
-            FontSize="24"
-            Padding="6"
-            FontStyle="Italic"
-            Foreground="Crimson"
-            Background="LightPink"
-            TextTrimming="CharacterEllipsis"
-            Text="{Binding Path=ErrorMessage}"
-            Visibility="{Binding Path=IsError, Converter={StaticResource visibilityConverter}}" />
 
     </Grid>
 
