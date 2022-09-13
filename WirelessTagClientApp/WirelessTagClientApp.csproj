@@ -110,6 +110,7 @@
     <Compile Include="Utils\EnumHelper.cs" />
     <Compile Include="Utils\TemperatureConvertor.cs" />
     <Compile Include="ViewModels\AllTagsViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />
     <Compile Include="Views\AllTagsView.cs">
       <DependentUpon>AllTagsView.xaml</DependentUpon>
