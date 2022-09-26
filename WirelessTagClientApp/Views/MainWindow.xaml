@@ -18,6 +18,7 @@
         <KeyBinding Command="{Binding Path=RefreshCommand}" Key="F5" CommandParameter="{Binding}"/>
         <!--<KeyBinding Command="{Binding Path=ToggleViewCommand}" Key="F9" CommandParameter="{Binding}"/>-->
         <KeyBinding Command="{Binding Path=CloseCommand}" Key="F4" Modifiers="Ctrl" CommandParameter="{Binding}"/>
+        <KeyBinding Command="{Binding Path=CloseCommand}" Key="Esc" CommandParameter="{Binding}"/>
     </Window.InputBindings>
 
     <Window.Resources>
