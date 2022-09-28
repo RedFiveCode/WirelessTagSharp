@@ -41,8 +41,8 @@ namespace WirelessTagClientApp
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            // refresh view model
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => { viewModel.Refresh(); }), DispatcherPriority.Background, null);
+            // login and refresh the view model
+            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => { viewModel.LoginAndRefresh(); }), DispatcherPriority.Background, null);
         }
 
         private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
