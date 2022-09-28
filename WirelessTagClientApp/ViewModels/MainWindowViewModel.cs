@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.Common;
@@ -16,9 +17,8 @@ namespace WirelessTagClientApp.ViewModels
         private bool isError;
         private string errorMessage;
 
-        private RefreshCommand refreshCommand;
+        private RefreshAllTagsCommand refreshAllTagsCommand;
         private CloseCommand closeCommand;
-        // need new refresh command that will push a message on the bus to tell the active view to refresh itself???
 
         private AllTagsViewModel activeViewModel;
 
@@ -47,17 +47,46 @@ namespace WirelessTagClientApp.ViewModels
             isError = false;
             errorMessage = String.Empty;
 
-            refreshCommand = new RefreshCommand();
+            refreshAllTagsCommand = new RefreshAllTagsCommand(client, options);
             closeCommand = new CloseCommand();
             activeViewModel = new AllTagsViewModel(this.options);
         }
 
-        // Refresh the active view
-        public void Refresh()
-        {
-            activeViewModel.Refresh();
 
-            LastUpdated = DateTime.Now;
+        /// <summary>
+        /// Log-in and refresh the active view
+        /// </summary>
+        public void LoginAndRefresh()
+        {
+            // TODO
+            // create watcher
+            // add async refresh method to AllTagsViewModel
+            // should we have one long lived instance of the watcher,
+            // or create new watchers for each task/refresh call?
+
+            // update LastUpdated when the watcher has completed
+            // (subscribe to its property changed events or extend watcher to fired its own events?)
+            //
+            // maybe separate the watcher ctor from running the task as well, so can rerun the same task.
+
+            //watcher = new NotifyTaskCompletion<AllTagsViewModel>(activeViewModel.RefreshAsync);
+
+            // need to move client access to own service class away from AllTagsViewModel ???
+
+            var task = client.LoginAsync(options.Username, options.Password);
+            task.ContinueWith(responseTask =>
+            {
+                if (!responseTask.Result || responseTask.Status != TaskStatus.RanToCompletion)
+                {
+                    // UI thread ???
+                    IsBusy = false;
+                    SetError(Properties.Resources.Error_Login);
+                }
+
+                refreshAllTagsCommand.Command.Execute(this);
+
+                LastUpdated = DateTime.Now;
+            });
         }
 
         /// <summary>
@@ -122,7 +151,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand RefreshCommand
         {
-            get { return refreshCommand.Command; }
+            get { return refreshAllTagsCommand.Command; }
         }
 
         /// <summary>
@@ -138,5 +167,11 @@ namespace WirelessTagClientApp.ViewModels
             get { return activeViewModel; }
         }
 
+        public void SetError(string message)
+        {
+            IsBusy = false;
+            IsError = true;
+            ErrorMessage = message;
+        }
     }
 }
