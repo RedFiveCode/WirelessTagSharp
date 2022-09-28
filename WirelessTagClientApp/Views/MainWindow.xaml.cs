@@ -28,7 +28,6 @@ namespace WirelessTagClientApp
             DataContext = viewModel;
 
             Loaded += OnLoaded;
-            //KeyDown += OnKeyDown;
 
             // allow user to click and drag to move main window around
             // by clicking anywhere on main window, including child controls
@@ -48,14 +47,6 @@ namespace WirelessTagClientApp
         private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
-        }
-
-        private void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                Close();
-            }
         }
 
     }
