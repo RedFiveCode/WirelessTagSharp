@@ -122,5 +122,25 @@ namespace WirelessTagClientApp.Test.ViewModel
             // assert
             Assert.IsFalse(target.IsError);
         }
+
+        [TestMethod]
+        public void SetError_Should_Set_Depedent_Properties()
+        {
+            // arrange
+            var target = new MainWindowViewModel();
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.SetError("my error message");
+
+            // assert
+            observer.AssertPropertyChangedEvent("IsError");
+            observer.AssertPropertyChangedEvent("ErrorMessage");
+            observer.AssertPropertyChangedEvent("IsBusy");
+
+            Assert.IsTrue(target.IsError);
+            Assert.AreEqual("my error message", target.ErrorMessage);
+            Assert.IsFalse(target.IsBusy);
+        }
     }
 }
