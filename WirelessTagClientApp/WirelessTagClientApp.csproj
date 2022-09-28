@@ -108,7 +108,6 @@
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Commands\CloseCommand.cs" />
     <Compile Include="Commands\RefreshAllTagsCommand.cs" />
-    <Compile Include="Commands\RefreshCommand.cs" />
     <Compile Include="Commands\ToggleViewCommand.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\ViewModelBase.cs" />

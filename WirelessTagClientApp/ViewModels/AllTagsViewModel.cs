@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.Common;
@@ -17,7 +15,6 @@ namespace WirelessTagClientApp.ViewModels
         private readonly IWirelessTagAsyncClient client;
         private readonly Options options;
 
-        private RefreshCommand refreshCommand;
         private ToggleViewCommand toggleViewCommand;
         private CloseCommand closeCommand;
         private ObservableCollection<TagViewModel> tagList;
@@ -33,7 +30,6 @@ namespace WirelessTagClientApp.ViewModels
             Tags = new ObservableCollection<TagViewModel>();
             LastUpdated = DateTime.MinValue;
 
-            refreshCommand = new RefreshCommand();
             toggleViewCommand = new ToggleViewCommand();
             closeCommand = new CloseCommand();
 
@@ -164,14 +160,6 @@ namespace WirelessTagClientApp.ViewModels
                 errorMessage = value;
                 NotifyPropertyChanged();
             }
-        }
-
-        /// <summary>
-        /// Get the command to refresh the tag data
-        /// </summary>
-        public ICommand RefreshCommand
-        {
-            get { return refreshCommand.Command; }
         }
 
         /// <summary>
