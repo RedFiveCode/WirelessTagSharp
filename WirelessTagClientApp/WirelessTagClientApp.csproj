@@ -121,7 +121,7 @@
     <Compile Include="Views\AllTagsView.cs">
       <DependentUpon>AllTagsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TagView.xaml.cs">
+    <Compile Include="ViewControls\TagView.xaml.cs">
       <DependentUpon>TagView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\AllTagsView.xaml">
@@ -140,7 +140,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\TagView.xaml">
+    <Page Include="ViewControls\TagView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

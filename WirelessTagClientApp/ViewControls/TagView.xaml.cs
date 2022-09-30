@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WirelessTagClientApp.Views
+namespace WirelessTagClientApp.ViewControls
 {
     /// <summary>
     /// Interaction logic for TagView.xaml
