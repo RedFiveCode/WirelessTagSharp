@@ -4,6 +4,13 @@ using System.Windows.Data;
 
 namespace WirelessTagClientApp.Converters
 {
+    /// <summary>
+    /// Format timespan from now in a friendly way
+    /// for example "3 days ago"
+    /// </summary>
+    /// <remarks>
+    /// See https://github.com/Humanizr/Humanizer
+    /// </remarks>
     public class HumanizeTimeSpanValueConverter : IValueConverter
     {
         #region IValueConverter Members
@@ -23,7 +30,7 @@ namespace WirelessTagClientApp.Converters
                 var dt = (DateTime)value;
                 var span = DateTime.Now.Subtract(dt);
 
-                return String.Format(Properties.Resources.DurationAgo, span.Humanize());
+                return String.Format(Properties.Resources.DurationAgo, span.Humanize()); // for example "3 days ago"
             }
             else
             {
