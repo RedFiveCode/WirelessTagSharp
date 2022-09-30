@@ -100,6 +100,7 @@
     <Compile Include="Commands\RefreshAllTagsCommandTest.cs" />
     <Compile Include="Common\ViewModelFactoryTest.cs" />
     <Compile Include="Converters\EnumToVisibilityConverterTest.cs" />
+    <Compile Include="Converters\EmptyStringConverterTest.cs" />
     <Compile Include="TestHelpers\PropertyChangedObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\EnumHelperTest.cs" />
