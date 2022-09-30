@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.ViewModels;
@@ -17,7 +19,7 @@ namespace WirelessTagClientApp.Test.Commands
         }
 
         [TestMethod]
-        public void ToggleViewCommand_SetsViewMode()
+        public void ToggleViewCommand_SetsViewMode_ForAllTags()
         {
             // arrange
             var target = new ToggleViewCommand();
@@ -35,6 +37,32 @@ namespace WirelessTagClientApp.Test.Commands
             // assert
             Assert.AreEqual(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[0].Mode);
             Assert.AreEqual(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[1].Mode);
+        }
+
+        [TestMethod]
+        public void ToggleViewCommand_SetsNextViewMode_And_WrapsRound()
+        {
+            // arrange
+            var viewModes = (TagViewModel.ViewMode[])Enum.GetValues(typeof(TagViewModel.ViewMode));
+            var orderedViewModes = viewModes.ToArray().OrderBy(x => x);
+            var first = orderedViewModes.First(); // TagViewModel.ViewMode.Temperature
+            var last = orderedViewModes.Last(); // TagViewModel.ViewMode.BatteryPercent
+
+
+            var tagViewModel = new TagViewModel() { Id = 1, Mode = TagViewModel.ViewMode.Temperature };
+
+            var target = new ToggleViewCommand();
+            var viewModel = new AllTagsViewModel();
+          
+            viewModel.Tags.Add(tagViewModel);
+
+            tagViewModel.Mode = last; // TagViewModel.ViewMode.BatteryPercent
+
+            // act
+            target.Command.Execute(viewModel);
+
+            // assert
+            Assert.AreEqual(first, tagViewModel.Mode);
         }
     }
 }
