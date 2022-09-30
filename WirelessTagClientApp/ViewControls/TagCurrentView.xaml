@@ -171,8 +171,14 @@
                         Grid.Column="0">Temperature:</TextBlock>
                     <TextBlock 
                         Grid.Row="0" 
-                        Grid.Column="2"
-                        Text="{Binding Path=Temperature, StringFormat={}{0:n1} °C}" />
+                        Grid.Column="2">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:n1} °C ({1:n1} °F)">
+                                <Binding Path="Temperature" FallbackValue="0" />
+                                <Binding Path="TemperatureFahrenheit" FallbackValue="32" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
 
                     <!-- not all tags support humidity sensor, so display blank if not supported -->
                     <TextBlock 
@@ -185,7 +191,7 @@
                         Grid.ColumnSpan="3" 
                         Style="{StaticResource humidityStyle}">
                         <TextBlock.Text>
-                            <Binding Path="RelativeHumidity" StringFormat="{}{0:n1} %" />
+                            <Binding Path="RelativeHumidity" StringFormat="{}{0:n1} %" FallbackValue="0"/>
                         </TextBlock.Text>
                     </TextBlock>
 
@@ -229,8 +235,11 @@
                         Grid.Column="0">Signal Strength:</TextBlock>
                     <TextBlock
                         Grid.Row="5"
-                        Grid.Column="2"
-                        Text="{Binding Path=SignalStrength, StringFormat={}{0} dBm}"/>
+                        Grid.Column="2">
+                        <TextBlock.Text>
+                            <Binding Path="SignalStrength" StringFormat="{}{0} dBm" FallbackValue="0"/>
+                        </TextBlock.Text>
+                    </TextBlock>
 
                     <TextBlock
                         Grid.Row="6"
@@ -240,8 +249,8 @@
                         Grid.Column="2">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0:n2} V {1:p0}">
-                                <Binding Path="BatteryVoltage" />
-                                <Binding Path="BatteryRemaining" />
+                                <Binding Path="BatteryVoltage" FallbackValue="0.00" />
+                                <Binding Path="BatteryRemaining" FallbackValue="0%"/>
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
