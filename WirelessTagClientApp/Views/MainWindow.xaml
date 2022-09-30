@@ -30,9 +30,9 @@
                 CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                 Command="{Binding Path=RefreshCommand}"
                 CommandParameter="{Binding}" >
-                <!--<MenuItem.Icon>
-                    <Image Source="/WirelessTagUI;component/Images/CopyHS.png" Width="16" Height="16" SnapsToDevicePixels="True" />
-                </MenuItem.Icon>-->
+                <MenuItem.Icon>
+                    <Image Source="/Images/Refresh.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                </MenuItem.Icon>
             </MenuItem>
 
             <!--<MenuItem 
@@ -41,7 +41,7 @@
                 Command="{Binding Path=ToggleViewCommand}"
                 CommandParameter="{Binding}" >
                 --><!--<MenuItem.Icon>
-                    <Image Source="/WirelessTagUI;component/Images/CopyHS.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                    <Image Source="/WirelessTagClientApp;component/Images/CopyHS.png" Width="16" Height="16" SnapsToDevicePixels="True" />
                 </MenuItem.Icon>--><!--
             </MenuItem>-->
 
@@ -52,9 +52,9 @@
                 CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                 Command="{Binding Path=CloseCommand}"
                 CommandParameter="{Binding}" >
-                <!--<MenuItem.Icon>
-                    <Image Source="/WirelessTagUI;component/Images/CopyHS.png" Width="16" Height="16" SnapsToDevicePixels="True" />
-                </MenuItem.Icon>-->
+                <MenuItem.Icon>
+                    <Image Source="/Images/Close.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                </MenuItem.Icon>
             </MenuItem>
 
         </ContextMenu>
