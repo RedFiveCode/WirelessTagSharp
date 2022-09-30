@@ -6,13 +6,23 @@
              xmlns:local="clr-namespace:WirelessTagClientApp.Views"
              xmlns:localConv="clr-namespace:WirelessTagClientApp.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300"
+             d:DesignHeight="400"
              d:DesignWidth="200">
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <localConv:EnumToVisibilityConverter x:Key="enumVisibilityConverter" />
-        </ResourceDictionary>
+        <localConv:EnumToVisibilityConverter x:Key="enumVisibilityConverter" />
+
+        <!-- TextBlock style - not all tags support humidity sensor, so hide if not supported -->
+        <Style TargetType="{x:Type TextBlock}" x:Key="humidityStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsHumidityTag}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsHumidityTag}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <!-- Data context is TagViewModel -->
@@ -31,6 +41,7 @@
 
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -129,6 +140,112 @@
                     VerticalAlignment="Bottom"
                     Foreground="#404040"
                     Text="%" />
+            </StackPanel>
+
+            <!-- Details -->
+            <StackPanel
+                Grid.Row="5" 
+                Grid.Column="0"
+                Orientation="Horizontal"
+                Visibility="{Binding Path=Mode, Mode=OneWay, ConverterParameter=VerboseDetails, Converter={StaticResource ResourceKey=enumVisibilityConverter}}">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="6" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- current temperature -->
+                    <TextBlock 
+                        Grid.Row="0" 
+                        Grid.Column="0">Temperature:</TextBlock>
+                    <TextBlock 
+                        Grid.Row="0" 
+                        Grid.Column="2"
+                        Text="{Binding Path=Temperature, StringFormat={}{0:n1} °C}" />
+
+                    <!-- not all tags support humidity sensor, so display blank if not supported -->
+                    <TextBlock 
+                        Grid.Row="1" 
+                        Grid.Column="0" 
+                        Style="{StaticResource humidityStyle}">Humidity:</TextBlock>
+                    <TextBlock 
+                        Grid.Row="1" 
+                        Grid.Column="2" 
+                        Grid.ColumnSpan="3" 
+                        Style="{StaticResource humidityStyle}">
+                        <TextBlock.Text>
+                            <Binding Path="RelativeHumidity" StringFormat="{}{0:n1} %" />
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0">Description:</TextBlock>
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Text="{Binding Path=Description}"/>
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0">Id:</TextBlock>
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} {1:B}">
+                                <Binding Path="Id" />
+                                <Binding Path="Uuid" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0">Last Communication:</TextBlock>
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:dd-MMM-yyyy HH:mm:ss}">
+                                <Binding Path="LastCommunication" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0">Signal Strength:</TextBlock>
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        Text="{Binding Path=SignalStrength, StringFormat={}{0} dBm}"/>
+
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0">Battery:</TextBlock>
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:n2} V {1:p0}">
+                                <Binding Path="BatteryVoltage" />
+                                <Binding Path="BatteryRemaining" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Grid>
             </StackPanel>
         </Grid>
     </GroupBox>
