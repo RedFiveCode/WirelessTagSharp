@@ -61,6 +61,15 @@ namespace WirelessTagClientApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} ago.
+        /// </summary>
+        internal static string DurationAgo {
+            get {
+                return ResourceManager.GetString("DurationAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exception: {0}; {1}.
         /// </summary>
         internal static string Error_Exception {

@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DurationAgo" xml:space="preserve">
+    <value>{0} ago</value>
+    <comment>{0} = friendly time span</comment>
+  </data>
   <data name="Error_Exception" xml:space="preserve">
     <value>Exception: {0}; {1}</value>
     <comment>{0} = exception message; {1} = stack trace</comment>
