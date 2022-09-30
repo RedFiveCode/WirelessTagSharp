@@ -11,6 +11,7 @@
 
     <UserControl.Resources>
         <localConv:EnumToVisibilityConverter x:Key="enumVisibilityConverter" />
+        <localConv:EmptyStringConverter x:Key="emptyStringConverter" />
 
         <!-- TextBlock style - not all tags support humidity sensor, so hide if not supported -->
         <Style TargetType="{x:Type TextBlock}" x:Key="humidityStyle">
@@ -201,7 +202,7 @@
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
-                        Text="{Binding Path=Description}"/>
+                        Text="{Binding Path=Description, Converter={StaticResource emptyStringConverter}}"/>
 
                     <TextBlock
                         Grid.Row="3"
