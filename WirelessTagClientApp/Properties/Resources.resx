@@ -124,4 +124,7 @@
   <data name="Error_Login" xml:space="preserve">
     <value>Error logging in; verify the username and password</value>
   </data>
+  <data name="UnavailableText" xml:space="preserve">
+    <value>(none)</value>
+  </data>
 </root>

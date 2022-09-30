@@ -77,5 +77,14 @@ namespace WirelessTagClientApp.Properties {
                 return ResourceManager.GetString("Error_Login", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (none).
+        /// </summary>
+        internal static string UnavailableText {
+            get {
+                return ResourceManager.GetString("UnavailableText", resourceCulture);
+            }
+        }
     }
 }
