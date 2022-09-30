@@ -23,7 +23,7 @@ namespace WirelessTagClientApp.ViewModels
         private double batteryVoltage;
         private double batteryRemaining;
 
-        public enum ViewMode { Temperature = 0, TemperatureF, Humidity, BatteryVoltage, BatteryPercent }
+        public enum ViewMode { Temperature = 0, TemperatureF, Humidity, BatteryVoltage, BatteryPercent, VerboseDetails }
 
         public TagViewModel()
         {

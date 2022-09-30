@@ -46,7 +46,7 @@ namespace WirelessTagClientApp.Test.Commands
             var viewModes = (TagViewModel.ViewMode[])Enum.GetValues(typeof(TagViewModel.ViewMode));
             var orderedViewModes = viewModes.ToArray().OrderBy(x => x);
             var first = orderedViewModes.First(); // TagViewModel.ViewMode.Temperature
-            var last = orderedViewModes.Last(); // TagViewModel.ViewMode.BatteryPercent
+            var last = orderedViewModes.Last(); // TagViewModel.ViewMode.VerboseDetails
 
 
             var tagViewModel = new TagViewModel() { Id = 1, Mode = TagViewModel.ViewMode.Temperature };
@@ -56,7 +56,7 @@ namespace WirelessTagClientApp.Test.Commands
           
             viewModel.Tags.Add(tagViewModel);
 
-            tagViewModel.Mode = last; // TagViewModel.ViewMode.BatteryPercent
+            tagViewModel.Mode = last; // TagViewModel.ViewMode.VerboseDetails
 
             // act
             target.Command.Execute(viewModel);
