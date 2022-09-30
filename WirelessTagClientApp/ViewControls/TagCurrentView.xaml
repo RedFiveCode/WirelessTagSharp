@@ -12,6 +12,7 @@
     <UserControl.Resources>
         <localConv:EnumToVisibilityConverter x:Key="enumVisibilityConverter" />
         <localConv:EmptyStringConverter x:Key="emptyStringConverter" />
+        <localConv:HumanizeTimeSpanValueConverter x:Key="timespanConverter" />
 
         <!-- TextBlock style - not all tags support humidity sensor, so hide if not supported -->
         <Style TargetType="{x:Type TextBlock}" x:Key="humidityStyle">
@@ -225,7 +226,8 @@
                         Grid.Row="4"
                         Grid.Column="2">
                         <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0:dd-MMM-yyyy HH:mm:ss}">
+                            <MultiBinding StringFormat="{}{0} ({1:dd-MMM-yyyy HH:mm:ss})">
+                                <Binding Path="LastCommunication" Converter="{StaticResource timespanConverter}" />
                                 <Binding Path="LastCommunication" />
                             </MultiBinding>
                         </TextBlock.Text>
