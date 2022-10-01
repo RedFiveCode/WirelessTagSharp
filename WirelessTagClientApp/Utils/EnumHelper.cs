@@ -25,6 +25,21 @@ namespace WirelessTagClientApp.Utils
             T[] values = (T[])Enum.GetValues(currentValue.GetType());
             int i = Array.IndexOf<T>(values, currentValue) + 1;
             return (values.Length == i) ? values[0] : values[i];
+            return (i == values.Length ? values.First() : values[i]);
+        }
+
+        public static T PreviousEnum<T>(T currentValue) where T : struct
+        {
+            if (!typeof(T).IsEnum)
+            {
+                throw new ArgumentException($"Argument '{typeof(T).FullName}' is not an Enum type");
+            }
+
+            T[] values = (T[])Enum.GetValues(currentValue.GetType());
+            int i = Array.IndexOf<T>(values, currentValue) - 1;
+
+            return (i < 0 ? values.Last() : values[i]);
+        }
         }
     }
 }
