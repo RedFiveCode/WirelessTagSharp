@@ -15,7 +15,7 @@ namespace WirelessTagClientApp.ViewModels
         private readonly IWirelessTagAsyncClient client;
         private readonly Options options;
 
-        private ToggleViewCommand toggleViewCommand;
+        private ToggleViewCommand toggleNextViewCommand;
         private ToggleViewCommand togglePreviousViewCommand;
         private CloseCommand closeCommand;
         private ObservableCollection<TagViewModel> tagList;
@@ -31,7 +31,7 @@ namespace WirelessTagClientApp.ViewModels
             Tags = new ObservableCollection<TagViewModel>();
             LastUpdated = DateTime.MinValue;
 
-            toggleViewCommand = new ToggleViewCommand();
+            toggleNextViewCommand = new ToggleViewCommand();
             togglePreviousViewCommand = new ToggleViewCommand(Commands.ToggleViewCommand.Direction.Previous);
             closeCommand = new CloseCommand();
 
@@ -167,9 +167,9 @@ namespace WirelessTagClientApp.ViewModels
         /// <summary>
         /// Get the command to toggle the view
         /// </summary>
-        public ICommand ToggleViewCommand
+        public ICommand ToggleNextViewCommand
         {
-            get { return toggleViewCommand.Command; }
+            get { return toggleNextViewCommand.Command; }
         }
 
         /// <summary>
