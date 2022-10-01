@@ -31,5 +31,21 @@ namespace WirelessTagClientApp.Test.Utils
 
             Assert.AreEqual(ExampleEnumeration.Hearts, result);
         }
+
+        [TestMethod]
+        public void PreviousEnum_Value_ShouldReturnPreviousValue()
+        {
+            var result = EnumHelper.PreviousEnum<ExampleEnumeration>(ExampleEnumeration.Spades);
+
+            Assert.AreEqual(ExampleEnumeration.Hearts, result);
+        }
+
+        [TestMethod]
+        public void PreviousEnum_ValueAtStart_ShouldReturnLastValue()
+        {
+            var result = EnumHelper.PreviousEnum<ExampleEnumeration>(ExampleEnumeration.Hearts);
+
+            Assert.AreEqual(ExampleEnumeration.Diamonds, result);
+        }
     }
 }
