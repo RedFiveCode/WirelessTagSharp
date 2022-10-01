@@ -251,9 +251,9 @@
                         Grid.Row="6"
                         Grid.Column="2">
                         <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0:n2} V {1:p0}">
+                            <MultiBinding StringFormat="{}{0:n2} V {1:n0} %">
                                 <Binding Path="BatteryVoltage" FallbackValue="0.00" />
-                                <Binding Path="BatteryRemaining" FallbackValue="0%"/>
+                                <Binding Path="BatteryRemaining" FallbackValue="0"/>
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
