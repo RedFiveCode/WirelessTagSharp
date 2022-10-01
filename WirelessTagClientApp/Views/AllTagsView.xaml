@@ -15,6 +15,7 @@
 
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding Path=ToggleViewCommand}" Key="F9" CommandParameter="{Binding}"/>
+        <KeyBinding Command="{Binding Path=TogglePreviousViewCommand}" Key="F9" Modifiers="Ctrl" CommandParameter="{Binding}"/>
     </UserControl.InputBindings>
 
     <Grid>

@@ -40,6 +40,9 @@ namespace WirelessTagClientAppTest.ViewModel
             Assert.IsFalse(target.IsBusy);
             Assert.IsFalse(target.IsError);
             Assert.AreEqual(String.Empty, target.ErrorMessage);
+
+            Assert.IsNotNull(target.ToggleViewCommand);
+            Assert.IsNotNull(target.TogglePreviousViewCommand);
         }
 
         [TestMethod]
