@@ -41,7 +41,7 @@ namespace WirelessTagClientAppTest.ViewModel
             Assert.IsFalse(target.IsError);
             Assert.AreEqual(String.Empty, target.ErrorMessage);
 
-            Assert.IsNotNull(target.ToggleViewCommand);
+            Assert.IsNotNull(target.ToggleNextViewCommand);
             Assert.IsNotNull(target.TogglePreviousViewCommand);
         }
 
