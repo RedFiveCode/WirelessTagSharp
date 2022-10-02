@@ -36,6 +36,9 @@ namespace WirelessTagClientApp.Commands
             {
                 viewModel.IsBusy = true;
 
+                // uncomment to simulate a very long delay in getting response
+                //await Task.Delay(5000);
+
                 await client.GetTagListAsync()
                         .ContinueWith(tt =>
                         {

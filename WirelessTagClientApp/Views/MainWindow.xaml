@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WirelessTagClientApp.Views"
         xmlns:converters="clr-namespace:ValueConverters;assembly=ValueConverters"
+        xmlns:busyIndicator="https://github.com/Peoky/BusyIndicator"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -60,20 +61,26 @@
         </ContextMenu>
     </Window.Resources>
 
-    <Grid
-        ContextMenu="{StaticResource contextMenu}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
+    <busyIndicator:BusyMask      
+        IndicatorType="ThreeDots"
         
+        BusyContent="Please wait..."
+        IsBusy="{Binding Path=IsBusy}">
+        
+        <Grid
+        ContextMenu="{StaticResource contextMenu}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
-        <local:AllTagsView
+
+            <local:AllTagsView
              Grid.Row="0" 
             DataContext="{Binding Path=ActiveViewModel}"/>
 
-        <TextBlock
+            <!--<TextBlock
             Grid.Row="0"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -82,20 +89,20 @@
             Foreground="DarkSlateBlue"
             Visibility="{Binding Path=IsBusy, Converter={StaticResource visibilityConverter}}" >
             <TextBlock.Text>Busy...</TextBlock.Text>
-        </TextBlock>
+        </TextBlock>-->
 
-        <StackPanel
+            <StackPanel
             Grid.Row="1" Orientation="Horizontal">
 
-            <TextBlock
+                <TextBlock
                 Padding="6,0,6,0"
                 Text="Last Updated:"/>
-            <TextBlock
+                <TextBlock
                 TextTrimming="CharacterEllipsis"
                 Text="{Binding Path=LastUpdated, StringFormat={}{0:ddd dd-MMM-yyyy HH:mm:ss} }" />
-        </StackPanel>
+            </StackPanel>
 
-        <TextBlock
+            <TextBlock
             Grid.Row="2"
             FontSize="24"
             Padding="6"
@@ -105,5 +112,7 @@
             TextTrimming="CharacterEllipsis"
             Text="{Binding Path=ErrorMessage}"
             Visibility="{Binding Path=IsError, Converter={StaticResource visibilityConverter}}" />
-    </Grid>
+        </Grid>
+
+    </busyIndicator:BusyMask>
 </Window>
