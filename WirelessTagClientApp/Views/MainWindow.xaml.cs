@@ -24,6 +24,7 @@ namespace WirelessTagClientApp
             options = Parser.Default.ParseArguments<Options>(args).Value;
 
             viewModel = new MainWindowViewModel(options);
+            viewModel.IsBusy = true;
 
             DataContext = viewModel;
 
