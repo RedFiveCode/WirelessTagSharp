@@ -26,6 +26,7 @@ namespace WirelessTagClientApp.Test.Common
             Assert.AreEqual(75, result.BatteryRemaining);
             Assert.AreEqual(42, result.SignalStrength);
             Assert.AreEqual(new DateTime(2022, 1, 1), result.LastCommunication);
+            Assert.IsFalse(result.IsHumidityTag);
         }
 
 
@@ -79,7 +80,8 @@ namespace WirelessTagClientApp.Test.Common
                 BatteryVoltage = 1.5,
                 BatteryRemaining = 0.75,
                 SignalStrength = 42,
-                LastCommunication = new DateTime(2022, 1, 1)
+                LastCommunication = new DateTime(2022, 1, 1),
+                TagType = TagInfo.TemperatureTag
             };
         }
     }

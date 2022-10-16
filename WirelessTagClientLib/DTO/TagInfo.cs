@@ -11,7 +11,7 @@ namespace WirelessTagClientLib.DTO
     [DebuggerDisplay("Tag={Name}, Type={TagType}, Id={Uuid}")]
     public class TagInfo
     {
-        private const int TemperatureTag = 12;
+        public const int TemperatureTag = 12;
         private const int HumidityTag = 13;
 
         /// <summary>

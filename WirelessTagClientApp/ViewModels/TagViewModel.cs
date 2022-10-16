@@ -22,6 +22,7 @@ namespace WirelessTagClientApp.ViewModels
         private double relativeHumidity;
         private double batteryVoltage;
         private double batteryRemaining;
+        private bool isHumidityTag;
 
         public enum ViewMode { Temperature = 0, TemperatureF, Humidity, BatteryVoltage, BatteryPercent, VerboseDetails }
 
@@ -186,6 +187,19 @@ namespace WirelessTagClientApp.ViewModels
             set
             {
                 batteryRemaining = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Get/set the flag indicating if the tag supports humidity measurement
+        /// </summary>
+        public bool IsHumidityTag
+        {
+            get { return isHumidityTag; }
+            set
+            {
+                isHumidityTag = value;
                 NotifyPropertyChanged();
             }
         }

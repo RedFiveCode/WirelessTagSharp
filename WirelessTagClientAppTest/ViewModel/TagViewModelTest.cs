@@ -38,6 +38,7 @@ namespace WirelessTagClientAppTest.ViewModel
             Assert.AreEqual(0, target.SignalStrength);
             Assert.AreEqual(0d, target.BatteryVoltage);
             Assert.AreEqual(0d, target.BatteryRemaining);
+            Assert.IsFalse(target.IsHumidityTag);
         }
 
         [TestMethod]
@@ -207,6 +208,20 @@ namespace WirelessTagClientAppTest.ViewModel
 
             // assert
             Assert.AreEqual(212d, target.TemperatureFahrenheit);
+        }
+
+        [TestMethod]
+        public void IsHumidityTag_Setter_Should_Fire_PropertyChanged_Event()
+        {
+            // arrange
+            var target = new TagViewModel();
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.IsHumidityTag = true;
+
+            // assert
+            observer.AssertPropertyChangedEvent("IsHumidityTag");
         }
     }
 }
