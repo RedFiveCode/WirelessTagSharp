@@ -19,6 +19,7 @@ namespace WirelessTagClientApp.ViewModels
 
         private RefreshAllTagsCommand refreshAllTagsCommand;
         private CloseCommand closeCommand;
+        private AboutCommand aboutCommand;
 
         private AllTagsViewModel activeViewModel;
 
@@ -49,6 +50,8 @@ namespace WirelessTagClientApp.ViewModels
 
             refreshAllTagsCommand = new RefreshAllTagsCommand(client, options);
             closeCommand = new CloseCommand();
+            aboutCommand = new AboutCommand();
+
             activeViewModel = new AllTagsViewModel(this.options);
         }
 
@@ -160,6 +163,14 @@ namespace WirelessTagClientApp.ViewModels
         public ICommand CloseCommand
         {
             get { return closeCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the command to how About dialog
+        /// </summary>
+        public ICommand AboutCommand
+        {
+            get { return aboutCommand.Command; }
         }
 
         public AllTagsViewModel ActiveViewModel
