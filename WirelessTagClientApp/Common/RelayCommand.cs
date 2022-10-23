@@ -122,10 +122,7 @@ namespace WirelessTagClientApp.Common
         /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
-            if (parameter is T)
-            {
-                _execute((T)parameter);
-            }
+            _execute(parameter as T); // allow null
         }
 
         #endregion // ICommand Members
