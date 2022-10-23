@@ -8,9 +8,9 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WirelessTagClientApp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("https://github.com/RedFiveCode")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("https://github.com/RedFiveCode")]
 [assembly: AssemblyProduct("WirelessTagClientApp")]
 [assembly: AssemblyCopyright("Copyright © 2014-2022 RedFiveCode (https://github.com/RedFiveCode)")]
 [assembly: AssemblyTrademark("")]

@@ -98,6 +98,8 @@
   <ItemGroup>
     <Compile Include="Commands\ToggleViewCommandTest.cs" />
     <Compile Include="Commands\RefreshAllTagsCommandTest.cs" />
+    <Compile Include="Commands\NavigateHyperlinkCommandTest.cs" />
+    <Compile Include="Commands\AboutCommandTest.cs" />
     <Compile Include="Common\ViewModelFactoryTest.cs" />
     <Compile Include="Converters\EnumToVisibilityConverterTest.cs" />
     <Compile Include="Converters\EmptyStringConverterTest.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="ViewModel\TagViewModelTest.cs" />
     <Compile Include="ViewModel\AllTagsViewModelTest.cs" />
     <Compile Include="ViewModel\MainWindowViewModelTest.cs" />
+    <Compile Include="ViewModel\AboutViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

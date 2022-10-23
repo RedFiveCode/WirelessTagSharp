@@ -33,6 +33,8 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             // commands
             Assert.IsNotNull(target.CloseCommand);
+            Assert.IsNotNull(target.RefreshCommand);
+            Assert.IsNotNull(target.AboutCommand);
 
             // view-model(s)
             Assert.IsNotNull(target.ActiveViewModel);
