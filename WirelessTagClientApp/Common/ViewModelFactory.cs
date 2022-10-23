@@ -24,7 +24,8 @@ namespace WirelessTagClientApp.Common
                 SignalStrength = tag.SignalStrength,
                 BatteryVoltage = tag.BatteryVoltage,
                 BatteryRemaining = 100d * tag.BatteryRemaining, // convert to percentage 0 to 100, not 0 to 1
-                RelativeHumidity = tag.RelativeHumidity
+                RelativeHumidity = tag.RelativeHumidity,
+                IsHumidityTag = tag.IsHumidityTag
             };
 
             return tagVM;
