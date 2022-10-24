@@ -52,7 +52,7 @@ namespace WirelessTagClientApp.ViewModels
             closeCommand = new CloseCommand();
             aboutCommand = new AboutCommand();
 
-            activeViewModel = new AllTagsViewModel(this.options);
+            ActiveViewModel = new AllTagsViewModel(this.options);
         }
 
 
@@ -176,6 +176,12 @@ namespace WirelessTagClientApp.ViewModels
         public AllTagsViewModel ActiveViewModel
         {
             get { return activeViewModel; }
+
+            set
+            {
+                activeViewModel = value;
+                NotifyPropertyChanged();
+            }
         }
 
         public void SetError(string message)
