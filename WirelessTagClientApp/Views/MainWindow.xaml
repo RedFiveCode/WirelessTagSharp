@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WirelessTagClientApp.Views"
+        xmlns:localViewModels="clr-namespace:WirelessTagClientApp.ViewModels"
         xmlns:converters="clr-namespace:ValueConverters;assembly=ValueConverters"
         xmlns:busyIndicator="https://github.com/Peoky/BusyIndicator"
         mc:Ignorable="d"
@@ -26,6 +27,11 @@
     </Window.InputBindings>
 
     <Window.Resources>
+
+        <DataTemplate DataType="{x:Type localViewModels:AllTagsViewModel}">
+            <local:AllTagsView />
+        </DataTemplate>
+        
         <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
        
         <ContextMenu x:Key="contextMenu" >
@@ -87,9 +93,9 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
-            <local:AllTagsView
-                Grid.Row="0" 
-                DataContext="{Binding Path=ActiveViewModel}"/>
+            <ContentControl
+                Grid.Row="0"
+                Content="{Binding Path=ActiveViewModel}" />
 
             <StackPanel
                 Grid.Row="1" Orientation="Horizontal">
