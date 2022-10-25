@@ -17,7 +17,6 @@ namespace WirelessTagClientApp.ViewModels
 
         private ToggleViewCommand toggleNextViewCommand;
         private ToggleViewCommand togglePreviousViewCommand;
-        private CloseCommand closeCommand;
         private ObservableCollection<TagViewModel> tagList;
         private DateTime lastUpdated;
         private bool isBusy;
@@ -33,7 +32,6 @@ namespace WirelessTagClientApp.ViewModels
 
             toggleNextViewCommand = new ToggleViewCommand();
             togglePreviousViewCommand = new ToggleViewCommand(Commands.ToggleViewCommand.Direction.Previous);
-            closeCommand = new CloseCommand();
 
             client = new WirelessTagAsyncClient();
 
@@ -92,7 +90,7 @@ namespace WirelessTagClientApp.ViewModels
                     }
                 });
             });
- 
+
             // TODO
             //Tags.Add(new TagViewModel() { Id = 1, Name = "My dummy tag", Description = "Some descriptive text", Temperature = 20, Uuid = Guid.Empty });
             //Tags.Add(new TagViewModel() { Id = 2, Name = "Second tag", Description = "Some descriptive text", Temperature = 21, Uuid = Guid.Empty });
@@ -178,14 +176,6 @@ namespace WirelessTagClientApp.ViewModels
         public ICommand TogglePreviousViewCommand
         {
             get { return togglePreviousViewCommand.Command; }
-        }
-
-        /// <summary>
-        /// Get the command to close the app
-        /// </summary>
-        public ICommand CloseCommand
-        {
-            get { return closeCommand.Command; }
         }
 
         private void SetError(string message)
