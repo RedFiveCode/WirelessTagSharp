@@ -10,7 +10,7 @@ using WirelessTagClientAppTest.TestHelpers;
 using WirelessTagClientLib;
 using WirelessTagClientLib.DTO;
 
-namespace WirelessTagClientAppTest.ViewModel
+namespace WirelessTagClientApp.Test.ViewModel
 {
     [TestClass]
     public class AllTagsViewModelTest

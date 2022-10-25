@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using WirelessTagClientApp.Converters;
 
-namespace WirelessTagClientAppTest.Converters
+namespace WirelessTagClientApp.Test.Converters
 {
     [TestClass]
     public class EnumToVisibilityConverterTest

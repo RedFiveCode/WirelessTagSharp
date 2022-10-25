@@ -4,7 +4,7 @@ using System.ComponentModel;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientAppTest.TestHelpers;
 
-namespace WirelessTagClientAppTest.ViewModel
+namespace WirelessTagClientApp.Test.ViewModel
 {
     [TestClass]
     public class TagViewModelTest
