@@ -3,7 +3,7 @@ using System;
 using System.Windows.Data;
 using WirelessTagClientApp.Converters;
 
-namespace WirelessTagClientAppTest.Converters
+namespace WirelessTagClientApp.Test.Converters
 {
     /// <summary>
     /// Unit tests for the <see cref="HumanizeTimeSpanValueConverter"/> class
