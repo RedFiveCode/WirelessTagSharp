@@ -100,6 +100,7 @@
     <Compile Include="Commands\RefreshAllTagsCommandTest.cs" />
     <Compile Include="Commands\NavigateHyperlinkCommandTest.cs" />
     <Compile Include="Commands\AboutCommandTest.cs" />
+    <Compile Include="Commands\ChangeViewCommandTest.cs" />
     <Compile Include="Common\ViewModelFactoryTest.cs" />
     <Compile Include="Converters\EnumToVisibilityConverterTest.cs" />
     <Compile Include="Converters\EmptyStringConverterTest.cs" />
