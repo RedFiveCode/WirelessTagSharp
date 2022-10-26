@@ -129,6 +129,7 @@
     </ApplicationDefinition>
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Commands\AboutCommand.cs" />
+    <Compile Include="Commands\ChangeViewCommand.cs" />
     <Compile Include="Commands\CloseCommand.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Interfaces\IProcessStarter.cs" />
