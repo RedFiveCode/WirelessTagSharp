@@ -63,7 +63,15 @@ namespace WirelessTagClientApp.Commands
 
             if (responseTask.Status == TaskStatus.RanToCompletion)
             {
-                viewModel.ActiveViewModel.Tags = ViewModelFactory.CreateTagViewModelList(responseTask.Result);
+                if (viewModel.Mode == MainWindowViewModel.ViewMode.SummaryView && viewModel.ActiveViewModel is AllTagsViewModel)
+                {
+                    var vm = viewModel.ActiveViewModel as AllTagsViewModel;
+                    vm.Tags = ViewModelFactory.CreateTagViewModelList(responseTask.Result);
+                }
+                else
+                {
+                    viewModel.SetError($"GetTagListResponse received when active view is not {MainWindowViewModel.ViewMode.SummaryView}");
+                }
             }
             else
             {

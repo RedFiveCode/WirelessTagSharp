@@ -35,8 +35,11 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.IsNotNull(target.CloseCommand);
             Assert.IsNotNull(target.RefreshCommand);
             Assert.IsNotNull(target.AboutCommand);
+            Assert.IsNotNull(target.SummaryViewCommand);
+            Assert.IsNotNull(target.MinMaxViewCommand);
 
             // view-model(s)
+            Assert.AreEqual(MainWindowViewModel.ViewMode.SummaryView, target.Mode);
             Assert.IsNotNull(target.ActiveViewModel);
         }
 
@@ -143,6 +146,35 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.IsTrue(target.IsError);
             Assert.AreEqual("my error message", target.ErrorMessage);
             Assert.IsFalse(target.IsBusy);
+        }
+
+        [TestMethod]
+        public void Mode_Setter_Should_Fire_PropertyChanged_Events()
+        {
+            // arrange
+            var target = new MainWindowViewModel();
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.Mode = MainWindowViewModel.ViewMode.MinMaxView;
+
+            // assert
+            observer.AssertPropertyChangedEvent("Mode");
+            observer.AssertPropertyChangedEvent("ActiveViewModel");
+        }
+
+        [TestMethod]
+        public void Mode_Setter_Should_Set_ActiveViewModel()
+        {
+            // arrange
+            var target = new MainWindowViewModel();
+            var originalValue = target.ActiveViewModel;
+
+            // act
+            target.Mode = MainWindowViewModel.ViewMode.MinMaxView;
+
+            // assert
+            Assert.AreNotSame(originalValue, target.ActiveViewModel);
         }
     }
 }

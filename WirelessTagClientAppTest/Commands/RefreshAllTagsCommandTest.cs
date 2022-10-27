@@ -60,7 +60,8 @@ namespace WirelessTagClientApp.Test.Commands
             await target.ExecuteAsync(viewModel);
 
             // assert
-            var innerViewModel = viewModel.ActiveViewModel;
+            var innerViewModel = viewModel.ActiveViewModel as AllTagsViewModel;
+            Assert.IsNotNull(innerViewModel);
             Assert.IsNotNull(innerViewModel.Tags);
             Assert.AreEqual(1, innerViewModel.Tags.Count);
             Assert.AreEqual(1, innerViewModel.Tags[0].Id);

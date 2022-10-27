@@ -113,6 +113,7 @@
     <Compile Include="ViewModel\AllTagsViewModelTest.cs" />
     <Compile Include="ViewModel\MainWindowViewModelTest.cs" />
     <Compile Include="ViewModel\AboutViewModelTest.cs" />
+    <Compile Include="ViewModel\MinMaxViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
