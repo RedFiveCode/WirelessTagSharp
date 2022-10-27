@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
@@ -20,8 +22,14 @@ namespace WirelessTagClientApp.ViewModels
         private RefreshAllTagsCommand refreshAllTagsCommand;
         private CloseCommand closeCommand;
         private AboutCommand aboutCommand;
+        private ChangeViewCommand summaryViewCommand;
+        private ChangeViewCommand minMaxViewCommand;
 
-        private AllTagsViewModel activeViewModel;
+        private ViewMode mode;
+        private ViewModelBase activeViewModel;
+        private readonly Dictionary<ViewMode, ViewModelBase> viewModelMap;
+
+        public enum ViewMode { SummaryView = 0, MinMaxView }
 
         /// <summary>
         /// Ctor for unit testing
@@ -51,8 +59,14 @@ namespace WirelessTagClientApp.ViewModels
             refreshAllTagsCommand = new RefreshAllTagsCommand(client, options);
             closeCommand = new CloseCommand();
             aboutCommand = new AboutCommand();
+            summaryViewCommand = new ChangeViewCommand(ViewMode.SummaryView);
+            minMaxViewCommand = new ChangeViewCommand(ViewMode.MinMaxView);
 
-            ActiveViewModel = new AllTagsViewModel(this.options);
+            viewModelMap = new Dictionary<ViewMode, ViewModelBase>();
+            viewModelMap[ViewMode.SummaryView] = new AllTagsViewModel(this.options);
+            viewModelMap[ViewMode.MinMaxView] = new MinMaxViewModel(this.options);
+
+            Mode = ViewMode.SummaryView;
         }
 
 
@@ -166,20 +180,49 @@ namespace WirelessTagClientApp.ViewModels
         }
 
         /// <summary>
-        /// Get the command to how About dialog
+        /// Get the command to show About dialog
         /// </summary>
         public ICommand AboutCommand
         {
             get { return aboutCommand.Command; }
         }
 
-        public AllTagsViewModel ActiveViewModel
+        /// <summary>
+        /// Get the command to change the view
+        /// </summary>
+        public ICommand SummaryViewCommand
+        {
+            get { return summaryViewCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the command to change the view
+        /// </summary>
+        public ICommand MinMaxViewCommand
+        {
+            get { return minMaxViewCommand.Command; }
+        }
+
+        public ViewModelBase ActiveViewModel
         {
             get { return activeViewModel; }
 
             set
             {
                 activeViewModel = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public ViewMode Mode
+        {
+            get { return mode; }
+
+            set
+            {
+                mode = value;
+                ActiveViewModel = viewModelMap[value];
+
                 NotifyPropertyChanged();
             }
         }
