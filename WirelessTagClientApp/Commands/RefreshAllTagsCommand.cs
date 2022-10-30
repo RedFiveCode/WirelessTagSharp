@@ -1,5 +1,6 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WirelessTagClientApp.Common;
@@ -66,7 +67,11 @@ namespace WirelessTagClientApp.Commands
                 if (viewModel.Mode == MainWindowViewModel.ViewMode.SummaryView && viewModel.ActiveViewModel is AllTagsViewModel)
                 {
                     var vm = viewModel.ActiveViewModel as AllTagsViewModel;
-                    vm.Tags = ViewModelFactory.CreateTagViewModelList(responseTask.Result);
+
+                    // keep existing view mode of tags
+                    var originalViewMode = (vm.Tags.Any() ? vm.Tags.First().Mode : default(TagViewModel.ViewMode));
+
+                    vm.Tags = ViewModelFactory.CreateTagViewModelList(responseTask.Result, originalViewMode);
                 }
                 else
                 {

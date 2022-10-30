@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using WirelessTagClientApp.Common;
+using WirelessTagClientApp.ViewModels;
 using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.Test.Common
@@ -64,8 +65,23 @@ namespace WirelessTagClientApp.Test.Common
             Assert.AreEqual(75, result[0].BatteryRemaining); // should multiply by 100 so scaled 0 to 100
             Assert.AreEqual(42, result[0].SignalStrength);
             Assert.AreEqual(new DateTime(2022, 1, 1), result[0].LastCommunication);
+            Assert.AreEqual(TagViewModel.ViewMode.Temperature, result[0].Mode);
         }
 
+        [TestMethod]
+        public void CreateTagViewModelList_Should_Return_ValidObject_WithExistingMode()
+        {
+            List<TagInfo> tags = new List<TagInfo>()
+            {
+                CreateTagInfo()
+            };
+
+            var result = ViewModelFactory.CreateTagViewModelList(tags, TagViewModel.ViewMode.VerboseDetails);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(TagViewModel.ViewMode.VerboseDetails, result[0].Mode);
+        }
 
         private TagInfo CreateTagInfo()
         {
