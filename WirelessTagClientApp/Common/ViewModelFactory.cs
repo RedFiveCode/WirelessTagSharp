@@ -33,13 +33,21 @@ namespace WirelessTagClientApp.Common
 
         public static ObservableCollection<TagViewModel> CreateTagViewModelList(IEnumerable<TagInfo> tags)
         {
+            return CreateTagViewModelList(tags, TagViewModel.ViewMode.Temperature);
+        }
+
+        public static ObservableCollection<TagViewModel> CreateTagViewModelList(IEnumerable<TagInfo> tags, TagViewModel.ViewMode mode)
+        {
             var collection = new ObservableCollection<TagViewModel>();
 
             if (tags != null && tags.Any())
             {
                 foreach (var tag in tags)
                 {
-                    collection.Add(CreateTagViewModel(tag));
+                    var item = CreateTagViewModel(tag);
+                    item.Mode = mode;
+                        
+                    collection.Add(item);
                 }
             }
 

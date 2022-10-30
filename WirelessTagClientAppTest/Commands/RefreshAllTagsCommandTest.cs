@@ -68,6 +68,44 @@ namespace WirelessTagClientApp.Test.Commands
         }
 
         [TestMethod]
+        public async Task Execute_AlreadyHaveSomeData_RefreshesListOfTagsInViewModel_AndMaintainsPreviousTagViewMode()
+        {
+            // arrange
+            var clientMock = CreateAsyncClientMock();
+            var options = new Options();
+
+            var target = new RefreshAllTagsCommand(clientMock.Object, options);
+
+            var viewModel = new MainWindowViewModel()
+            {
+                Mode = MainWindowViewModel.ViewMode.SummaryView
+            };
+
+            // add some tags to the inner view model
+            var previousViewMode = TagViewModel.ViewMode.VerboseDetails;
+            var tagViewModel = new TagViewModel()
+            {
+                Id = 1,
+                Name = "my tag",
+                Mode = TagViewModel.ViewMode.VerboseDetails
+            };
+
+            var innerViewModel = viewModel.ActiveViewModel as AllTagsViewModel;
+            innerViewModel.Tags.Add(tagViewModel);
+
+            // act - await async operations returning
+            await target.ExecuteAsync(viewModel);
+
+            // assert
+            var updatedActiveViewModel = viewModel.ActiveViewModel as AllTagsViewModel;
+            Assert.IsNotNull(updatedActiveViewModel);
+            Assert.IsNotNull(updatedActiveViewModel.Tags);
+            Assert.AreEqual(1, updatedActiveViewModel.Tags.Count);
+            Assert.AreEqual(1, updatedActiveViewModel.Tags[0].Id);
+            Assert.AreEqual(previousViewMode, innerViewModel.Tags[0].Mode);
+        }
+
+        [TestMethod]
         public async Task Execute_Sets_ViewModel_IsBusy()
         {
             // arrange
