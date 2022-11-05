@@ -128,6 +128,24 @@
   <data name="Error_Login" xml:space="preserve">
     <value>Error logging in; verify the username and password</value>
   </data>
+  <data name="TimeInterval_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="TimeInterval_Last30Days" xml:space="preserve">
+    <value>Last 30 days</value>
+  </data>
+  <data name="TimeInterval_Last7Days" xml:space="preserve">
+    <value>Last 7 days</value>
+  </data>
+  <data name="TimeInterval_ThisYear" xml:space="preserve">
+    <value>This year</value>
+  </data>
+  <data name="TimeInterval_Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="TimeInterval_Yesterday" xml:space="preserve">
+    <value>Yesterday</value>
+  </data>
   <data name="UnavailableText" xml:space="preserve">
     <value>(none)</value>
   </data>

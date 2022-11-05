@@ -88,6 +88,60 @@ namespace WirelessTagClientApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string TimeInterval_All {
+            get {
+                return ResourceManager.GetString("TimeInterval_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last 30 days.
+        /// </summary>
+        internal static string TimeInterval_Last30Days {
+            get {
+                return ResourceManager.GetString("TimeInterval_Last30Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last 7 days.
+        /// </summary>
+        internal static string TimeInterval_Last7Days {
+            get {
+                return ResourceManager.GetString("TimeInterval_Last7Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This year.
+        /// </summary>
+        internal static string TimeInterval_ThisYear {
+            get {
+                return ResourceManager.GetString("TimeInterval_ThisYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today.
+        /// </summary>
+        internal static string TimeInterval_Today {
+            get {
+                return ResourceManager.GetString("TimeInterval_Today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yesterday.
+        /// </summary>
+        internal static string TimeInterval_Yesterday {
+            get {
+                return ResourceManager.GetString("TimeInterval_Yesterday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (none).
         /// </summary>
         internal static string UnavailableText {
