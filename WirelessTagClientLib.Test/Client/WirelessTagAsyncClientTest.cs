@@ -160,7 +160,7 @@ namespace WirelessTagClientLib.Test
         }
         #endregion
 
-        #region GetTagSpanStatsAsyn
+        #region GetTagSpanStatsAsync
         [TestMethod]
         public void GetTagSpanStatsAsync_Response_Ok_Should_Return_Valid_Response()
         {
