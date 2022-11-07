@@ -13,7 +13,7 @@ using WirelessTagClientLib.DTO;
 namespace WirelessTagClientApp.Test.Commands
 {
     [TestClass]
-    public class RefreshAllTagsCommandAsyncTest
+    public class RefreshAllTagsCommandTest
     {
         [TestMethod]
         public void Command_Implements_ICommand()
