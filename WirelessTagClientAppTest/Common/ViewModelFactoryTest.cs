@@ -83,6 +83,278 @@ namespace WirelessTagClientApp.Test.Common
             Assert.AreEqual(TagViewModel.ViewMode.VerboseDetails, result[0].Mode);
         }
 
+        // TODO - CreateRowViewModel tests
+        [TestMethod]
+        public void CreateRowViewModel_DataNull_Should_Return_Null()
+        {
+            var tag = CreateTagInfo();
+
+            var result = ViewModelFactory.CreateRowViewModel(null, tag, TimeInterval.Today);
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void CreateRowViewModel_DataEmpty_Should_Return_Null()
+        {
+            var tag = CreateTagInfo();
+            var data = new List<TemperatureDataPoint>(); // empty list
+
+            var result = ViewModelFactory.CreateRowViewModel(data, tag, TimeInterval.Today);
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void CreateRowViewModel_NoDataWithinTimeInterval_Should_Return_Null()
+        {
+            var tag = CreateTagInfo();
+
+            var today = DateTime.Now.Date;
+
+            var data = new List<TemperatureDataPoint>()
+            {
+                // only data for today
+                CreateTemperatureDataPoint(today.AddHours(10), 10d),
+                CreateTemperatureDataPoint(today.AddHours(11), 9d),
+                CreateTemperatureDataPoint(today.AddHours(12), 11d),
+                CreateTemperatureDataPoint(today.AddHours(13), 15d),
+            };
+
+            var result = ViewModelFactory.CreateRowViewModel(data, tag, TimeInterval.Yesterday);
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void CreateRowViewModel_Today_Should_Return_ValidObject()
+        {
+            var tag = CreateTagInfo();
+
+            var today = DateTime.Now.Date;
+            var data = new List<TemperatureDataPoint>()
+            {
+                CreateTemperatureDataPoint(today.AddHours(10), 10d),
+                CreateTemperatureDataPoint(today.AddHours(11), 9d), // lowest temperature
+                CreateTemperatureDataPoint(today.AddHours(12), 11d),
+                CreateTemperatureDataPoint(today.AddHours(13), 15d), // highest temperature
+            };
+
+            var result = ViewModelFactory.CreateRowViewModel(data, tag, TimeInterval.Today);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(tag.SlaveId, result.TagId); // 1
+            Assert.AreEqual(tag.Name, result.TagName); // My tag name
+
+            Assert.AreEqual(TimeInterval.Today, result.Interval);
+            Assert.AreEqual(today, result.IntervalFrom);
+            Assert.AreEqual(today.AddHours(23).AddMinutes(59).AddSeconds(59), result.IntervalTo);
+            
+            Assert.AreEqual(9d, result.Minimum.Temperature);
+            Assert.AreEqual(today.AddHours(11), result.Minimum.Timestamp); // 11:00:00
+
+            Assert.AreEqual(15d, result.Maximum.Temperature);
+            Assert.AreEqual(today.AddHours(13), result.Maximum.Timestamp); // 13:00:00
+        }
+
+        [TestMethod]
+        public void CreateRowViewModel_Yesterday_Should_Return_ValidObject()
+        {
+            var tag = CreateTagInfo();
+
+            var today = DateTime.Now.Date;
+            var yesterday = today.AddDays(-1);
+
+            var data = new List<TemperatureDataPoint>()
+            {
+                CreateTemperatureDataPoint(yesterday.AddHours(0), 10d),
+                CreateTemperatureDataPoint(yesterday.AddHours(2), 9d), // lowest temperature
+                CreateTemperatureDataPoint(yesterday.AddHours(4), 11d),
+                CreateTemperatureDataPoint(yesterday.AddHours(6), 15d), // highest temperature
+
+                CreateTemperatureDataPoint(today.AddHours(10), 10d),
+                CreateTemperatureDataPoint(today.AddHours(11), 9d),
+                CreateTemperatureDataPoint(today.AddHours(12), 11d),
+                CreateTemperatureDataPoint(today.AddHours(13), 15d),
+            };
+
+            var result = ViewModelFactory.CreateRowViewModel(data, tag, TimeInterval.Yesterday);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(tag.SlaveId, result.TagId); // 1
+            Assert.AreEqual(tag.Name, result.TagName); // My tag name
+
+            Assert.AreEqual(TimeInterval.Yesterday, result.Interval);
+            Assert.AreEqual(yesterday, result.IntervalFrom);
+            Assert.AreEqual(yesterday.AddHours(23).AddMinutes(59).AddSeconds(59), result.IntervalTo);
+
+            Assert.AreEqual(9d, result.Minimum.Temperature);
+            Assert.AreEqual(yesterday.AddHours(2), result.Minimum.Timestamp); // 02:00:00
+
+            Assert.AreEqual(15d, result.Maximum.Temperature);
+            Assert.AreEqual(yesterday.AddHours(6), result.Maximum.Timestamp); // 04:00:00
+        }
+
+        [TestMethod]
+        public void CreateRowViewModel_Last7Days_Should_Return_ValidObject()
+        {
+            var tag = CreateTagInfo();
+
+            var today = DateTime.Now.Date;
+
+            var data = new List<TemperatureDataPoint>()
+            {
+                CreateTemperatureDataPoint(today.AddDays(-8).AddHours(1), 1d), // lowest temperature, but beyond 7 days ago
+                CreateTemperatureDataPoint(today.AddDays(-8).AddHours(2), 25d), // highest temperature, but beyond 7 days ago
+
+                CreateTemperatureDataPoint(today.AddDays(-7).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-7).AddHours(2), 11d),
+
+                CreateTemperatureDataPoint(today.AddDays(-6).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-6).AddHours(2), 11d),
+
+                CreateTemperatureDataPoint(today.AddDays(-5).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-5).AddHours(2), 20d), // highest temperature within 7 day range
+
+                CreateTemperatureDataPoint(today.AddDays(-4).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-4).AddHours(2), 11d),
+
+                CreateTemperatureDataPoint(today.AddDays(-3).AddHours(1), 2d), // lowest temperature within 7 day range
+                CreateTemperatureDataPoint(today.AddDays(-3).AddHours(2), 11d),
+
+                CreateTemperatureDataPoint(today.AddDays(-2).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-2).AddHours(2), 11d),
+
+                // yesterday
+                CreateTemperatureDataPoint(today.AddDays(-1).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-1).AddHours(2), 11d),
+
+                // today
+                CreateTemperatureDataPoint(today.AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddHours(2), 9d),
+            };
+
+            var result = ViewModelFactory.CreateRowViewModel(data, tag, TimeInterval.Last7Days);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(tag.SlaveId, result.TagId); // 1
+            Assert.AreEqual(tag.Name, result.TagName); // My tag name
+
+            Assert.AreEqual(TimeInterval.Last7Days, result.Interval);
+            Assert.AreEqual(today.AddDays(-7), result.IntervalFrom);
+            Assert.AreEqual(today.AddHours(23).AddMinutes(59).AddSeconds(59), result.IntervalTo);
+
+            Assert.AreEqual(2d, result.Minimum.Temperature);
+            Assert.AreEqual(today.AddDays(-3).AddHours(1), result.Minimum.Timestamp);
+
+            Assert.AreEqual(20d, result.Maximum.Temperature);
+            Assert.AreEqual(today.AddDays(-5).AddHours(2), result.Maximum.Timestamp);
+        }
+
+        [TestMethod]
+        public void CreateRowViewModel_Last30Days_Should_Return_ValidObject()
+        {
+            var tag = CreateTagInfo();
+
+            var today = DateTime.Now.Date;
+
+            var data = new List<TemperatureDataPoint>()
+            {
+                CreateTemperatureDataPoint(today.AddDays(-31).AddHours(1), 1d), // lowest temperature, but beyond 30 days ago
+                CreateTemperatureDataPoint(today.AddDays(31).AddHours(2), 25d), // highest temperature, but beyond 30 days ago
+
+                CreateTemperatureDataPoint(today.AddDays(-30).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-30).AddHours(2), 11d),
+
+                CreateTemperatureDataPoint(today.AddDays(-25).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-25).AddHours(2), 11d),
+
+                CreateTemperatureDataPoint(today.AddDays(-15).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-15).AddHours(2), 20d), // highest temperature within 30 day range
+
+                CreateTemperatureDataPoint(today.AddDays(-10).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-10).AddHours(2), 11d),
+
+                CreateTemperatureDataPoint(today.AddDays(-5).AddHours(1), 2d), // lowest temperature within 30 day range
+                CreateTemperatureDataPoint(today.AddDays(-5).AddHours(2), 11d),
+
+                CreateTemperatureDataPoint(today.AddDays(-2).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-2).AddHours(2), 11d),
+
+                // yesterday
+                CreateTemperatureDataPoint(today.AddDays(-1).AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddDays(-1).AddHours(2), 11d),
+
+                // today
+                CreateTemperatureDataPoint(today.AddHours(1), 10d),
+                CreateTemperatureDataPoint(today.AddHours(2), 9d),
+            };
+
+            var result = ViewModelFactory.CreateRowViewModel(data, tag, TimeInterval.Last30Days);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(tag.SlaveId, result.TagId); // 1
+            Assert.AreEqual(tag.Name, result.TagName); // My tag name
+
+            Assert.AreEqual(TimeInterval.Last30Days, result.Interval);
+            Assert.AreEqual(today.AddDays(-30), result.IntervalFrom);
+            Assert.AreEqual(today.AddHours(23).AddMinutes(59).AddSeconds(59), result.IntervalTo);
+
+            Assert.AreEqual(2d, result.Minimum.Temperature);
+            Assert.AreEqual(today.AddDays(-5).AddHours(1), result.Minimum.Timestamp);
+
+            Assert.AreEqual(20d, result.Maximum.Temperature);
+            Assert.AreEqual(today.AddDays(-15).AddHours(2), result.Maximum.Timestamp);
+        }
+
+        [TestMethod]
+        public void CreateRowViewModel_ThisYear_Should_Return_ValidObject()
+        {
+            var tag = CreateTagInfo();
+
+            var today = DateTime.Now.Date;
+            var startOfYear = new DateTime(today.Year, 1, 1);
+
+            var dayOfYear = today.DayOfYear;
+
+            // Data so far this year...
+            // if today is early in the year, say 2nd January, then not much data to consider
+            // so need to be careful in constructing test data to ensure that it has not fallen before the start of the current year
+
+
+
+            var data = new List<TemperatureDataPoint>();
+
+
+            DateTime dt = today;
+            while (dt >= startOfYear)
+            {
+                data.Add(CreateTemperatureDataPoint(dt, 10d));
+
+                dt = dt.AddDays(-1);
+            }
+
+            // the min and max temperatures over the year to date occur today
+            data.Add(CreateTemperatureDataPoint(today.AddHours(1), 0d));
+            data.Add(CreateTemperatureDataPoint(today.AddHours(2), 100d));
+
+            var result = ViewModelFactory.CreateRowViewModel(data, tag, TimeInterval.ThisYear);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(tag.SlaveId, result.TagId); // 1
+            Assert.AreEqual(tag.Name, result.TagName); // My tag name
+
+            Assert.AreEqual(TimeInterval.ThisYear, result.Interval);
+            Assert.AreEqual(startOfYear, result.IntervalFrom);
+            Assert.AreEqual(today.AddHours(23).AddMinutes(59).AddSeconds(59), result.IntervalTo);
+
+            Assert.AreEqual(0d, result.Minimum.Temperature);
+            Assert.AreEqual(today.AddHours(1), result.Minimum.Timestamp);
+
+            Assert.AreEqual(100d, result.Maximum.Temperature);
+            Assert.AreEqual(today.AddHours(2), result.Maximum.Timestamp);
+        }
+
         private TagInfo CreateTagInfo()
         {
             return new TagInfo()
@@ -99,6 +371,11 @@ namespace WirelessTagClientApp.Test.Common
                 LastCommunication = new DateTime(2022, 1, 1),
                 TagType = TagInfo.TemperatureTag
             };
+        }
+
+        private TemperatureDataPoint CreateTemperatureDataPoint(DateTime dateTime, double temperature)
+        {
+            return new TemperatureDataPoint(dateTime, temperature);
         }
     }
 }
