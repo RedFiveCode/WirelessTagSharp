@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.Linq;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using MoreLinq;
+using WirelessTagClientApp.Utils;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientLib.DTO;
 
@@ -52,6 +55,39 @@ namespace WirelessTagClientApp.Common
             }
 
             return collection;
+        }
+
+        public static MinMaxMeasurementViewModel CreateRowViewModel(IEnumerable<TemperatureDataPoint> rawData, TagInfo tag, TimeInterval interval)
+        {
+            if (rawData == null || !rawData.Any())
+            {
+                return null; // no data points
+            }
+
+            var timeRange = TimeIntervalHelper.GetTimeRange(DateTime.Now, interval);
+
+            var dataPointsInTimeInterval = rawData.Where(d => d.Time >= timeRange.Item1 && d.Time <= timeRange.Item2);
+
+            if (!dataPointsInTimeInterval.Any())
+            {
+                return null; // no data points within time range
+            }
+
+            var coldest = dataPointsInTimeInterval.MinBy(tdp => tdp.Temperature).First();
+            var warmest = dataPointsInTimeInterval.MaxBy(tdp => tdp.Temperature).First();
+
+            var row = new MinMaxMeasurementViewModel()
+            {
+                Interval = interval,
+                IntervalFrom = timeRange.Item1,
+                IntervalTo = timeRange.Item2,
+                TagId = tag.SlaveId,
+                TagName = tag.Name,
+                Minimum = new Measurement() { Temperature = coldest.Temperature, Timestamp = coldest.Time },
+                Maximum = new Measurement() { Temperature = warmest.Temperature, Timestamp = warmest.Time }
+            };
+
+            return row;
         }
     }
 }

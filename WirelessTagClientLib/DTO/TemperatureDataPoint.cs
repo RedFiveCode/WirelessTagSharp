@@ -13,6 +13,15 @@ namespace WirelessTagClientLib.DTO
     [DebuggerDisplay("Time={Time}, Temperature={Temperature}, Humidity={Humidity}, Lux={Lux}, Battery={Battery}")]
     public class TemperatureDataPoint
     {
+        public TemperatureDataPoint()
+        { }
+
+        public TemperatureDataPoint(DateTime time, double temperature)
+        {
+            Time = time;
+            Temperature = temperature;
+        }
+
         /// <summary>
         /// Date and Time
         /// </summary>
