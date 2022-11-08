@@ -15,28 +15,24 @@ namespace WirelessTagClientApp.Commands
         private readonly IWirelessTagAsyncClient client;
         private readonly Options options;
 
-        public IAsyncCommand<MainWindowViewModel> Command { get; private set; }
+        public IAsyncCommand<AllTagsViewModel> Command { get; private set; }
 
         public RefreshAllTagsCommand(IWirelessTagAsyncClient client, Options options)
         {
             this.client = client;
             this.options = options;
-            Command = new AsyncCommand<MainWindowViewModel>(p => ExecuteAsync(p), p => CanExecute(p));
+            Command = new AsyncCommand<AllTagsViewModel>(p => ExecuteAsync(p), p => CanExecute(p));
         }
 
         private bool CanExecute(object p)
         {
             return true;
-            //var vm = p as MainWindowViewModel;
-            //return vm != null && !vm.IsBusy;
         }
 
-        public async Task ExecuteAsync(MainWindowViewModel viewModel)
+        public async Task ExecuteAsync(AllTagsViewModel viewModel)
         {
             try
             {
-                viewModel.IsBusy = true;
-
                 // uncomment to simulate a very long delay in getting response
                 //await Task.Delay(5000);
 
@@ -48,41 +44,26 @@ namespace WirelessTagClientApp.Commands
             }
             catch (Exception ex)
             {
-                viewModel.SetError(ex.Message);
-            }
-            finally
-            {
-                viewModel.IsBusy = false;
+                throw;
             }
         }
 
-        private void OnGetTagListResponse(Task<List<TagInfo>> responseTask, MainWindowViewModel viewModel)
+        private void OnGetTagListResponse(Task<List<TagInfo>> responseTask, AllTagsViewModel viewModel)
         {
             // UI thread ???
-            viewModel.IsBusy = false;
-            viewModel.LastUpdated = DateTime.Now; // local time
-
             if (responseTask.Status == TaskStatus.RanToCompletion)
             {
-                if (viewModel.Mode == MainWindowViewModel.ViewMode.SummaryView && viewModel.ActiveViewModel is AllTagsViewModel)
-                {
-                    var vm = viewModel.ActiveViewModel as AllTagsViewModel;
+                // keep existing view mode of tags
+                var originalViewMode = (viewModel.Tags.Any() ? viewModel.Tags.First().Mode : default(TagViewModel.ViewMode));
 
-                    // keep existing view mode of tags
-                    var originalViewMode = (vm.Tags.Any() ? vm.Tags.First().Mode : default(TagViewModel.ViewMode));
-
-                    vm.Tags = ViewModelFactory.CreateTagViewModelList(responseTask.Result, originalViewMode);
-                }
-                else
-                {
-                    viewModel.SetError($"GetTagListResponse received when active view is not {MainWindowViewModel.ViewMode.SummaryView}");
-                }
+                viewModel.Tags = ViewModelFactory.CreateTagViewModelList(responseTask.Result, originalViewMode);
             }
             else
             {
-                var ex = responseTask.Exception.InnerException;
-
-                viewModel.SetError(String.Format(Properties.Resources.Error_Exception, ex.Message, ex.StackTrace));
+                if (responseTask.Exception != null && responseTask.Exception.InnerException != null)
+                {
+                    throw new AggregateException(responseTask.Exception.InnerException);
+                }
             }
         }
     }

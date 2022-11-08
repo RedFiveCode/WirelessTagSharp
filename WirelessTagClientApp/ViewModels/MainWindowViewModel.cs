@@ -241,21 +241,35 @@ namespace WirelessTagClientApp.ViewModels
             // wrap in try-catch and set IsBusy and SetError
             // commands then do not need to do this and then only need to know about their inner view-model instance
 
-            if (mode == ViewMode.SummaryView)
+            try
             {
-                var command = new RefreshAllTagsCommand(client, options);
+                IsBusy = true;
 
-                await command.ExecuteAsync(this);
+                if (mode == ViewMode.SummaryView)
+                {
+                    var command = new RefreshAllTagsCommand(client, options);
+
+                    await command.ExecuteAsync(viewModelMap[mode] as AllTagsViewModel);
+                }
+                //else if (mode == ViewMode.MinMaxView)
+                //{
+                //    var command = new RefreshMinMaxTagsCommand(client, options);
+
+                //    await command.ExecuteAsync(this);
+                //}
+                else
+                {
+                    throw new ArgumentOutOfRangeException($"Cannot refresh active view '{mode}'");
+                }
             }
-            //else if (mode == ViewMode.MinMaxView)
-            //{
-            //    var command = new RefreshMinMaxTagsCommand(client, options);
-
-            //    await command.ExecuteAsync(this);
-            //}
-            else
+            catch (Exception ex)
             {
-                throw new ArgumentOutOfRangeException($"Cannot refresh active view '{mode}'");
+                SetError(ex.Message);
+            }
+            finally
+            {
+                LastUpdated = DateTime.Now;
+                IsBusy = false;
             }
         }
     }
