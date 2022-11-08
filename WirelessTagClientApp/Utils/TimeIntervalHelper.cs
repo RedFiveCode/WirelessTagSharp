@@ -44,7 +44,7 @@ namespace WirelessTagClientApp.Utils
 
             if (interval == TimeInterval.All)
             {
-                var from = DateTime.MinValue;
+                var from = new DateTime(2000, 1, 1); // arbitrary start of epoch
                 var to = dt;
 
                 return new Tuple<DateTime, DateTime>(from, to);

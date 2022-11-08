@@ -87,7 +87,7 @@ namespace WirelessTagClientApp.Test.Utils
 
             // assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(DateTime.MinValue, result.Item1); // from
+            Assert.AreEqual(new DateTime(2000, 1, 1), result.Item1); // from
             Assert.AreEqual(now, result.Item2);
         }
 
