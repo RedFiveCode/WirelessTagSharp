@@ -54,17 +54,15 @@ namespace WirelessTagClientApp.Test.Commands
 
             var target = new RefreshAllTagsCommand(clientMock.Object, options);
 
-            var viewModel = new MainWindowViewModel();
+            var viewModel = new AllTagsViewModel();
 
             // act - await async operations returning
             await target.ExecuteAsync(viewModel);
 
             // assert
-            var innerViewModel = viewModel.ActiveViewModel as AllTagsViewModel;
-            Assert.IsNotNull(innerViewModel);
-            Assert.IsNotNull(innerViewModel.Tags);
-            Assert.AreEqual(1, innerViewModel.Tags.Count);
-            Assert.AreEqual(1, innerViewModel.Tags[0].Id);
+            Assert.IsNotNull(viewModel.Tags);
+            Assert.AreEqual(1, viewModel.Tags.Count);
+            Assert.AreEqual(1, viewModel.Tags[0].Id);
         }
 
         [TestMethod]
@@ -76,13 +74,9 @@ namespace WirelessTagClientApp.Test.Commands
 
             var target = new RefreshAllTagsCommand(clientMock.Object, options);
 
-            var viewModel = new MainWindowViewModel()
-            {
-                Mode = MainWindowViewModel.ViewMode.SummaryView
-            };
+            var viewModel = new AllTagsViewModel();
 
-            // add some tags to the inner view model
-            var previousViewMode = TagViewModel.ViewMode.VerboseDetails;
+            // add some tags to the view model
             var tagViewModel = new TagViewModel()
             {
                 Id = 1,
@@ -90,73 +84,21 @@ namespace WirelessTagClientApp.Test.Commands
                 Mode = TagViewModel.ViewMode.VerboseDetails
             };
 
-            var innerViewModel = viewModel.ActiveViewModel as AllTagsViewModel;
-            innerViewModel.Tags.Add(tagViewModel);
+            viewModel.Tags.Add(tagViewModel);
+
+            var previousViewMode = tagViewModel.Mode;
 
             // act - await async operations returning
             await target.ExecuteAsync(viewModel);
 
             // assert
-            var updatedActiveViewModel = viewModel.ActiveViewModel as AllTagsViewModel;
-            Assert.IsNotNull(updatedActiveViewModel);
-            Assert.IsNotNull(updatedActiveViewModel.Tags);
-            Assert.AreEqual(1, updatedActiveViewModel.Tags.Count);
-            Assert.AreEqual(1, updatedActiveViewModel.Tags[0].Id);
-            Assert.AreEqual(previousViewMode, innerViewModel.Tags[0].Mode);
+            Assert.IsNotNull(viewModel.Tags);
+            Assert.AreEqual(1, viewModel.Tags.Count);
+            Assert.AreEqual(1, viewModel.Tags[0].Id);
+            Assert.AreEqual(previousViewMode, viewModel.Tags[0].Mode);
         }
 
-        [TestMethod]
-        public async Task Execute_Sets_ViewModel_IsBusy()
-        {
-            // arrange
-            var clientMock = CreateAsyncClientMock();
-            var options = new Options();
 
-            var target = new RefreshAllTagsCommand(clientMock.Object, options);
-
-            var viewModel = new MainWindowViewModel();
-            var observer = new PropertyChangedObserver(viewModel);
-
-            Assert.IsFalse(viewModel.IsBusy);
-
-            // act - await async operations returning
-            var task = target.ExecuteAsync(viewModel);
-            Assert.IsTrue(viewModel.IsBusy);
-
-            await task;
-
-            // assert
-            observer.AssertPropertyChangedEvent("IsBusy");
-        }
-
-        [TestMethod]
-        public async Task Execute_Error_Sets_ViewModel_Error()
-        {
-            // arrange
-            var clientMock = new Mock<IWirelessTagAsyncClient>();
-            clientMock.Setup(x => x.GetTagListAsync())
-                      .Throws(new InvalidOperationException("test exception"));
-
-            var options = new Options();
-
-            var target = new RefreshAllTagsCommand(clientMock.Object, options);
-
-            var viewModel = new MainWindowViewModel();
-            var observer = new PropertyChangedObserver(viewModel);
-
-            Assert.IsFalse(viewModel.IsError);
-            Assert.AreEqual(String.Empty, viewModel.ErrorMessage);
-
-            // act - await async operations returning
-            await target.ExecuteAsync(viewModel);
-
-            // assert
-            observer.AssertPropertyChangedEvent("IsError");
-            observer.AssertPropertyChangedEvent("ErrorMessage");
-
-            Assert.IsTrue(viewModel.IsError);
-            Assert.AreNotEqual(String.Empty, viewModel.ErrorMessage);
-        }
 
         [TestMethod]
         public async Task Execute_Calls_Client_GetTagList()
@@ -173,7 +115,7 @@ namespace WirelessTagClientApp.Test.Commands
 
             var target = new RefreshAllTagsCommand(clientMock.Object, options);
 
-            var viewModel = new MainWindowViewModel();
+            var viewModel = new AllTagsViewModel();
 
             // act - await async operations returning
             await target.ExecuteAsync(viewModel);
