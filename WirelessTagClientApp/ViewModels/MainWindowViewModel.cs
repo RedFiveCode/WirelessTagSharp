@@ -19,7 +19,7 @@ namespace WirelessTagClientApp.ViewModels
         private bool isError;
         private string errorMessage;
 
-        private RefreshAllTagsCommand refreshAllTagsCommand;
+        private RefreshViewCommand refreshCommand;
         private CloseCommand closeCommand;
         private AboutCommand aboutCommand;
         private ChangeViewCommand summaryViewCommand;
@@ -56,7 +56,7 @@ namespace WirelessTagClientApp.ViewModels
             isError = false;
             errorMessage = String.Empty;
 
-            refreshAllTagsCommand = new RefreshAllTagsCommand(client, options);
+            refreshCommand = new RefreshViewCommand();
             closeCommand = new CloseCommand();
             aboutCommand = new AboutCommand();
             summaryViewCommand = new ChangeViewCommand(ViewMode.SummaryView);
@@ -100,7 +100,8 @@ namespace WirelessTagClientApp.ViewModels
                     SetError(Properties.Resources.Error_Login);
                 }
 
-                refreshAllTagsCommand.Command.Execute(this);
+                // refresh the default view
+                Refresh();
 
                 LastUpdated = DateTime.Now;
             });
@@ -164,11 +165,11 @@ namespace WirelessTagClientApp.ViewModels
         }
 
         /// <summary>
-        /// Get the command to refresh the tag data
+        /// Get the command to refresh the active view
         /// </summary>
         public ICommand RefreshCommand
         {
-            get { return refreshAllTagsCommand.Command; }
+            get { return refreshCommand.Command; }
         }
 
         /// <summary>
@@ -232,6 +233,30 @@ namespace WirelessTagClientApp.ViewModels
             IsBusy = false;
             IsError = true;
             ErrorMessage = message;
+        }
+
+        public async void Refresh()
+        {
+            // TODO
+            // wrap in try-catch and set IsBusy and SetError
+            // commands then do not need to do this and then only need to know about their inner view-model instance
+
+            if (mode == ViewMode.SummaryView)
+            {
+                var command = new RefreshAllTagsCommand(client, options);
+
+                await command.ExecuteAsync(this);
+            }
+            //else if (mode == ViewMode.MinMaxView)
+            //{
+            //    var command = new RefreshMinMaxTagsCommand(client, options);
+
+            //    await command.ExecuteAsync(this);
+            //}
+            else
+            {
+                throw new ArgumentOutOfRangeException($"Cannot refresh active view '{mode}'");
+            }
         }
     }
 }
