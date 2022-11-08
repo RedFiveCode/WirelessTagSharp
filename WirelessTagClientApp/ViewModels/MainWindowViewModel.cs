@@ -237,10 +237,6 @@ namespace WirelessTagClientApp.ViewModels
 
         public async void Refresh()
         {
-            // TODO
-            // wrap in try-catch and set IsBusy and SetError
-            // commands then do not need to do this and then only need to know about their inner view-model instance
-
             try
             {
                 IsBusy = true;
