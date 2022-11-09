@@ -1,14 +1,29 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientAppTest.TestHelpers;
+using WirelessTagClientLib;
+using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.Test.ViewModel
 {
     [TestClass]
     public class MainWindowViewModelTest
     {
+        [TestInitialize]
+        public void TestSetup()
+        {
+            // Ensure we have a SynchronizationContext for task continuations in the view-model;
+            // WPF has this by default, but unit tests do not, otherwise we get an InvalidOperationException
+            // "The current SynchronizationContext may not be used as a TaskScheduler"
+            // See https://stackoverflow.com/questions/8245926/the-current-synchronizationcontext-may-not-be-used-as-a-taskscheduler
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+        }
+
         [TestMethod]
         public void Class_Should_Implement_INotifyPropertyChanged()
         {
@@ -175,6 +190,58 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             // assert
             Assert.AreNotSame(originalValue, target.ActiveViewModel);
+        }
+
+        [TestMethod]
+        public void Refresh_Should_Set_IsBusy_Property()
+        {
+            // arrange
+            var mock = CreateAsyncClientMock();
+            var target = new MainWindowViewModel(mock.Object, new Options());
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.Refresh();
+
+            // assert
+            observer.AssertPropertyChangedEvent("IsBusy", 2); // should set then reset IsBusy
+        }
+
+        [TestMethod]
+        public void Refresh_Should_Set_LastUpdated_Property()
+        {
+            // arrange
+            var mock = CreateAsyncClientMock();
+            var target = new MainWindowViewModel(mock.Object, new Options());
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.Refresh();
+
+            // assert
+            observer.AssertPropertyChangedEvent("LastUpdated");
+        }
+
+        private Mock<IWirelessTagAsyncClient> CreateAsyncClientMock()
+        {
+            var clientMock = new Mock<IWirelessTagAsyncClient>();
+
+            clientMock.Setup(x => x.LoginAsync(It.IsAny<string>(), It.IsAny<string>()))
+                 .Callback(() => Console.WriteLine("Mocked LoginAsync callback"))
+                 .ReturnsAsync(true);
+
+            clientMock.Setup(x => x.GetTagListAsync())
+                .Callback(() => Console.WriteLine("Mocked GetTagListAsync callback"))
+                .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = 1 } });
+
+            clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                      .Callback(() => Console.WriteLine("Mocked GetTemperatureRawDataAsync callback"))
+                      .ReturnsAsync(new List<TemperatureDataPoint>()
+                      {
+                          new TemperatureDataPoint(DateTime.Today.Date, 10d)
+                      }); ;
+
+            return clientMock;
         }
     }
 }
