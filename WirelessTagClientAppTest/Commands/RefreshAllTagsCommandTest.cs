@@ -2,11 +2,11 @@
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.ViewModels;
-using WirelessTagClientAppTest.TestHelpers;
 using WirelessTagClientLib;
 using WirelessTagClientLib.DTO;
 
@@ -15,6 +15,16 @@ namespace WirelessTagClientApp.Test.Commands
     [TestClass]
     public class RefreshAllTagsCommandTest
     {
+        [TestInitialize]
+        public void TestSetup()
+        {
+            // Ensure we have a SynchronizationContext for task continuations in the view-model;
+            // WPF has this by default, but unit tests do not, otherwise we get an InvalidOperationException
+            // "The current SynchronizationContext may not be used as a TaskScheduler"
+            // See https://stackoverflow.com/questions/8245926/the-current-synchronizationcontext-may-not-be-used-as-a-taskscheduler
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+        }
+
         [TestMethod]
         public void Command_Implements_ICommand()
         {
