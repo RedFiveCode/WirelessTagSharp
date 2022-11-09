@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="WirelessTagClientApp.Views.MinMaxView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WirelessTagClientApp.Views"
+             xmlns:localConv="clr-namespace:WirelessTagClientApp.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <!-- listview column header alignment -->
+        <Style x:Key="listviewColumnStyleLeft" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Padding" Value="6,0,6,0" />
+        </Style>
+
+        <localConv:TimeIntervalValueConverter x:Key="intervalConverter" />
+    </UserControl.Resources>
+    
+    <Grid>
+        <ListView
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            SelectionMode="Multiple"
+            
+            ItemsSource="{Binding Path=Data, Mode=OneWay}" >
+            <ListView.View>
+                
+                <!-- data content is MinMaxMeasurementViewModel -->
+                
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn 
+                        Width="100"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        <GridViewColumnHeader>Tag</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="6,0,0,0"
+                                        TextTrimming="CharacterEllipsis"
+                                        Text="{Binding Path=TagName, Mode=OneWay}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn 
+                        Width="250"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        <GridViewColumnHeader>Minimum Temperature</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        TextTrimming="CharacterEllipsis">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0:n1} °C @ {1:ddd dd-MMM-yyyy HH:mm:ss}">
+                                                <Binding Path="Minimum.Temperature" Mode="OneWay" />
+                                                <Binding Path="Minimum.Timestamp" Mode="OneWay" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn 
+                        Width="250"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        <GridViewColumnHeader>Maximum Temperature</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        TextTrimming="CharacterEllipsis">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0:n1} °C @ {1:ddd dd-MMM-yyyy HH:mm:ss}">
+                                                <Binding Path="Maximum.Temperature" Mode="OneWay" />
+                                                <Binding Path="Maximum.Timestamp" Mode="OneWay" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn 
+                        Width="100"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        <GridViewColumnHeader>Interval</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="6,0,0,0"
+                                        TextTrimming="CharacterEllipsis"
+                                        Text="{Binding Path=Interval, Mode=OneWay, Converter={StaticResource intervalConverter}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn 
+                        Width="100"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        <GridViewColumnHeader>Difference</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="6,0,0,0"
+                                        TextTrimming="CharacterEllipsis"
+                                        Text="{Binding Path=Difference, Mode=OneWay, StringFormat={}{0:n1} °C}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

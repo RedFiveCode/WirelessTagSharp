@@ -248,13 +248,13 @@ namespace WirelessTagClientApp.ViewModels
 
                     await command.ExecuteAsync(viewModel);
                 }
-                //else if (mode == ViewMode.MinMaxView)
-                //{
-                //    var command = new RefreshMinMaxTagsCommand(client, options);
-                //    var viewModel = viewModelMap[mode] as MinMaxViewModel;
+                else if (mode == ViewMode.MinMaxView)
+                {
+                    var command = new RefreshMinMaxTagsCommand(client, options);
+                    var viewModel = viewModelMap[mode] as MinMaxViewModel;
 
-                //    await command.ExecuteAsync(viewModel);
-                //}
+                    await command.ExecuteAsync(viewModel);
+                }
                 else
                 {
                     throw new ArgumentOutOfRangeException($"Cannot refresh active view '{mode}'");
