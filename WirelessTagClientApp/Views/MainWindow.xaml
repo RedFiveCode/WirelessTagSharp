@@ -33,14 +33,7 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type localViewModels:MinMaxViewModel}">
-            <!-- TODO -->
-            <TextBlock
-                FontSize="24"
-                FontStyle="Italic"
-                Foreground="Tomato"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="*** MinMaxViewModel ***" />
+            <local:MinMaxView />
         </DataTemplate>
 
         <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
