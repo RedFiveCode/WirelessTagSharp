@@ -75,36 +75,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public void LoginAndRefresh()
         {
-            // TODO
-            // create watcher
-            // add async refresh method to AllTagsViewModel
-            // should we have one long lived instance of the watcher,
-            // or create new watchers for each task/refresh call?
-
-            // update LastUpdated when the watcher has completed
-            // (subscribe to its property changed events or extend watcher to fired its own events?)
-            //
-            // maybe separate the watcher ctor from running the task as well, so can rerun the same task.
-
-            //watcher = new NotifyTaskCompletion<AllTagsViewModel>(activeViewModel.RefreshAsync);
-
-            // need to move client access to own service class away from AllTagsViewModel ???
-
-            var task = client.LoginAsync(options.Username, options.Password);
-            task.ContinueWith(responseTask =>
-            {
-                if (!responseTask.Result || responseTask.Status != TaskStatus.RanToCompletion)
-                {
-                    // UI thread ???
-                    IsBusy = false;
-                    SetError(Properties.Resources.Error_Login);
-                }
-
-                // refresh the default view
-                Refresh();
-
-                LastUpdated = DateTime.Now;
-            });
+            Refresh();
         }
 
         /// <summary>

@@ -36,6 +36,10 @@ namespace WirelessTagClientApp.Commands
                 // uncomment to simulate a very long delay in getting response
                 //await Task.Delay(5000);
 
+                var loginTask = client.LoginAsync(options.Username, options.Password);
+
+                await loginTask;
+
                 await client.GetTagListAsync()
                         .ContinueWith(tt =>
                         {
