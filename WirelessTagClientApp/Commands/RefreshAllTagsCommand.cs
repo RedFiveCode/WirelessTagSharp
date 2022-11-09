@@ -39,8 +39,9 @@ namespace WirelessTagClientApp.Commands
                 await client.GetTagListAsync()
                         .ContinueWith(tt =>
                         {
+                            // UI thread
                             OnGetTagListResponse(tt, viewModel);
-                        });
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
             }
             catch (Exception ex)
             {
