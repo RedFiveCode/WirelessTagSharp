@@ -1,28 +1,41 @@
-﻿using WirelessTagClientApp.Common;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using WirelessTagClientApp.Common;
 using WirelessTagClientLib;
+using WirelessTagClientApp.Utils;
+using MoreLinq;
+using WirelessTagClientLib.DTO;
+using System.Windows;
+using WirelessTagClientApp.Commands;
 
 namespace WirelessTagClientApp.ViewModels
 {
     public class MinMaxViewModel : ViewModelBase
     {
-        private readonly IWirelessTagAsyncClient client;
-        private readonly Options options;
+        private ObservableCollection<MinMaxMeasurementViewModel> data;
 
-        public MinMaxViewModel(Options options = null)
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public MinMaxViewModel()
         {
-            this.options = options;
-
-            client = new WirelessTagAsyncClient();
+            data = new ObservableCollection<MinMaxMeasurementViewModel>();
         }
 
         /// <summary>
-        /// Ctor for unit testing
+        /// Get/set the list of temperature minimum and maximum measurements
         /// </summary>
-        /// <param name="client"></param>
-        public MinMaxViewModel(IWirelessTagAsyncClient client)
+        public ObservableCollection<MinMaxMeasurementViewModel> Data
         {
-            this.client = client;
-            options = new Options();
+            get { return data; }
+            set
+            {
+                data = value;
+                NotifyPropertyChanged();
+            }
         }
     }
 }
