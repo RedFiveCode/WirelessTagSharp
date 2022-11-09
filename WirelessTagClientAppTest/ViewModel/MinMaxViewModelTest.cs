@@ -1,7 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using WirelessTagClientApp.ViewModels;
+using WirelessTagClientAppTest.TestHelpers;
+using WirelessTagClientLib;
+using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.Test.ViewModel
 {
@@ -25,7 +31,22 @@ namespace WirelessTagClientApp.Test.ViewModel
             var target = new MinMaxViewModel();
 
             // assert
-
+            Assert.IsNotNull(target.Data);
         }
+
+        [TestMethod]
+        public void Data_Setter_Should_Fire_PropertyChanged_Event()
+        {
+            // arrange
+            var target = new MinMaxViewModel();
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.Data = new ObservableCollection<MinMaxMeasurementViewModel>();
+
+            // assert
+            observer.AssertPropertyChangedEvent("Data");
+        }
+
     }
 }
