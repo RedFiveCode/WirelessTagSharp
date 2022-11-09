@@ -63,8 +63,8 @@ namespace WirelessTagClientApp.ViewModels
             minMaxViewCommand = new ChangeViewCommand(ViewMode.MinMaxView);
 
             viewModelMap = new Dictionary<ViewMode, ViewModelBase>();
-            viewModelMap[ViewMode.SummaryView] = new AllTagsViewModel(this.options);
-            viewModelMap[ViewMode.MinMaxView] = new MinMaxViewModel(this.options);
+            viewModelMap[ViewMode.SummaryView] = new AllTagsViewModel();
+            viewModelMap[ViewMode.MinMaxView] = new MinMaxViewModel();
 
             Mode = ViewMode.SummaryView;
         }
@@ -244,14 +244,16 @@ namespace WirelessTagClientApp.ViewModels
                 if (mode == ViewMode.SummaryView)
                 {
                     var command = new RefreshAllTagsCommand(client, options);
+                    var viewModel = viewModelMap[mode] as AllTagsViewModel;
 
-                    await command.ExecuteAsync(viewModelMap[mode] as AllTagsViewModel);
+                    await command.ExecuteAsync(viewModel);
                 }
                 //else if (mode == ViewMode.MinMaxView)
                 //{
                 //    var command = new RefreshMinMaxTagsCommand(client, options);
+                //    var viewModel = viewModelMap[mode] as MinMaxViewModel;
 
-                //    await command.ExecuteAsync(this);
+                //    await command.ExecuteAsync(viewModel);
                 //}
                 else
                 {
