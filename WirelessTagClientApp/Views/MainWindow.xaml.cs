@@ -33,7 +33,7 @@ namespace WirelessTagClientApp
             // allow user to click and drag to move main window around
             // by clicking anywhere on main window, including child controls
             // https://stackoverflow.com/questions/34581188/draggable-wpf-window-with-no-border
-            PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;           
+            //PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;           
 
             // Persist window state; using the name of type as key
             ((App)Application.Current).WindowPlace.Register(this);

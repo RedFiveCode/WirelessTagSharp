@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WirelessTagClientApp.Views"
              xmlns:localConv="clr-namespace:WirelessTagClientApp.Converters"
+             xmlns:util="clr-namespace:Wpf.Util"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -21,9 +22,9 @@
         <ListView
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            SelectionMode="Multiple"
-            
-            ItemsSource="{Binding Path=Data, Mode=OneWay}" >
+            SelectionMode="Single"
+            ItemsSource="{Binding Path=Data, Mode=OneWay}" 
+            util:GridViewSort.AutoSort="True" >
             <ListView.View>
                 
                 <!-- data content is MinMaxMeasurementViewModel -->
@@ -31,6 +32,7 @@
                 <GridView AllowsColumnReorder="False">
                     <GridViewColumn 
                         Width="100"
+                        util:GridViewSort.PropertyName="TagName"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
                         <GridViewColumnHeader>Tag</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
@@ -47,6 +49,7 @@
 
                     <GridViewColumn 
                         Width="250"
+                        util:GridViewSort.PropertyName="Minimum.Temperature"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
                         <GridViewColumnHeader>Minimum Temperature</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
@@ -68,6 +71,7 @@
 
                     <GridViewColumn 
                         Width="250"
+                        util:GridViewSort.PropertyName="Maximum.Temperature"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
                         <GridViewColumnHeader>Maximum Temperature</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
@@ -89,6 +93,7 @@
 
                     <GridViewColumn 
                         Width="100"
+                        util:GridViewSort.PropertyName="Interval"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
                         <GridViewColumnHeader>Interval</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
@@ -105,6 +110,7 @@
 
                     <GridViewColumn 
                         Width="100"
+                        util:GridViewSort.PropertyName="Difference"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
                         <GridViewColumnHeader>Difference</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
