@@ -15,3 +15,8 @@
 * [Icons by Axialis](https://www.axialis.com) ([CC Attribution-NoDerivatives 4.0 International](https://www.axialis.com/icons/license.html))
 * [FontAwesome](https://github.com/FortAwesome/Font-Awesome) ([CC 4.0](https://fontawesome.com/license/free))
 * [Microsoft Visual Studio 2022 Image Library](https://learn.microsoft.com/en-us/visualstudio/designers/the-visual-studio-image-library?view=vs-2022) ([Microsoft Software License Terms](https://www.microsoft.com/en-us/download/details.aspx?id=35825))
+
+### Techniques
+* [Automatically sort a GridView when a column header is clicked by Thomas Levesque](https://thomaslevesque.com/2009/08/04/wpf-automatically-sort-a-gridview-continued)
+
+
