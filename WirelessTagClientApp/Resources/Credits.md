@@ -19,4 +19,5 @@
 ### Techniques
 * [Automatically sort a GridView when a column header is clicked by Thomas Levesque](https://thomaslevesque.com/2009/08/04/wpf-automatically-sort-a-gridview-continued)
 * [Implementing an Exception Helper Class for Parameter Null Checking by Marius Schulz](https://mariusschulz.com/blog/implementing-an-exception-helper-class-for-parameter-null-checking)
+* [Relay command from MSDN Magazine, February 2009 by Josh Smith](http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030)
 
