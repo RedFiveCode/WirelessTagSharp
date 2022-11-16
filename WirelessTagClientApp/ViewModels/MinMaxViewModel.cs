@@ -1,21 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using WirelessTagClientApp.Common;
-using WirelessTagClientLib;
-using WirelessTagClientApp.Utils;
-using MoreLinq;
-using WirelessTagClientLib.DTO;
-using System.Windows;
 using WirelessTagClientApp.Commands;
+using System.Windows.Input;
 
 namespace WirelessTagClientApp.ViewModels
 {
     public class MinMaxViewModel : ViewModelBase
     {
         private ObservableCollection<MinMaxMeasurementViewModel> data;
+        private CopyMinMaxTagsComand copyCommand;
 
         /// <summary>
         /// ctor
@@ -23,6 +16,7 @@ namespace WirelessTagClientApp.ViewModels
         public MinMaxViewModel()
         {
             data = new ObservableCollection<MinMaxMeasurementViewModel>();
+            copyCommand = new CopyMinMaxTagsComand();
         }
 
         /// <summary>
@@ -36,6 +30,14 @@ namespace WirelessTagClientApp.ViewModels
                 data = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        /// <summary>
+        /// Get the command to copy data to the clipboard
+        /// </summary>
+        public ICommand CopyCommand
+        {
+            get { return copyCommand.Command; }
         }
     }
 }
