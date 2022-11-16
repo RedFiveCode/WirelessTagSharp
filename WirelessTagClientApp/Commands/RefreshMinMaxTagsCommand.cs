@@ -38,6 +38,9 @@ namespace WirelessTagClientApp.Commands
 
             try
             {
+                // clear any previous results
+                viewModel.Data.Clear();
+
                 var loginTask = client.LoginAsync(options.Username, options.Password);
 
                 Console.WriteLine($"LoginAsync task is {loginTask.Id}");
