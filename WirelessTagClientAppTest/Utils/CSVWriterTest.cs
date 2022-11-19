@@ -55,7 +55,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42,3.14,42.10,hello\r\n", result);
+            Assert.AreEqual("42, 3.14, 42.10, hello\r\n", result);
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42,3.14\r\n", result);
+            Assert.AreEqual("42, 3.14\r\n", result);
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42,3.14\r\n43,2.72\r\n", result);
+            Assert.AreEqual("42, 3.14\r\n43, 2.72\r\n", result);
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42,hello\\, world!\r\n", result);
+            Assert.AreEqual("42, hello\\, world!\r\n", result);
         }
 
         [TestMethod]
@@ -146,7 +146,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("#IntValue,DoubleValue\r\n42,3.14\r\n", result);
+            Assert.AreEqual("#IntValue, DoubleValue\r\n42, 3.14\r\n", result);
         }
     }
 

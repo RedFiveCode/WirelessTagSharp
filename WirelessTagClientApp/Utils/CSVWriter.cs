@@ -8,7 +8,7 @@ namespace WirelessTagClientApp.Utils
     public class CSVWriter<T>
     {
         private string headerDelimiter = "#";
-        private string separator = ",";
+        private string separator = ", ";
         private string newline = Environment.NewLine;
 
         private List<Func<T, string>> _expressionList;
