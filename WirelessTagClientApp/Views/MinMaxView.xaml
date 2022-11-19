@@ -18,6 +18,10 @@
         <localConv:TimeIntervalValueConverter x:Key="intervalConverter" />
     </UserControl.Resources>
     
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding Path=CopyCommand}" Key="C" Modifiers="Ctrl" CommandParameter="{Binding}"/>
+    </UserControl.InputBindings>
+
     <Grid>
         <ListView
             HorizontalAlignment="Stretch"
