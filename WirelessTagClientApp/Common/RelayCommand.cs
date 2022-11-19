@@ -100,7 +100,6 @@ namespace WirelessTagClientApp.Common
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
             if (_canExecute == null)
@@ -108,12 +107,7 @@ namespace WirelessTagClientApp.Common
                 return true;
             }
 
-            if (parameter is T)
-            {
-                return _canExecute((T)parameter);
-            }
-
-            return true;
+            return _canExecute(parameter as T); // allow null
         }
 
         /// <summary>
