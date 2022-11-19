@@ -55,7 +55,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42, 3.14, 42.10, hello\r\n", result);
+            Assert.AreEqual("42, 3.14, 42.10, hello", result);
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42, 3.14\r\n", result);
+            Assert.AreEqual("42, 3.14", result);
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42, 3.14\r\n43, 2.72\r\n", result);
+            Assert.AreEqual("42, 3.14\r\n43, 2.72", result);
         }
 
         [TestMethod]
@@ -110,7 +110,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42!3.14 ", result);
+            Assert.AreEqual("42!3.14", result);
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42, hello\\, world!\r\n", result);
+            Assert.AreEqual("42, hello\\, world!", result);
         }
 
         [TestMethod]
@@ -146,7 +146,26 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("#IntValue, DoubleValue\r\n42, 3.14\r\n", result);
+            Assert.AreEqual("#IntValue, DoubleValue\r\n42, 3.14", result);
+        }
+
+        [TestMethod]
+        public void WriteCSV_Should_Return_String_With_Lines_Separated_By_Newline_Except_For_Last_Line()
+        {
+            // arrange
+            var list = new List<MyRecord>();
+            list.Add(new MyRecord() { IntValue = 42, DoubleValue = 3.1415, Text = "hello, world!" });
+            list.Add(new MyRecord() { IntValue = 66, DoubleValue = 1.618, Text = "greetings" });
+
+            var target = new CSVWriter<MyRecord>();
+            target.AddColumn(x => x.IntValue.ToString(), "IntValue");
+            target.AddColumn(x => x.DoubleValue.ToString("f2"), "DoubleValue");
+
+            // act
+            var result = target.WriteCSV(list);
+
+            // assert
+            Assert.AreEqual("#IntValue, DoubleValue\r\n42, 3.14\r\n66, 1.62", result);
         }
     }
 
