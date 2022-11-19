@@ -88,9 +88,11 @@ namespace WirelessTagClientApp.Utils
                 builder.Append(newline);
             }
 
-            foreach(var item in list)
+            for (int i = 0; i < list.Count; i++)
             {
-                foreach(var expression in _expressionList)
+                var item = list[i];
+
+                foreach (var expression in _expressionList)
                 {
                     var value = expression(item); 
 
@@ -113,7 +115,12 @@ namespace WirelessTagClientApp.Utils
                         builder.Append(separator);
                     }
                 }
-                builder.Append(newline);
+
+                // append newline separator for all lines except the last
+                if (i != list.Count - 1)
+                {
+                    builder.Append(newline);
+                }
             }
 
             return builder.ToString();
