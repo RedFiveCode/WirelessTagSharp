@@ -21,7 +21,7 @@ namespace WirelessTagClientConsole
                         //
                         // simple synchronous client returning json strings
                         //
-                        //SimpleJsonClient(o);
+                        SimpleJsonClient(o);
 
 
                         //
@@ -34,7 +34,7 @@ namespace WirelessTagClientConsole
                         // simple asynchronous client returning strongly typed DTO objects
                         //
 
-                        AsyncClient(o);
+                        //AsyncClient(o);
                     });
             }
             catch (Exception ex)
@@ -67,6 +67,9 @@ namespace WirelessTagClientConsole
 
             var data = client.GetTemperatureRawData(1, DateTime.Today, DateTime.Today);
             Console.WriteLine(data);
+
+            var rawStatsData = client.GetTagStatsRawData(1, DateTime.Today.AddDays(-1), DateTime.Today);
+            Console.WriteLine(rawStatsData);
         }
 
         private static void SimpleClient(Options options)

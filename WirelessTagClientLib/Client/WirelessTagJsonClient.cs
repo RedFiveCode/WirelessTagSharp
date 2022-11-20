@@ -123,6 +123,24 @@ namespace WirelessTagClientLib
         }
 
         /// <summary>
+        /// Get the raw temperature/battery/humidity data for the specified tag for a date range
+        /// </summary>
+        /// <param name="tagId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        public string GetTagStatsRawData(int tagId, DateTime from, DateTime to)
+        {
+            var request = new GetStatsRawDataRequest()
+            {
+                Id = tagId,
+                From = from,
+                To = to
+            };
+
+            return Execute(request);
+        }
+
+        /// <summary>
         /// Execute the request, returning Json response
         /// </summary>
         /// <param name="request"></param>
