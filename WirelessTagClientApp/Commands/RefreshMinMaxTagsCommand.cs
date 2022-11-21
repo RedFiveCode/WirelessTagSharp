@@ -1,12 +1,10 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
-using MoreLinq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using WirelessTagClientApp.Common;
-using WirelessTagClientApp.Utils;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientLib;
 using WirelessTagClientLib.DTO;
@@ -67,85 +65,33 @@ namespace WirelessTagClientApp.Commands
                     return;
                 }
 
-                // THIS WORKS!
-                // Get UI update after each request completes,
-                // but too many concurrent requests results in HttpStatusException / HttpStatusCode.InternalServerError
+                // IMPORTANT
+                // We can need to get historic temperature data for all the tags and time intervals.
+                //
+                // We can create tasks to send a request to get temperature data for a given tag and time interval, and await each request/task to complete .
+                // However the server does not like too many requests too quickly...
+                //
+                // We hope to avoid too many concurrent requests as this can result in HttpStatusException / HttpStatusCode.InternalServerError
+                // {"Message":"You have downloaded full log less than 30 seconds ago. 
+                //   Please configure URL call back to receive real-time tag data instead of polling the API GetTemperatureRawData","StackTrace":"
+                //   at MyTagList.ethLogs.CheckLogDownloadRateLimit(...) 
+                //   at MyTagList.ethLogs.CheckTagType(...)
+                //   at MyTagList.ethLogs.GetTemperatureRawData(...)",
+                //   "ExceptionType":"MyTagList.ethLogs+TooManyRequestException"}
+                //
+                // Instead, we perform one query per tag to get all the temperature data over a long time period; will then split this into chunks locally.
+                // Since each query potentially takes a long time, this avoids the risk of spamming the server with too many requests to quickly.
+                //
+                // Also, remember that some tags may not have any data points in the time period of interest.
+                // Ideally should call GetTagSpanStatsAsync/GetMultiTagStatsSpan to get time range for each tag
+                //
+                // Uses an arbitrary cutoff date as staring point for oldest data.
+                var cutoffDate = new DateTime(2015, 1, 1);
+
                 foreach (var tag in tagList)
                 {
-                    //foreach (var interval in Enum.GetValues(typeof(TimeInterval)).Cast<TimeInterval>())
-                    var interval = TimeInterval.Today;
-                    {
-                        await GetTemperatureRawDataWithContinuationTask(viewModel, tag, interval);
-                    }
+                    await GetTemperatureRawDataWithContinuationTask(viewModel, tag, cutoffDate);
                 }
-
-
-                // THIS WORKS!
-                // Get UI update after each request completes,
-                // but too many concurrent requests results in HttpStatusException / HttpStatusCode.InternalServerError
-                //foreach (var tag in tagListTask.Result)
-                //{
-                //    //var task = GetTemperatureRawDataWithContinuationTask(tag, TimeInterval.Today);
-
-                //    // Gotta be careful here an not spam the server with too many requests...
-                //    // Will get HttpStatusException / HttpStatusCode.InternalServerError
-                //    // {"Message":"You have downloaded full log less than 30 seconds ago. 
-                //    // Please configure URL call back to receive real-time tag data instead of polling the API GetTemperatureRawData","StackTrace":"
-                //    // at MyTagList.ethLogs.CheckLogDownloadRateLimit(...) 
-                //    // at MyTagList.ethLogs.CheckTagType(...)
-                //    // at MyTagList.ethLogs.GetTemperatureRawData(...)",
-                //    // "ExceptionType":"MyTagList.ethLogs+TooManyRequestException"}
-
-                //    taskList.Add(GetTemperatureRawDataWithContinuationTask(tag, TimeInterval.Today));
-                //    taskList.Add(GetTemperatureRawDataWithContinuationTask(tag, TimeInterval.Yesterday));
-                //    taskList.Add(GetTemperatureRawDataWithContinuationTask(tag, TimeInterval.Last7Days));
-                //    taskList.Add(GetTemperatureRawDataWithContinuationTask(tag, TimeInterval.Last30Days));
-                //    taskList.Add(GetTemperatureRawDataWithContinuationTask(tag, TimeInterval.ThisYear));
-                //    taskList.Add(GetTemperatureRawDataWithContinuationTask(tag, TimeInterval.All));
-                //    // etc
-                //}
-
-                await Task.WhenAll(taskList);
-
-                // THIS WORKS!
-                //foreach (var tag in tagListTask.Result)
-                //{
-                //    // get all raw data for current tag
-                //    // some tags may not have any data points in the time period of interest...
-                //    // only query the client once to get all data, rather than repeated queries for ever increasing chunks of the same data
-                //    // ideally should call GetTagSpanStatsAsync to get time range for each tag
-                //    var from = new DateTime(2021, 1, 1);
-                //    var to = DateTime.Now;
-
-                //    var rawData = await client.GetTemperatureRawDataAsync(tag.SlaveId, from, to);
-
-                //    // split raw data for current tag into time ranges (for example last 7 days)
-                //    // and get min and max temperature for that time interval
-                //    var rowList = new List<MinMaxMeasurementViewModel>();
-
-                //    foreach (var interval in Enum.GetValues(typeof(TimeInterval)).Cast< TimeInterval>())
-                //    {
-                //        var row = CreateRowViewModel(rawData, tag, interval);
-
-                //        if (row != null)
-                //        {
-                //            rowList.Add(row);
-                //        }
-                //    }
-
-
-                //    if (rowList.Any())
-                //    {
-                //        foreach (var row in rowList)
-                //        {
-                //            viewModel.Data.Add(row);
-                //        }
-                //    }
-
-                //    //taskList.Add(t);
-                //}
-
-
             }
             catch (Exception ex)
             {
@@ -154,45 +100,54 @@ namespace WirelessTagClientApp.Commands
             }
         }
 
-        private Task GetTemperatureRawDataTask(int tagId, TimeInterval interval)
+        private Task GetTemperatureRawDataWithContinuationTask(MinMaxViewModel viewModel, TagInfo tag, DateTime from)
         {
-            var timeRange = TimeIntervalHelper.GetTimeRange(DateTime.Now, interval);
+            var to = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59); // end of today
 
-            return client.GetTemperatureRawDataAsync(tagId, timeRange.Item1, timeRange.Item2);
-        }
-
-        private Task GetTemperatureRawDataWithContinuationTask(MinMaxViewModel viewModel, TagInfo tag, TimeInterval interval)
-        {
-            var timeRange = TimeIntervalHelper.GetTimeRange(DateTime.Now, interval);
-
-            var task = client.GetTemperatureRawDataAsync(tag.SlaveId, timeRange.Item1, timeRange.Item2)
+            var stopwatch = Stopwatch.StartNew();
+            var task = client.GetTemperatureRawDataAsync(tag.SlaveId, from, to)
                 .ContinueWith(rawDataTask =>
                 {
+                    stopwatch.Stop();
+
                     // create row view-model object on worker thread;
                     // potentially has to filter a large number of raw data items
                     // so don't block the UI thread
-                    if (rawDataTask.IsCompleted)
+                    if (rawDataTask.IsCompleted && rawDataTask.Status == TaskStatus.RanToCompletion)
                     {
-                        var rawData = rawDataTask.Result;
+                        Console.WriteLine($"Tag {tag.SlaveId} : {rawDataTask.Result.Count} data points since {from}, duration {stopwatch.Elapsed}");
 
-                        return ViewModelFactory.CreateRowViewModel(rawData, tag, interval);
+                        var rows = new List<MinMaxMeasurementViewModel>();
+
+                        // split raw data for current tag into time ranges (for example last 7 days)
+                        foreach (var interval in Enum.GetValues(typeof(TimeInterval)).Cast<TimeInterval>())
+                        {
+                            var rowViewModel = ViewModelFactory.CreateRowViewModel(rawDataTask.Result, tag, interval);
+
+                            // some tags may not have any data points in the time period of interest
+                            if (rowViewModel != null) // null means no data within the time interval
+                            {
+                                rows.Add(rowViewModel);
+                            }
+                        }
+
+                        return rows;
 
                     }
                     return null; // error or no data for tag in the time interval
                 })
                 .ContinueWith(rowTask =>
-                 {
-                     // UI thread
-                     if (rowTask.IsCompleted && rowTask.Result != null)
-                     {
-                         // UI thread
-                         viewModel.Data.Add(rowTask.Result);
-                         //Application.Current.Dispatcher.Invoke(() =>
-                         //{
-                         //    viewModel.Data.Add(rowTask.Result);
-                         //});
-                     }
-                 }, TaskScheduler.FromCurrentSynchronizationContext());
+                {
+                    // UI thread
+                    if (rowTask.IsCompleted && rowTask.Result != null)
+                    {
+                        // UI thread
+                        foreach(var row in rowTask.Result)
+                        {
+                            viewModel.Data.Add(row);
+                        }
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
 
             return task;
         }
