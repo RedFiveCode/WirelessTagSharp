@@ -82,7 +82,7 @@ namespace WirelessTagClientApp.Test.Commands
             target.Command.Execute(viewModel);
 
             // only check header, so we can avoid timestamp comparisons
-            string expectedDataHeader = "#Id,Tag,Interval,From,IntervalTo,MinimumTemperature,MinimumTimestamp,MaximumTemperature,MaximumTimestamp,Difference";
+            string expectedDataHeader = "#Id, Tag, Interval, From, IntervalTo, MinimumTemperature, MinimumTimestamp, MaximumTemperature, MaximumTimestamp, Difference";
 
             mock.Verify(x => x.WriteText(It.Is<string>(csv => csv.StartsWith(expectedDataHeader))), Times.Once());
         }
