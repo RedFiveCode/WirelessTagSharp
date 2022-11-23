@@ -32,8 +32,6 @@ namespace WirelessTagClientApp.Commands
 
         public async Task ExecuteAsync(MinMaxViewModel viewModel)
         {
-            List<Task> taskList = new List<Task>();
-
             try
             {
                 // clear any previous results
