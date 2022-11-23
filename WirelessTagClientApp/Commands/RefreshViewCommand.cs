@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using WirelessTagClientApp.Common;
 using WirelessTagClientApp.ViewModels;
 
@@ -28,9 +29,9 @@ namespace WirelessTagClientApp.Commands
             return true;
         }
 
-        private void Refresh(MainWindowViewModel p)
+        private async Task Refresh(MainWindowViewModel p)
         {
-            p.Refresh();
+            await p.Refresh();
         }
     }
 }
