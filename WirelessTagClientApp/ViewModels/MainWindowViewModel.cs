@@ -73,9 +73,9 @@ namespace WirelessTagClientApp.ViewModels
         /// <summary>
         /// Log-in and refresh the active view
         /// </summary>
-        public void LoginAndRefresh()
+        public async void LoginAndRefresh()
         {
-            Refresh();
+            await Refresh();
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace WirelessTagClientApp.ViewModels
             ErrorMessage = message;
         }
 
-        public async void Refresh()
+        public async Task Refresh()
         {
             try
             {
@@ -217,14 +217,35 @@ namespace WirelessTagClientApp.ViewModels
                     var command = new RefreshAllTagsCommand(client, options);
                     var viewModel = viewModelMap[mode] as AllTagsViewModel;
 
-                    await command.ExecuteAsync(viewModel);
+                    await command.ExecuteAsync(viewModel)
+                                 .ContinueWith(refreshTask =>
+                                 {
+                                     LastUpdated = DateTime.Now;
+                                     IsBusy = false;
+
+                                     if (refreshTask.IsFaulted)
+                                     {
+                                         SetError(refreshTask.Exception.ToString());
+                                     }
+                                 }, TaskScheduler.FromCurrentSynchronizationContext());
+
                 }
                 else if (mode == ViewMode.MinMaxView)
                 {
                     var command = new RefreshMinMaxTagsCommand(client, options);
                     var viewModel = viewModelMap[mode] as MinMaxViewModel;
 
-                    await command.ExecuteAsync(viewModel);
+                    await command.ExecuteAsync(viewModel)
+                                 .ContinueWith(refreshTask =>
+                                 {
+                                     LastUpdated = DateTime.Now;
+                                     IsBusy = false;
+
+                                     if (refreshTask.IsFaulted)
+                                     {
+                                         SetError(refreshTask.Exception.ToString());
+                                     }
+                                 }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
                 else
                 {
@@ -237,8 +258,8 @@ namespace WirelessTagClientApp.ViewModels
             }
             finally
             {
-                LastUpdated = DateTime.Now;
-                IsBusy = false;
+                //LastUpdated = DateTime.Now;
+                //IsBusy = false;
             }
         }
     }

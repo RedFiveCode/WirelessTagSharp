@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientAppTest.TestHelpers;
 using WirelessTagClientLib;
@@ -193,30 +194,64 @@ namespace WirelessTagClientApp.Test.ViewModel
         }
 
         [TestMethod]
-        public void Refresh_Should_Set_IsBusy_Property()
+        public async Task Refresh_SummaryView_Should_Set_IsBusy_Property()
         {
             // arrange
             var mock = CreateAsyncClientMock();
             var target = new MainWindowViewModel(mock.Object, new Options());
+            target.Mode = MainWindowViewModel.ViewMode.SummaryView;
             var observer = new PropertyChangedObserver(target);
 
             // act
-            target.Refresh();
+            await target.Refresh();
 
             // assert
             observer.AssertPropertyChangedEvent("IsBusy", 2); // should set then reset IsBusy
         }
 
         [TestMethod]
-        public void Refresh_Should_Set_LastUpdated_Property()
+        public async Task Refresh_SummaryView_Should_Set_LastUpdated_Property()
         {
             // arrange
             var mock = CreateAsyncClientMock();
             var target = new MainWindowViewModel(mock.Object, new Options());
+            target.Mode = MainWindowViewModel.ViewMode.SummaryView;
             var observer = new PropertyChangedObserver(target);
 
             // act
-            target.Refresh();
+            await target.Refresh();
+
+            // assert
+            observer.AssertPropertyChangedEvent("LastUpdated");
+        }
+
+        [TestMethod]
+        public async Task Refresh_MinMaxView_Should_Set_IsBusy_Property()
+        {
+            // arrange
+            var mock = CreateAsyncClientMock();
+            var target = new MainWindowViewModel(mock.Object, new Options());
+            target.Mode = MainWindowViewModel.ViewMode.MinMaxView;
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            await target.Refresh();
+
+            // assert
+            observer.AssertPropertyChangedEvent("IsBusy", 2); // should set then reset IsBusy
+        }
+
+        [TestMethod]
+        public async Task Refresh_MinMaxView_Should_Set_LastUpdated_Property()
+        {
+            // arrange
+            var mock = CreateAsyncClientMock();
+            var target = new MainWindowViewModel(mock.Object, new Options());
+            target.Mode = MainWindowViewModel.ViewMode.MinMaxView;
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            await target.Refresh();
 
             // assert
             observer.AssertPropertyChangedEvent("LastUpdated");
