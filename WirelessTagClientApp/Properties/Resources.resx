@@ -131,6 +131,10 @@
   <data name="TimeInterval_All" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="TimeInterval_CurrentMonth" xml:space="preserve">
+    <value>MMMM yyyy</value>
+    <comment>current month and year</comment>
+  </data>
   <data name="TimeInterval_Last30Days" xml:space="preserve">
     <value>Last 30 days</value>
   </data>
@@ -138,7 +142,8 @@
     <value>Last 7 days</value>
   </data>
   <data name="TimeInterval_ThisYear" xml:space="preserve">
-    <value>This year</value>
+    <value>This year ({0:yyyy})</value>
+    <comment>{0} = current year</comment>
   </data>
   <data name="TimeInterval_Today" xml:space="preserve">
     <value>Today</value>
