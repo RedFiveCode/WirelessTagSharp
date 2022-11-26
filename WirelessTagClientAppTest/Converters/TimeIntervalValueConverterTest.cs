@@ -10,7 +10,7 @@ namespace WirelessTagClientApp.Test.Converters
     /// Unit tests for the <see cref="TimeIntervalValueConverter"/> class
     /// </summary>
     [TestClass]
-    public class IntervalValueConverterTest
+    public class TimeIntervalValueConverterTest
     {
         [TestMethod]
         public void Class_Should_Implement_IValueConverter_Interface()
