@@ -19,7 +19,7 @@ namespace WirelessTagClientApp.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -97,6 +97,15 @@ namespace WirelessTagClientApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MMMM yyyy.
+        /// </summary>
+        internal static string TimeInterval_CurrentMonth {
+            get {
+                return ResourceManager.GetString("TimeInterval_CurrentMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last 30 days.
         /// </summary>
         internal static string TimeInterval_Last30Days {
@@ -115,7 +124,7 @@ namespace WirelessTagClientApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This year.
+        ///   Looks up a localized string similar to This year ({0:yyyy}).
         /// </summary>
         internal static string TimeInterval_ThisYear {
             get {
