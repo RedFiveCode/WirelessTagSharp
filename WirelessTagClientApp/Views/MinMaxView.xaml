@@ -17,10 +17,6 @@
 
         <localConv:TimeIntervalValueConverter x:Key="intervalConverter" />
     </UserControl.Resources>
-    
-    <UserControl.InputBindings>
-        <KeyBinding Command="{Binding Path=CopyCommand}" Key="C" Modifiers="Ctrl" CommandParameter="{Binding}"/>
-    </UserControl.InputBindings>
 
     <Grid>
         <ListView
@@ -28,7 +24,7 @@
             VerticalAlignment="Stretch"
             SelectionMode="Single"
             ItemsSource="{Binding Path=Data, Mode=OneWay}" 
-            util:GridViewSort.AutoSort="True" >
+            util:GridViewSort.AutoSort="True">
             <ListView.View>
                 
                 <!-- data content is MinMaxMeasurementViewModel -->

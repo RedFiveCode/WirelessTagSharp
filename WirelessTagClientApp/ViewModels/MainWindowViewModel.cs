@@ -24,6 +24,7 @@ namespace WirelessTagClientApp.ViewModels
         private AboutCommand aboutCommand;
         private ChangeViewCommand summaryViewCommand;
         private ChangeViewCommand minMaxViewCommand;
+        private DelegatedCommand copyCommand;
 
         private ViewMode mode;
         private ViewModelBase activeViewModel;
@@ -56,17 +57,25 @@ namespace WirelessTagClientApp.ViewModels
             isError = false;
             errorMessage = String.Empty;
 
+            viewModelMap = new Dictionary<ViewMode, ViewModelBase>();
+            var summaryViewModel = new AllTagsViewModel();
+            var minMaxViewModel = new MinMaxViewModel();
+
+            viewModelMap[ViewMode.SummaryView] = summaryViewModel;
+            viewModelMap[ViewMode.MinMaxView] = minMaxViewModel;
+
+            Mode = ViewMode.SummaryView;
+
             refreshCommand = new RefreshViewCommand();
             closeCommand = new CloseCommand();
             aboutCommand = new AboutCommand();
             summaryViewCommand = new ChangeViewCommand(ViewMode.SummaryView);
             minMaxViewCommand = new ChangeViewCommand(ViewMode.MinMaxView);
+            copyCommand = new DelegatedCommand();
 
-            viewModelMap = new Dictionary<ViewMode, ViewModelBase>();
-            viewModelMap[ViewMode.SummaryView] = new AllTagsViewModel();
-            viewModelMap[ViewMode.MinMaxView] = new MinMaxViewModel();
-
-            Mode = ViewMode.SummaryView;
+            // associate commands for main view that are delegated to the active child view(s)
+            // TODO copyCommand.Register(ViewMode.SummaryView, summaryViewModel.CopyCommand);
+            copyCommand.Register(ViewMode.MinMaxView, minMaxViewModel.CopyCommand);
         }
 
 
@@ -173,6 +182,14 @@ namespace WirelessTagClientApp.ViewModels
         public ICommand MinMaxViewCommand
         {
             get { return minMaxViewCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the command to copy the active view to the clipboard
+        /// </summary>
+        public ICommand CopyCommand
+        {
+            get { return copyCommand.Command; }
         }
 
         public ViewModelBase ActiveViewModel
