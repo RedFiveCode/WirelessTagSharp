@@ -32,6 +32,7 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             Assert.IsNotNull(target.ToggleNextViewCommand);
             Assert.IsNotNull(target.TogglePreviousViewCommand);
+            Assert.IsNotNull(target.CopyCommand);
         }
 
         [TestMethod]

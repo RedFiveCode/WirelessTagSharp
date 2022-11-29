@@ -11,6 +11,7 @@ namespace WirelessTagClientApp.ViewModels
     {
         private ToggleViewCommand toggleNextViewCommand;
         private ToggleViewCommand togglePreviousViewCommand;
+        private CopyAllTagsCommand copyCommand;
         private ObservableCollection<TagViewModel> tagList;
 
         /// <summary>
@@ -22,6 +23,7 @@ namespace WirelessTagClientApp.ViewModels
 
             toggleNextViewCommand = new ToggleViewCommand();
             togglePreviousViewCommand = new ToggleViewCommand(Commands.ToggleViewCommand.Direction.Previous);
+            copyCommand = new CopyAllTagsCommand();
         }
 
         /// <summary>
@@ -53,5 +55,12 @@ namespace WirelessTagClientApp.ViewModels
             get { return togglePreviousViewCommand.Command; }
         }
 
+        /// <summary>
+        /// Get the command to copy the data for all tags to the clipboard
+        /// </summary>
+        public ICommand CopyCommand
+        {
+            get { return copyCommand.Command; }
+        }
     }
 }

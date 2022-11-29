@@ -74,7 +74,7 @@ namespace WirelessTagClientApp.ViewModels
             copyCommand = new DelegatedCommand();
 
             // associate commands for main view that are delegated to the active child view(s)
-            // TODO copyCommand.Register(ViewMode.SummaryView, summaryViewModel.CopyCommand);
+            copyCommand.Register(ViewMode.SummaryView, summaryViewModel.CopyCommand);
             copyCommand.Register(ViewMode.MinMaxView, minMaxViewModel.CopyCommand);
         }
 
