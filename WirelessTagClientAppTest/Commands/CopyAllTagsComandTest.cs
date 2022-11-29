@@ -83,9 +83,8 @@ namespace WirelessTagClientApp.Test.Commands
 
             // only check header, so we can avoid timestamp comparisons
             string expectedData =
-@"#Id, Name, Description, Uuid, Temperature (C), RelativeHumidity, SignalStrength (dBm), BatteryVoltage (V), BatteryRemaining (%), Last Communication, IsHumidityTag
-42, My tag, Tag description, 00000000-0000-0000-0000-000000000000, 25.0, 50.0, -20, 1.2, 0.9, 01-Jan-2022 00:00:00, True";
-
+@"#Id, Name, Description, Uuid, Temperature (C), Relative Humidity, Signal Strength (dBm), Battery Voltage (V), Battery Remaining (%), Last Communication, IsHumidityTag
+42, My tag, Tag description, 00000000-0000-0000-0000-000000000000, 25.0, 50.0, -20, 1.23, 0.9, 01-Jan-2022 00:00:00, True";
 
             mock.Verify(x => x.WriteText(It.Is<string>(csv => csv == expectedData)), Times.Once());
         }
@@ -103,7 +102,7 @@ namespace WirelessTagClientApp.Test.Commands
                 Temperature = 25.0,
                 RelativeHumidity = 50.0,
                 SignalStrength = -20,
-                BatteryVoltage = 1.2,
+                BatteryVoltage = 1.23,
                 BatteryRemaining = 0.9,
                 LastCommunication = new DateTime(2022, 1, 1),
                 IsHumidityTag = true

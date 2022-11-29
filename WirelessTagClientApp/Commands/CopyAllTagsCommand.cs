@@ -58,10 +58,10 @@ namespace WirelessTagClientApp.Commands
             writer.AddColumn(x => x.Description, "Description");
             writer.AddColumn(x => x.Uuid.ToString(), "Uuid");
             writer.AddColumn(x => x.Temperature.ToString("f1"), "Temperature (C)");           
-            writer.AddColumn(x => x.RelativeHumidity.ToString("f1"), "RelativeHumidity");
-            writer.AddColumn(x => x.SignalStrength.ToString(), "SignalStrength (dBm)");
-            writer.AddColumn(x => x.BatteryVoltage.ToString("f1"), "BatteryVoltage (V)");
-            writer.AddColumn(x => x.BatteryRemaining.ToString("f1"), "BatteryRemaining (%)");
+            writer.AddColumn(x => x.RelativeHumidity.ToString("f1"), "Relative Humidity");
+            writer.AddColumn(x => x.SignalStrength.ToString(), "Signal Strength (dBm)");
+            writer.AddColumn(x => x.BatteryVoltage.ToString("f2"), "Battery Voltage (V)");
+            writer.AddColumn(x => x.BatteryRemaining.ToString("f1"), "Battery Remaining (%)");
             writer.AddColumn(x => x.LastCommunication.ToString("dd-MMM-yyyy HH:mm:ss"), "Last Communication");
             writer.AddColumn(x => x.IsHumidityTag.ToString(), "IsHumidityTag");
 
