@@ -74,5 +74,13 @@ namespace WirelessTagClientApp.ViewModels
         /// Temperature (degrees C).
         /// </summary>
         public double Temperature { get; set; }
+
+        /// <summary>
+        /// Returns true if the measurement occured today
+        /// </summary>
+        public bool IsToday
+        {
+            get { return Timestamp.Date == DateTime.Today; }
+        }
     }
 }

@@ -15,6 +15,28 @@
             <Setter Property="Padding" Value="6,0,6,0" />
         </Style>
 
+        <Style TargetType="{x:Type TextBlock}" x:Key="highlightTodayStyleMinimum">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Minimum.IsToday}" Value="True">
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Minimum.IsToday}" Value="False">
+                    <Setter Property="FontWeight" Value="Normal" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="highlightTodayStyleMaximum">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Maximum.IsToday}" Value="True">
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Maximum.IsToday}" Value="False">
+                    <Setter Property="FontWeight" Value="Normal" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <localConv:TimeIntervalValueConverter x:Key="intervalConverter" />
     </UserControl.Resources>
 
@@ -56,6 +78,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
+                                        Style="{StaticResource highlightTodayStyleMinimum}"
                                         TextTrimming="CharacterEllipsis">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0:n1} °C @ {1:ddd dd-MMM-yyyy HH:mm:ss}">
@@ -78,6 +101,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
+                                        Style="{StaticResource highlightTodayStyleMaximum}"
                                         TextTrimming="CharacterEllipsis">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0:n1} °C @ {1:ddd dd-MMM-yyyy HH:mm:ss}">
