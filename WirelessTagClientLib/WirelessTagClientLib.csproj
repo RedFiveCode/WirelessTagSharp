@@ -88,6 +88,7 @@
     <Compile Include="Interfaces\IWirelessTagClient.cs" />
     <Compile Include="Mapper\Mapper.cs" />
     <Compile Include="Requests\GetMultiTagStatsSpanRequest.cs" />
+    <Compile Include="Requests\GetStatsRawDataRequest.cs" />
     <Compile Include="Requests\GetTagListRequest.cs" />
     <Compile Include="Requests\GetTemperatureRawDataRequest.cs" />
     <Compile Include="Requests\GetTemperatureStatsRequest.cs" />
