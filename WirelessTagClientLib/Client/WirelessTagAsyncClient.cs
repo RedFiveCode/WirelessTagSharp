@@ -137,6 +137,7 @@ namespace WirelessTagClientLib
                 throw new HttpStatusException(HttpStatusCode.NoContent);
             }
 
+            // will throw exception here if the request times out or has an error
             if (response.StatusCode != HttpStatusCode.OK) // 200
             {
                 throw new HttpStatusException(response.StatusCode, response.Content);

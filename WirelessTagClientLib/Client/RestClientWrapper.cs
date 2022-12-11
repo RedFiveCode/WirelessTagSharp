@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using System;
 using System.Threading.Tasks;
 
 namespace WirelessTagClientLib
@@ -15,9 +16,17 @@ namespace WirelessTagClientLib
             client = new RestClient();
         }
 
-        public RestClientWrapper(string url)
+        public RestClientWrapper(string url) : this(url, TimeSpan.FromSeconds(120))
+        { }
+
+        public RestClientWrapper(string url, TimeSpan requestTimeout)
         {
-            client = new RestClient(url);
+            var options = new RestClientOptions(url)
+            {
+                MaxTimeout = (int)requestTimeout.TotalMilliseconds
+            };
+
+            client = new RestClient(options);
         }
 
         public RestClientWrapper(RestClient client)
