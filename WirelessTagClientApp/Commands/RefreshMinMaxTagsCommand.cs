@@ -64,10 +64,10 @@ namespace WirelessTagClientApp.Commands
                 }
 
                 // IMPORTANT
-                // We can need to get historic temperature data for all the tags and time intervals.
+                // We need to get historic temperature data for all the tags and time intervals.
                 //
-                // We can create tasks to send a request to get temperature data for a given tag and time interval, and await each request/task to complete .
-                // However the server does not like too many requests too quickly...
+                // We can create tasks to send a request to get temperature data for a given tag and time interval,
+                // and await each request/task to complete. However the server does not like too many requests too quickly...
                 //
                 // We hope to avoid too many concurrent requests as this can result in HttpStatusException / HttpStatusCode.InternalServerError
                 // {"Message":"You have downloaded full log less than 30 seconds ago. 
@@ -81,7 +81,7 @@ namespace WirelessTagClientApp.Commands
                 // Since each query potentially takes a long time, this avoids the risk of spamming the server with too many requests to quickly.
                 //
                 // Also, remember that some tags may not have any data points in the time period of interest.
-                // Ideally should call GetTagSpanStatsAsync/GetMultiTagStatsSpan to get time range for each tag
+                // Ideally should call GetTagSpanStatsAsync/GetMultiTagStatsSpan to get time range for each tag.
                 //
                 // Uses an arbitrary cutoff date as staring point for oldest data.
                 var cutoffDate = new DateTime(2015, 1, 1);
