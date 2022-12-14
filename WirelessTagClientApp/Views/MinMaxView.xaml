@@ -148,6 +148,23 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+
+                    <GridViewColumn 
+                        Width="100"
+                        util:GridViewSort.PropertyName="Count"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        <GridViewColumnHeader>Measurements</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="6,0,0,0"
+                                        TextTrimming="CharacterEllipsis"
+                                        Text="{Binding Path=Count, Mode=OneWay, StringFormat={}{0:n0}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

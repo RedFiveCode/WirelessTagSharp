@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoreLinq.Extensions;
+using System;
 
 namespace WirelessTagClientApp.ViewModels
 {
@@ -14,6 +15,7 @@ namespace WirelessTagClientApp.ViewModels
             Interval = TimeInterval.All;
             Minimum = new Measurement();
             Maximum = new Measurement();
+            Count = -1;
         }
 
         /// <summary>
@@ -50,6 +52,11 @@ namespace WirelessTagClientApp.ViewModels
         /// Maximum temperature measurement
         /// </summary>
         public Measurement Maximum { get; set; }
+
+        /// <summary>
+        /// Number of temperature measurements in the time interval
+        /// </summary>
+        public int Count { get; set; }
 
         /// <summary>
         /// Get the difference between the maximum and minimum temperatures

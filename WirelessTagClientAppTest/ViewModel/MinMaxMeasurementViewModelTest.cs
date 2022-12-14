@@ -20,6 +20,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.AreEqual(-1, target.TagId);
             Assert.IsNotNull(target.Minimum);
             Assert.IsNotNull(target.Maximum);
+            Assert.AreEqual(-1, target.Count);
         }
 
         [TestMethod]

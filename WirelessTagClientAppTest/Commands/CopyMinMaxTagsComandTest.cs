@@ -82,7 +82,7 @@ namespace WirelessTagClientApp.Test.Commands
             target.Command.Execute(viewModel);
 
             // only check header, so we can avoid timestamp comparisons
-            string expectedDataHeader = "#Id, Tag, Interval, From, IntervalTo, MinimumTemperature, MinimumTimestamp, MaximumTemperature, MaximumTimestamp, Difference";
+            string expectedDataHeader = "#Id, Tag, Interval, From, IntervalTo, MinimumTemperature, MinimumTimestamp, MaximumTemperature, MaximumTimestamp, Difference, Measurements";
 
             mock.Verify(x => x.WriteText(It.Is<string>(csv => csv.StartsWith(expectedDataHeader))), Times.Once());
         }
@@ -99,7 +99,8 @@ namespace WirelessTagClientApp.Test.Commands
                 Minimum = new Measurement() { Temperature = 2.0, Timestamp = new DateTime(2022, 1, 1, 12, 0, 0) },
                 Maximum = new Measurement() { Temperature = 25.0, Timestamp = new DateTime(2022, 7, 1, 15, 0, 0) },
                 IntervalFrom = new DateTime(2022, 1, 1),
-                IntervalTo = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59)
+                IntervalTo = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59),
+                Count = 42
             });
 
             return viewModel;

@@ -64,6 +64,7 @@ namespace WirelessTagClientApp.Commands
             writer.AddColumn(x => x.Maximum.Temperature.ToString("f1"), "MaximumTemperature");
             writer.AddColumn(x => x.Maximum.Timestamp.ToString("dd-MMM-yyyy HH:mm:ss"), "MaximumTimestamp");
             writer.AddColumn(x => x.Difference.ToString("f1"), "Difference");
+            writer.AddColumn(x => x.Count.ToString(), "Measurements");
 
             return writer.WriteCSV(viewModel.Data);
         }

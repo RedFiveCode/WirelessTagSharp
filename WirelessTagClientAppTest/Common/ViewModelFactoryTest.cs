@@ -155,6 +155,8 @@ namespace WirelessTagClientApp.Test.Common
 
             Assert.AreEqual(15d, result.Maximum.Temperature);
             Assert.AreEqual(today.AddHours(13), result.Maximum.Timestamp); // 13:00:00
+
+            Assert.AreEqual(4, result.Count);
         }
 
         [TestMethod]
@@ -193,6 +195,8 @@ namespace WirelessTagClientApp.Test.Common
 
             Assert.AreEqual(15d, result.Maximum.Temperature);
             Assert.AreEqual(yesterday.AddHours(6), result.Maximum.Timestamp); // 04:00:00
+
+            Assert.AreEqual(4, result.Count);
         }
 
         [TestMethod]
@@ -249,6 +253,8 @@ namespace WirelessTagClientApp.Test.Common
 
             Assert.AreEqual(20d, result.Maximum.Temperature);
             Assert.AreEqual(today.AddDays(-5).AddHours(2), result.Maximum.Timestamp);
+
+            Assert.AreEqual(16, result.Count); // 16 of the 18 data points are in teh 7 day time span
         }
 
         [TestMethod]
