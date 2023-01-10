@@ -70,7 +70,6 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
-                                    Padding="6,0,0,0"
                                     TextTrimming="CharacterEllipsis"
                                     Text="{Binding Path=TagName, Mode=OneWay}"/>
                             </DataTemplate>
