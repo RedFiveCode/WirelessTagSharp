@@ -15,6 +15,15 @@
             <Setter Property="Padding" Value="6,0,6,0" />
         </Style>
 
+        <Style x:Key="listviewColumnStyleRight" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+            <Setter Property="Padding" Value="6,0,6,0" />
+        </Style>
+
+        <Style x:Key="listviewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+
         <Style TargetType="{x:Type TextBlock}" x:Key="highlightTodayStyleMinimum">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Minimum.IsToday}" Value="True">
@@ -45,6 +54,7 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             SelectionMode="Single"
+            ItemContainerStyle="{StaticResource listviewItemStyle}"
             ItemsSource="{Binding Path=Data, Mode=OneWay}" 
             util:GridViewSort.AutoSort="True">
             <ListView.View>
@@ -127,13 +137,15 @@
                     <GridViewColumn 
                         Width="100"
                         util:GridViewSort.PropertyName="Difference"
-                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleRight}" >
                         <GridViewColumnHeader>Difference</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
                                     Padding="6,0,0,0"
                                     TextTrimming="CharacterEllipsis"
+                                    HorizontalAlignment="Right"
+                                    TextAlignment="Right"
                                     Text="{Binding Path=Difference, Mode=OneWay, StringFormat={}{0:n1} °C}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -142,13 +154,15 @@
                     <GridViewColumn 
                         Width="100"
                         util:GridViewSort.PropertyName="Count"
-                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleRight}" >
                         <GridViewColumnHeader>Measurements</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
                                     Padding="6,0,0,0"
                                     TextTrimming="CharacterEllipsis"
+                                    HorizontalAlignment="Right"
+                                    TextAlignment="Right"
                                     Text="{Binding Path=Count, Mode=OneWay, StringFormat={}{0:n0}}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
