@@ -263,6 +263,9 @@
   <ItemGroup>
     <Resource Include="Images\Copy.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FlagPurple.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
