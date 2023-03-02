@@ -76,9 +76,9 @@
                 CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                 Command="{Binding Path=MinMaxViewCommand}"
                 CommandParameter="{Binding}" >
-                <!--<MenuItem.Icon>
-                    <Image Source="/WirelessTagClientApp;component/Images/CopyHS.png" Width="16" Height="16" SnapsToDevicePixels="True" />
-                </MenuItem.Icon>-->
+                <MenuItem.Icon>
+                    <Image Source="/WirelessTagClientApp;component/Images/FlagPurple.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                </MenuItem.Icon>
             </MenuItem>
 
             <Separator />
