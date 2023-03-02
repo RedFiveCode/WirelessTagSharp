@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WirelessTagClientApp.Common;
 using WirelessTagClientApp.ViewModels;
@@ -13,7 +14,7 @@ namespace WirelessTagClientApp.Commands
         /// <summary>
         /// Get the command object.
         /// </summary>
-        public ICommand Command { get; private set; }
+        public IAsyncCommand<MainWindowViewModel> Command { get; private set; }
 
         /// <summary>
         /// Ctor
@@ -21,15 +22,15 @@ namespace WirelessTagClientApp.Commands
         /// <param name="mode"></param>
         public RefreshViewCommand()
         {
-            Command = new RelayCommandT<MainWindowViewModel>(p => Refresh(p), p => CanRefresh(p));
+            Command = new AsyncCommand<MainWindowViewModel>(p => RefreshAsync(p), p => CanRefresh(p));
         }
 
-        private bool CanRefresh(MainWindowViewModel p)
+        private bool CanRefresh(object p)
         {
             return true;
         }
 
-        private async Task Refresh(MainWindowViewModel p)
+        private async Task RefreshAsync(MainWindowViewModel p)
         {
             await p.Refresh();
         }
