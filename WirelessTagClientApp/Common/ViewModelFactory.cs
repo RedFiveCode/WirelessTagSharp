@@ -83,8 +83,8 @@ namespace WirelessTagClientApp.Common
                 IntervalTo = timeRange.Item2,
                 TagId = tag.SlaveId,
                 TagName = tag.Name,
-                Minimum = new Measurement() { Temperature = coldest.Temperature, Timestamp = coldest.Time },
-                Maximum = new Measurement() { Temperature = warmest.Temperature, Timestamp = warmest.Time },
+                Minimum = new Measurement(coldest.Temperature, coldest.Time),
+                Maximum = new Measurement(warmest.Temperature, warmest.Time),
                 Count = dataPointsInTimeInterval.Count()
             };
 
