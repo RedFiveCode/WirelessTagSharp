@@ -27,9 +27,11 @@ namespace WirelessTagClientApp.Test.ViewModel
         public void Difference_Getter_Should_ReturnDifferenceInTemperatures()
         {
             // act
-            var target = new MinMaxMeasurementViewModel();
-            target.Minimum.Temperature = -10d;
-            target.Maximum.Temperature = 25d;
+            var target = new MinMaxMeasurementViewModel()
+            {
+                Minimum = new Measurement(-10d, DateTime.MinValue),
+                Maximum = new Measurement(25d, DateTime.MinValue)
+            };
 
             // assert
             Assert.AreEqual(35d, target.Difference);
@@ -43,11 +45,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         public void IsToday_Today_Should_ReturnTrue()
         {
             // arrange
-            var target = new Measurement()
-            {
-                Temperature = 20d,
-                Timestamp = DateTime.Now
-            };
+            var target = new Measurement(20d, DateTime.Now);
 
             // act/assert
             Assert.IsTrue(target.IsToday);
@@ -57,11 +55,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         public void IsToday_NotToday_Should_ReturnFalse()
         {
             // arrange
-            var target = new Measurement()
-            {
-                Temperature = 20d,
-                Timestamp = new DateTime(2022, 1, 1)
-            };
+            var target = new Measurement(20d, new DateTime(2022, 1, 1));
 
             // act/assert
             Assert.IsFalse(target.IsToday);

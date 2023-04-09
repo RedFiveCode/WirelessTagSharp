@@ -1,5 +1,4 @@
-﻿using MoreLinq.Extensions;
-using System;
+﻿using System;
 
 namespace WirelessTagClientApp.ViewModels
 {
@@ -72,22 +71,28 @@ namespace WirelessTagClientApp.ViewModels
     /// </summary>
     public class Measurement
     {
+        public Measurement() : this(0d, DateTime.MinValue) { }
+
+        public Measurement(double temperature, DateTime timestamp)
+        {
+            Temperature = temperature;
+            Timestamp = timestamp;
+            IsToday = (Timestamp.Date == DateTime.Today);
+        }
+
         /// <summary>
         /// Date and Time.
         /// </summary>
-        public DateTime Timestamp { get; set; }
+        public DateTime Timestamp { get; private set; }
 
         /// <summary>
         /// Temperature (degrees C).
         /// </summary>
-        public double Temperature { get; set; }
+        public double Temperature { get; private set; }
 
         /// <summary>
         /// Returns true if the measurement occured today
         /// </summary>
-        public bool IsToday
-        {
-            get { return Timestamp.Date == DateTime.Today; }
-        }
+        public bool IsToday { get; private set; }
     }
 }
