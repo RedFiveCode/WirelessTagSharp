@@ -22,7 +22,7 @@ namespace WirelessTagClientApp.ViewModels
             Tags = new ObservableCollection<TagViewModel>();
 
             toggleNextViewCommand = new ToggleViewCommand();
-            togglePreviousViewCommand = new ToggleViewCommand(Commands.ToggleViewCommand.Direction.Previous);
+            togglePreviousViewCommand = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
             copyCommand = new CopyAllTagsCommand();
         }
 
