@@ -56,7 +56,7 @@ namespace WirelessTagClientApp.ViewModels
 
         public string CompanyURL { get; private set; }
 
-        public string Credits { get; set; }
+        public string Credits { get; private set; }
 
         public ICommand NavigateCommand
         {
