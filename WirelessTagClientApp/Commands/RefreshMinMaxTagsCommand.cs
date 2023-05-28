@@ -108,6 +108,8 @@ namespace WirelessTagClientApp.Commands
                 {
                     stopwatch.Stop();
 
+                    viewModel.LastUpdated = DateTime.Now;
+
                     // create row view-model object on worker thread;
                     // potentially has to filter a large number of raw data items
                     // so don't block the UI thread

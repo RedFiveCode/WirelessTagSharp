@@ -29,6 +29,18 @@ namespace WirelessTagClientApp.Commands
         private void ChangeView(MainWindowViewModel p)
         {
             p.Mode = mode; // this will change the active view-model as well
+
+            // update main view LastUpdated from active child's view-model
+            if (p.Mode == MainWindowViewModel.ViewMode.SummaryView)
+            {
+                var childViewModel = p.ActiveViewModel as AllTagsViewModel;
+                p.LastUpdated = childViewModel.LastUpdated;
+            }
+            else if (p.Mode == MainWindowViewModel.ViewMode.MinMaxView)
+            {
+                var childViewModel = p.ActiveViewModel as MinMaxViewModel;
+                p.LastUpdated = childViewModel.LastUpdated;
+            }
         }
     }
 }
