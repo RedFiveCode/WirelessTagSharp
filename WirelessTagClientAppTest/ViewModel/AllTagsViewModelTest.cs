@@ -29,6 +29,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             // assert
             Assert.IsNotNull(target.Tags);
             Assert.AreEqual(0, target.Tags.Count);
+            Assert.AreEqual(DateTime.MinValue, target.LastUpdated);
 
             Assert.IsNotNull(target.ToggleNextViewCommand);
             Assert.IsNotNull(target.TogglePreviousViewCommand);
@@ -49,5 +50,18 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("Tags");
         }
 
+        [TestMethod]
+        public void LastUpdated_Setter_Should_Fire_PropertyChanged_Event()
+        {
+            // arrange
+            var target = new AllTagsViewModel();
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.LastUpdated = DateTime.Now;
+
+            // assert
+            observer.AssertPropertyChangedEvent("LastUpdated");
+        }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.ViewModels;
+using WirelessTagClientAppTest.TestHelpers;
 using WirelessTagClientLib;
 using WirelessTagClientLib.DTO;
 
@@ -96,6 +97,23 @@ namespace WirelessTagClientApp.Test.Commands
 
             // assert
             Assert.IsTrue(onCollectionChanged);
+        }
+
+        [TestMethod]
+        public async Task Execute_Sets_LastUpdated_Property()
+        {
+            // arrange
+            var clientMock = CreateAsyncClientMock();
+            var target = new RefreshMinMaxTagsCommand(clientMock.Object, new Options());
+            var viewModel = new MinMaxViewModel();
+
+            var observer = new PropertyChangedObserver(viewModel);
+
+            // act - await async operations returning
+            await target.ExecuteAsync(viewModel);
+
+            // assert
+            observer.AssertPropertyChangedEvent("LastUpdated");
         }
 
         private Mock<IWirelessTagAsyncClient> CreateAsyncClientMock()

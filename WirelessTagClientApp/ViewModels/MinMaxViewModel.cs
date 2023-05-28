@@ -2,12 +2,14 @@
 using WirelessTagClientApp.Common;
 using WirelessTagClientApp.Commands;
 using System.Windows.Input;
+using System;
 
 namespace WirelessTagClientApp.ViewModels
 {
     public class MinMaxViewModel : ViewModelBase
     {
         private ObservableCollection<MinMaxMeasurementViewModel> data;
+        private DateTime lastUpdated;
         private CopyMinMaxTagsComand copyCommand;
 
         /// <summary>
@@ -16,6 +18,7 @@ namespace WirelessTagClientApp.ViewModels
         public MinMaxViewModel()
         {
             data = new ObservableCollection<MinMaxMeasurementViewModel>();
+            lastUpdated = DateTime.MinValue;
             copyCommand = new CopyMinMaxTagsComand();
         }
 
@@ -28,6 +31,19 @@ namespace WirelessTagClientApp.ViewModels
             set
             {
                 data = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Get/set the time last updated
+        /// </summary>
+        public DateTime LastUpdated
+        {
+            get { return lastUpdated; }
+            set
+            {
+                lastUpdated = value;
                 NotifyPropertyChanged();
             }
         }

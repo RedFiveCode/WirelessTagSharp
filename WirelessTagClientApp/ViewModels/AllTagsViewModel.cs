@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
@@ -13,6 +14,7 @@ namespace WirelessTagClientApp.ViewModels
         private ToggleViewCommand togglePreviousViewCommand;
         private CopyAllTagsCommand copyCommand;
         private ObservableCollection<TagViewModel> tagList;
+        private DateTime lastUpdated;
 
         /// <summary>
         /// Ctor
@@ -20,6 +22,7 @@ namespace WirelessTagClientApp.ViewModels
         public AllTagsViewModel()
         {
             Tags = new ObservableCollection<TagViewModel>();
+            lastUpdated = DateTime.MinValue;
 
             toggleNextViewCommand = new ToggleViewCommand();
             togglePreviousViewCommand = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
@@ -35,6 +38,19 @@ namespace WirelessTagClientApp.ViewModels
             set
             {
                 tagList = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Get/set the time last updated
+        /// </summary>
+        public DateTime LastUpdated
+        {
+            get { return lastUpdated; }
+            set
+            {
+                lastUpdated = value;
                 NotifyPropertyChanged();
             }
         }

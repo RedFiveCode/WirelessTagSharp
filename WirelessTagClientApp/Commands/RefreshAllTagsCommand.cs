@@ -70,6 +70,8 @@ namespace WirelessTagClientApp.Commands
                     throw new AggregateException(responseTask.Exception.InnerException);
                 }
             }
+
+            viewModel.LastUpdated = DateTime.Now;
         }
     }
  }
