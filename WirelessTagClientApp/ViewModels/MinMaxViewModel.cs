@@ -11,6 +11,7 @@ namespace WirelessTagClientApp.ViewModels
         private ObservableCollection<MinMaxMeasurementViewModel> data;
         private DateTime lastUpdated;
         private CopyMinMaxTagsComand copyCommand;
+        private TemperatureRawDataCache rawDataCache;
 
         /// <summary>
         /// ctor
@@ -20,6 +21,7 @@ namespace WirelessTagClientApp.ViewModels
             data = new ObservableCollection<MinMaxMeasurementViewModel>();
             lastUpdated = DateTime.MinValue;
             copyCommand = new CopyMinMaxTagsComand();
+            rawDataCache = new TemperatureRawDataCache();
         }
 
         /// <summary>
@@ -46,6 +48,14 @@ namespace WirelessTagClientApp.ViewModels
                 lastUpdated = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        /// <summary>
+        /// Get the cache of raw measurements
+        /// </summary>
+        public TemperatureRawDataCache RawDataCache
+        {
+            get { return rawDataCache; }
         }
 
         /// <summary>
