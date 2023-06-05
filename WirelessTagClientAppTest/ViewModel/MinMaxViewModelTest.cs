@@ -1,13 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientAppTest.TestHelpers;
-using WirelessTagClientLib;
-using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.Test.ViewModel
 {
@@ -34,6 +30,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.IsNotNull(target.Data);
             Assert.AreEqual(DateTime.MinValue, target.LastUpdated);
             Assert.IsNotNull(target.CopyCommand);
+            Assert.IsNotNull(target.RawDataCache);
         }
 
         [TestMethod]

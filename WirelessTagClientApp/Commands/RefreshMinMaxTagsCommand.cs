@@ -88,6 +88,19 @@ namespace WirelessTagClientApp.Commands
 
                 foreach (var tag in tagList)
                 {
+                    //if (viewModel.ContainsDataForTagAndInterval(tag.SlaveId, TimeInterval.Today))
+
+                    if (viewModel.RawDataCache.ContainsDataForTag(tag.SlaveId, DateTime.Today))
+                    {
+                        cutoffDate = DateTime.Today;
+
+                        Console.WriteLine($"Tag {tag.SlaveId} : Already has data for today; updating from {cutoffDate}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Tag {tag.SlaveId} : Does not have data for today; updating from {cutoffDate}");
+                    }
+
                     await GetTemperatureRawDataWithContinuationTask(viewModel, tag, cutoffDate);
                 }
             }
@@ -117,12 +130,23 @@ namespace WirelessTagClientApp.Commands
                     {
                         Console.WriteLine($"Tag {tag.SlaveId} : {rawDataTask.Result.Count} data points since {from}, duration {stopwatch.Elapsed}");
 
+                        // Add data from this query to the cache
+                        // This will maintain any existing data in the cache that overlaps with the reponse;
+                        // that is raw data points for today already in the cache will be kept
+                        // and further (more recent) raw data points for today not yet in the cache will be added to the cache
+                        viewModel.RawDataCache.Update(tag.SlaveId, rawDataTask.Result);
+
+                        // get all the data in the cache
+                        var rawData = viewModel.RawDataCache.GetData(tag.SlaveId);
+
+                        Console.WriteLine($"Tag {tag.SlaveId} : Cached {rawData.Count()} data points");
+
                         var rows = new List<MinMaxMeasurementViewModel>();
 
                         // split raw data for current tag into time ranges (for example last 7 days)
                         foreach (var interval in Enum.GetValues(typeof(TimeInterval)).Cast<TimeInterval>())
                         {
-                            var rowViewModel = ViewModelFactory.CreateRowViewModel(rawDataTask.Result, tag, interval);
+                            var rowViewModel = ViewModelFactory.CreateRowViewModel(rawData, tag, interval);
 
                             // some tags may not have any data points in the time period of interest
                             if (rowViewModel != null) // null means no data within the time interval
@@ -142,7 +166,7 @@ namespace WirelessTagClientApp.Commands
                     if (rowTask.IsCompleted && rowTask.Result != null)
                     {
                         // UI thread
-                        foreach(var row in rowTask.Result)
+                        foreach (var row in rowTask.Result)
                         {
                             viewModel.Data.Add(row);
                         }
