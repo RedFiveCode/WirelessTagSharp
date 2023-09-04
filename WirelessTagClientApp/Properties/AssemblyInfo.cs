@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("https://github.com/RedFiveCode")]
 [assembly: AssemblyProduct("WirelessTagClientApp")]
-[assembly: AssemblyCopyright("Copyright © 2014-2022 RedFiveCode (https://github.com/RedFiveCode)")]
+[assembly: AssemblyCopyright("Copyright © 2014-2023 RedFiveCode (https://github.com/RedFiveCode)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
