@@ -29,7 +29,7 @@ json -> rest
 rest -> restapi : <i>Call REST endpoint with json blob payload</i>
 ...
 ...
-' reponse path
+' response path
 restapi -> rest : <i>Response json blob</i>
 rest -> json
 json -> resp
