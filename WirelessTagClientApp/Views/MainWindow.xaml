@@ -123,7 +123,7 @@
                 Content="{Binding Path=ActiveViewModel}" />
 
             <StackPanel
-                Grid.Row="1" Orientation="Horizontal">
+                Grid.Row="1" Orientation="Horizontal" Margin="6">
 
                 <TextBlock
                     Padding="6,0,6,0"
