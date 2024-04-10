@@ -83,7 +83,6 @@ namespace WirelessTagClientApp.Test.Common
             Assert.AreEqual(TagViewModel.ViewMode.VerboseDetails, result[0].Mode);
         }
 
-        // TODO - CreateRowViewModel tests
         [TestMethod]
         public void CreateRowViewModel_DataNull_Should_Return_Null()
         {
