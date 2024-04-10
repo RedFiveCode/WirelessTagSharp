@@ -131,7 +131,7 @@ namespace WirelessTagClientApp.Commands
                         Console.WriteLine($"Tag {tag.SlaveId} : {rawDataTask.Result.Count} data points since {from}, duration {stopwatch.Elapsed}");
 
                         // Add data from this query to the cache
-                        // This will maintain any existing data in the cache that overlaps with the reponse;
+                        // This will maintain any existing data in the cache that overlaps with the response;
                         // that is raw data points for today already in the cache will be kept
                         // and further (more recent) raw data points for today not yet in the cache will be added to the cache
                         viewModel.RawDataCache.Update(tag.SlaveId, rawDataTask.Result);
