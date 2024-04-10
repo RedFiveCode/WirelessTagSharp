@@ -99,6 +99,27 @@
 
                     <GridViewColumn 
                         Width="250"
+                        util:GridViewSort.PropertyName="Minimum.TemperatureF"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        <GridViewColumnHeader>Minimum Temperature</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Style="{StaticResource highlightTodayStyleMinimum}"
+                                    TextTrimming="CharacterEllipsis">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0:n1} °F @ {1:ddd dd-MMM-yyyy HH:mm:ss}">
+                                            <Binding Path="Minimum.TemperatureF" Mode="OneWay" />
+                                            <Binding Path="Minimum.Timestamp" Mode="OneWay" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn 
+                        Width="250"
                         util:GridViewSort.PropertyName="Maximum.Temperature"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
                         <GridViewColumnHeader>Maximum Temperature</GridViewColumnHeader>
@@ -110,6 +131,27 @@
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0:n1} °C @ {1:ddd dd-MMM-yyyy HH:mm:ss}">
                                             <Binding Path="Maximum.Temperature" Mode="OneWay" />
+                                            <Binding Path="Maximum.Timestamp" Mode="OneWay" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn 
+                        Width="250"
+                        util:GridViewSort.PropertyName="Maximum.Temperature"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        <GridViewColumnHeader>Maximum Temperature</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Style="{StaticResource highlightTodayStyleMaximum}"
+                                    TextTrimming="CharacterEllipsis">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0:n1} °F @ {1:ddd dd-MMM-yyyy HH:mm:ss}">
+                                            <Binding Path="Maximum.TemperatureF" Mode="OneWay" />
                                             <Binding Path="Maximum.Timestamp" Mode="OneWay" />
                                         </MultiBinding>
                                     </TextBlock.Text>
@@ -146,6 +188,23 @@
                                     HorizontalAlignment="Right"
                                     TextAlignment="Right"
                                     Text="{Binding Path=Difference, Mode=OneWay, StringFormat={}{0:n1} °C}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn 
+                        Width="100"
+                        util:GridViewSort.PropertyName="Difference"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleRight}" >
+                        <GridViewColumnHeader>Difference</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Padding="6,0,0,0"
+                                    TextTrimming="CharacterEllipsis"
+                                    HorizontalAlignment="Right"
+                                    TextAlignment="Right"
+                                    Text="{Binding Path=DifferenceF, Mode=OneWay, StringFormat={}{0:n1} °F}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

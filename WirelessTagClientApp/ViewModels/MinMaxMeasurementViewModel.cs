@@ -1,4 +1,5 @@
 ﻿using System;
+using WirelessTagClientApp.Utils;
 
 namespace WirelessTagClientApp.ViewModels
 {
@@ -58,11 +59,19 @@ namespace WirelessTagClientApp.ViewModels
         public int Count { get; set; }
 
         /// <summary>
-        /// Get the difference between the maximum and minimum temperatures
+        /// Get the difference between the maximum and minimum temperatures (degrees C)
         /// </summary>
         public double Difference
         {
             get { return (Minimum != null && Maximum != null ? Maximum.Temperature - Minimum.Temperature : Double.NaN); }
+        }
+
+        /// <summary>
+        /// Get the difference between the maximum and minimum temperatures (degrees F)
+        /// </summary>
+        public double DifferenceF
+        {
+            get { return (Minimum != null && Maximum != null ? Maximum.TemperatureF - Minimum.TemperatureF : Double.NaN); }
         }
     }
 
@@ -76,6 +85,7 @@ namespace WirelessTagClientApp.ViewModels
         public Measurement(double temperature, DateTime timestamp)
         {
             Temperature = temperature;
+            TemperatureF = TemperatureConvertor.ConvertToFarenheit(temperature);
             Timestamp = timestamp;
             IsToday = (Timestamp.Date == DateTime.Today);
         }
@@ -91,7 +101,12 @@ namespace WirelessTagClientApp.ViewModels
         public double Temperature { get; private set; }
 
         /// <summary>
-        /// Returns true if the measurement occured today
+        /// Temperature (degrees F).
+        /// </summary>
+        public double TemperatureF { get; private set; }
+
+        /// <summary>
+        /// Returns true if the measurement occurred today
         /// </summary>
         public bool IsToday { get; private set; }
     }

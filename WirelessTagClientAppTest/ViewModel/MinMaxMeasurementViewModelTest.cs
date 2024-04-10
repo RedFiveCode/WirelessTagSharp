@@ -36,11 +36,37 @@ namespace WirelessTagClientApp.Test.ViewModel
             // assert
             Assert.AreEqual(35d, target.Difference);
         }
+
+        [TestMethod]
+        public void DifferenceF_Getter_Should_ReturnDifferenceInTemperatures()
+        {
+            // act
+            var target = new MinMaxMeasurementViewModel()
+            {
+                Minimum = new Measurement(0d, DateTime.MinValue), // 32 F
+                Maximum = new Measurement(00d, DateTime.MinValue) // 212 F
+            };
+
+            // assert
+            Assert.AreEqual(180d, target.DifferenceF);
+        }
     }
 
     [TestClass]
     public class MeasurementViewModelTest
     {
+        [TestMethod]
+        public void Ctor_ShouldSetProperties()
+        {
+            // arrange
+            var target = new Measurement(0d, new DateTime(2022, 1, 1));
+
+            // act/assert
+            Assert.AreEqual(0d, target.Temperature);
+            Assert.AreEqual(32, target.TemperatureF);
+            Assert.IsFalse(target.IsToday);
+        }
+
         [TestMethod]
         public void IsToday_Today_Should_ReturnTrue()
         {
