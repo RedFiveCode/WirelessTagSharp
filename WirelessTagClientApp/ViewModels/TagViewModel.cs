@@ -123,7 +123,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public double TemperatureFahrenheit
         {
-            get { return TemperatureConvertor.ConvertToFarenheit(temperature); }
+            get { return TemperatureConvertor.ConvertToFahrenheit(temperature); }
         }
 
         /// <summary>

@@ -7,7 +7,7 @@
         /// </summary>
         /// <param name="celcius"></param>
         /// <returns></returns>
-        public static double ConvertToFarenheit(double celcius)
+        public static double ConvertToFahrenheit(double celcius)
         {
             return 32d + ((9d * celcius) / 5d);
         }

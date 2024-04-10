@@ -85,7 +85,7 @@ namespace WirelessTagClientApp.ViewModels
         public Measurement(double temperature, DateTime timestamp)
         {
             Temperature = temperature;
-            TemperatureF = TemperatureConvertor.ConvertToFarenheit(temperature);
+            TemperatureF = TemperatureConvertor.ConvertToFahrenheit(temperature);
             Timestamp = timestamp;
             IsToday = (Timestamp.Date == DateTime.Today);
         }
