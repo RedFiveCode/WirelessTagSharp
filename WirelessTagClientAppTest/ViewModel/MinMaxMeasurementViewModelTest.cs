@@ -51,40 +51,4 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.AreEqual(180d, target.DifferenceF);
         }
     }
-
-    [TestClass]
-    public class MeasurementViewModelTest
-    {
-        [TestMethod]
-        public void Ctor_ShouldSetProperties()
-        {
-            // arrange
-            var target = new Measurement(0d, new DateTime(2022, 1, 1));
-
-            // act/assert
-            Assert.AreEqual(0d, target.Temperature);
-            Assert.AreEqual(32, target.TemperatureF);
-            Assert.IsFalse(target.IsToday);
-        }
-
-        [TestMethod]
-        public void IsToday_Today_Should_ReturnTrue()
-        {
-            // arrange
-            var target = new Measurement(20d, DateTime.Now);
-
-            // act/assert
-            Assert.IsTrue(target.IsToday);
-        }
-
-        [TestMethod]
-        public void IsToday_NotToday_Should_ReturnFalse()
-        {
-            // arrange
-            var target = new Measurement(20d, new DateTime(2022, 1, 1));
-
-            // act/assert
-            Assert.IsFalse(target.IsToday);
-        }
-    }
 }
