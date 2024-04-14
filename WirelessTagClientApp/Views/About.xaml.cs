@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using WirelessTagClientApp.Interfaces;
 using WirelessTagClientApp.ViewModels;
 
 namespace WirelessTagClientApp.Views
@@ -28,21 +27,6 @@ namespace WirelessTagClientApp.Views
             {
                 Close();
             }
-        }
-    }
-
-    public class AboutDialogService : IDialogService
-    {
-        public bool ShowDialog(Window ownerWindow)
-        {
-            var dlg = new Views.About()
-            {
-                Owner = ownerWindow
-            };
-
-            var dialogResult = dlg.ShowDialog();
-
-            return dialogResult.HasValue && dialogResult.Value;
         }
     }
 }

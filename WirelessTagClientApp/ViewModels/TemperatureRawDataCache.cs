@@ -118,27 +118,4 @@ namespace WirelessTagClientApp.ViewModels
             get { return rawDataMap.Sum(x => x.Value.Count); }
         }
     }
-
-    public class TemperatureDataPointComparer : IEqualityComparer<TemperatureDataPoint>
-    {
-        public bool Equals(TemperatureDataPoint x, TemperatureDataPoint y)
-        {
-            if (Object.ReferenceEquals(x, y))
-            {
-                return true;
-            }
-
-            if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
-            {
-                return false;
-            }
-
-            return x.Time == y.Time;
-        }
-
-        public int GetHashCode(TemperatureDataPoint p)
-        {
-            return p.Time.GetHashCode();
-        }
-    }
 }

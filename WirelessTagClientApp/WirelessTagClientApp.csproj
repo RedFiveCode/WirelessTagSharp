@@ -165,13 +165,16 @@
     <Compile Include="ViewModels\AllTagsViewModel.cs" />
     <Compile Include="Utils\TimeIntervalHelper.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\Measurement.cs" />
     <Compile Include="ViewModels\MinMaxMeasurementViewModel.cs" />
     <Compile Include="ViewModels\MinMaxViewModel.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />
+    <Compile Include="ViewModels\TemperatureDataPointComparer.cs" />
     <Compile Include="ViewModels\TemperatureRawDataCache.cs" />
     <Compile Include="Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AboutDialogService.cs" />
     <Compile Include="Views\AllTagsView.cs">
       <DependentUpon>AllTagsView.xaml</DependentUpon>
     </Compile>
