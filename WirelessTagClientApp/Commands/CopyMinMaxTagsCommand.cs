@@ -8,7 +8,7 @@ using WirelessTagClientApp.ViewModels;
 
 namespace WirelessTagClientApp.Commands
 {
-    public class CopyMinMaxTagsComand
+    public class CopyMinMaxTagsCommand
     {
         private readonly IClipboardWriter clipboardWriter;
 
@@ -18,17 +18,17 @@ namespace WirelessTagClientApp.Commands
         public ICommand Command { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CopyMinMaxTagsComand"/> class
+        /// Initializes a new instance of the <see cref="CopyMinMaxTagsCommand"/> class
         /// </summary>
         /// <param name="mode"></param>
-        public CopyMinMaxTagsComand() : this(new ClipboardWriter())
+        public CopyMinMaxTagsCommand() : this(new ClipboardWriter())
         { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CopyMinMaxTagsComand"/> class for unit testing
+        /// Initializes a new instance of the <see cref="CopyMinMaxTagsCommand"/> class for unit testing
         /// </summary>
         /// <param name="clipboardWriter">Clipboard writer</param>
-        public CopyMinMaxTagsComand(IClipboardWriter clipboardWriter)
+        public CopyMinMaxTagsCommand(IClipboardWriter clipboardWriter)
         {
             Command = new RelayCommandT<MinMaxViewModel>(p => Copy(p), p => CanCopy(p));
             this.clipboardWriter = clipboardWriter;

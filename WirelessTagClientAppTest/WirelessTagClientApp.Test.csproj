@@ -102,7 +102,7 @@
     <Compile Include="Commands\RefreshViewCommandTest.cs" />
     <Compile Include="Commands\CopyMinMaxTagsComandTest.cs" />
     <Compile Include="Commands\DelegatedCommandTest.cs" />
-    <Compile Include="Commands\CopyAllTagsComandTest.cs" />
+    <Compile Include="Commands\CopyAllTagsCommandTest.cs" />
     <Compile Include="Common\RelayCommandTTest.cs" />
     <Compile Include="Common\ViewModelFactoryTest.cs" />
     <Compile Include="Converters\EnumToVisibilityConverterTest.cs" />

@@ -136,7 +136,7 @@
     <Compile Include="Commands\ChangeViewCommand.cs" />
     <Compile Include="Commands\CloseCommand.cs" />
     <Compile Include="Commands\CopyAllTagsCommand.cs" />
-    <Compile Include="Commands\CopyMinMaxTagsComand.cs" />
+    <Compile Include="Commands\CopyMinMaxTagsCommand.cs" />
     <Compile Include="Commands\DelegatedCommand.cs" />
     <Compile Include="Commands\RefreshMinMaxTagsCommand.cs" />
     <Compile Include="Commands\RefreshViewCommand.cs" />

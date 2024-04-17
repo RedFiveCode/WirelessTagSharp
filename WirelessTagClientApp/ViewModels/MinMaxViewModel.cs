@@ -20,7 +20,7 @@ namespace WirelessTagClientApp.ViewModels
         {
             data = new ObservableCollection<MinMaxMeasurementViewModel>();
             lastUpdated = DateTime.MinValue;
-            copyCommand = new CopyMinMaxTagsComand();
+            copyCommand = new CopyMinMaxTagsCommand();
             rawDataCache = new TemperatureRawDataCache();
         }
 

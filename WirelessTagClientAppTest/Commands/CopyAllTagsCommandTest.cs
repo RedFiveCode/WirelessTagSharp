@@ -9,10 +9,10 @@ using WirelessTagClientApp.ViewModels;
 namespace WirelessTagClientApp.Test.Commands
 {
     /// <summary>
-    /// Unit tests for teh <see cref="CopyAllTagsCommand"/> class.
+    /// Unit tests for the <see cref="CopyAllTagsCommand"/> class.
     /// </summary>
     [TestClass]
-    public class CopyAllTagsComandTest
+    public class CopyAllTagsCommandTest
     {
         [TestMethod]
         public void Command_Implements_ICommand()
