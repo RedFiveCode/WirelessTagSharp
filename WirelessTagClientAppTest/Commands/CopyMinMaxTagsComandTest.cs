@@ -9,15 +9,15 @@ using WirelessTagClientApp.ViewModels;
 namespace WirelessTagClientApp.Test.Commands
 {
     /// <summary>
-    /// Unit tests for the <see cref="CopyMinMaxTagsComand"/> class
+    /// Unit tests for the <see cref="CopyMinMaxTagsCommand"/> class
     /// </summary>
     [TestClass]
-    public class CopyMinMaxTagsComandTest
+    public class CopyMinMaxTagsCommandTest
     {
         [TestMethod]
         public void Command_Implements_ICommand()
         {
-            var target = new CopyMinMaxTagsComand();
+            var target = new CopyMinMaxTagsCommand();
 
             Assert.IsInstanceOfType(target.Command, typeof(ICommand));
         }
@@ -25,7 +25,7 @@ namespace WirelessTagClientApp.Test.Commands
         [TestMethod]
         public void CanExecute_Null_Should_Return_False()
         {
-            var target = new CopyMinMaxTagsComand();
+            var target = new CopyMinMaxTagsCommand();
             MinMaxViewModel viewModel = null;
 
             var result = target.Command.CanExecute(viewModel);
@@ -36,7 +36,7 @@ namespace WirelessTagClientApp.Test.Commands
         [TestMethod]
         public void CanExecute_Data_Null_Should_Return_False()
         {
-            var target = new CopyMinMaxTagsComand();
+            var target = new CopyMinMaxTagsCommand();
             var viewModel = new MinMaxViewModel()
             {
                 Data = null
@@ -50,7 +50,7 @@ namespace WirelessTagClientApp.Test.Commands
         [TestMethod]
         public void CanExecute_Data_Empty_Should_Return_False()
         {
-            var target = new CopyMinMaxTagsComand();
+            var target = new CopyMinMaxTagsCommand();
             var viewModel = new MinMaxViewModel();
 
             Assert.AreEqual(0, viewModel.Data.Count);
@@ -64,7 +64,7 @@ namespace WirelessTagClientApp.Test.Commands
         public void Execute_Should_WriteToClipboard()
         {
             var mock = CreateMockClipboardWriter();
-            var target = new CopyMinMaxTagsComand(mock.Object);
+            var target = new CopyMinMaxTagsCommand(mock.Object);
             var viewModel = CreateMinMaxViewModel();
 
             target.Command.Execute(viewModel);
@@ -76,7 +76,7 @@ namespace WirelessTagClientApp.Test.Commands
         public void Execute_Should_WriteExpectedDataToClipboard()
         {
             var mock = CreateMockClipboardWriter();
-            var target = new CopyMinMaxTagsComand(mock.Object);
+            var target = new CopyMinMaxTagsCommand(mock.Object);
             var viewModel = CreateMinMaxViewModel();
 
             target.Command.Execute(viewModel);
