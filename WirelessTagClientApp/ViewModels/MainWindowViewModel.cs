@@ -25,6 +25,7 @@ namespace WirelessTagClientApp.ViewModels
         private ChangeViewCommand summaryViewCommand;
         private ChangeViewCommand minMaxViewCommand;
         private DelegatedCommand copyCommand;
+        private DelegatedCommand toggleUnitsCommand;
 
         private ViewMode mode;
         private ViewModelBase activeViewModel;
@@ -72,10 +73,13 @@ namespace WirelessTagClientApp.ViewModels
             summaryViewCommand = new ChangeViewCommand(ViewMode.SummaryView);
             minMaxViewCommand = new ChangeViewCommand(ViewMode.MinMaxView);
             copyCommand = new DelegatedCommand();
+            toggleUnitsCommand = new DelegatedCommand();
 
             // associate commands for main view that are delegated to the active child view(s)
             copyCommand.Register(ViewMode.SummaryView, summaryViewModel.CopyCommand);
             copyCommand.Register(ViewMode.MinMaxView, minMaxViewModel.CopyCommand);
+
+            toggleUnitsCommand.Register(ViewMode.MinMaxView, minMaxViewModel.ToggleTemperatureUnitsCommand);
         }
 
 
@@ -190,6 +194,14 @@ namespace WirelessTagClientApp.ViewModels
         public ICommand CopyCommand
         {
             get { return copyCommand.Command; }
+        }
+        
+        /// <summary>
+        /// Get the command to toggle the temperature units
+        /// </summary>
+        public ICommand ToggleUnitsCommand
+        {
+            get { return toggleUnitsCommand.Command; }
         }
 
         public ViewModelBase ActiveViewModel

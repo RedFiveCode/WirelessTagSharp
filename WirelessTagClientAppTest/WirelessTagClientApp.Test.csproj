@@ -93,6 +93,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ToggleTemperatureUnitsCommandTest.cs" />
     <Compile Include="Commands\ToggleViewCommandTest.cs" />
     <Compile Include="Commands\RefreshAllTagsCommandTest.cs" />
     <Compile Include="Commands\NavigateHyperlinkCommandTest.cs" />
@@ -105,6 +106,8 @@
     <Compile Include="Commands\CopyAllTagsCommandTest.cs" />
     <Compile Include="Common\RelayCommandTTest.cs" />
     <Compile Include="Common\ViewModelFactoryTest.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverterTest.cs" />
+    <Compile Include="Converters\ColumnWidthConverterTest.cs" />
     <Compile Include="Converters\EnumToVisibilityConverterTest.cs" />
     <Compile Include="Converters\EmptyStringConverterTest.cs" />
     <Compile Include="Converters\HumanizeTimeSpanValueConverterTest.cs" />

@@ -47,6 +47,10 @@
         </Style>
 
         <localConv:TimeIntervalValueConverter x:Key="intervalConverter" />
+
+        <localConv:ColumnWidthConverter x:Key="columnWidthConverter" />
+
+        <localConv:BooleanToVisibilityConverter x:Key="visibilityConverter" />
     </UserControl.Resources>
 
     <Grid>
@@ -77,10 +81,15 @@
                     </GridViewColumn>
 
                     <GridViewColumn 
-                        Width="250"
+                        Width="{Binding Path=IsTemperatureCelsius, Converter={StaticResource columnWidthConverter}, ConverterParameter=250}"
                         util:GridViewSort.PropertyName="Minimum.Temperature"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
-                        <GridViewColumnHeader>Minimum Temperature</GridViewColumnHeader>
+                        
+                        <GridViewColumnHeader
+                            Content="Minimum Temperature °C"
+                            Visibility="{Binding Path=IsTemperatureCelsius, Converter={StaticResource visibilityConverter}}"
+                            util:GridViewCollapsibleColumn.CollapsibleColumn="True" />
+                        
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
@@ -98,10 +107,15 @@
                     </GridViewColumn>
 
                     <GridViewColumn 
-                        Width="250"
+                        Width="{Binding Path=IsTemperatureFahrenheit, Converter={StaticResource columnWidthConverter}, ConverterParameter=250}"
                         util:GridViewSort.PropertyName="Minimum.TemperatureF"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
-                        <GridViewColumnHeader>Minimum Temperature</GridViewColumnHeader>
+                        
+                        <GridViewColumnHeader
+                            Content="Minimum Temperature °F"
+                            Visibility="{Binding Path=IsTemperatureFahrenheit, Converter={StaticResource visibilityConverter}}"
+                            util:GridViewCollapsibleColumn.CollapsibleColumn="True" />
+                        
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
@@ -119,10 +133,15 @@
                     </GridViewColumn>
 
                     <GridViewColumn 
-                        Width="250"
+                        Width="{Binding Path=IsTemperatureCelsius, Converter={StaticResource columnWidthConverter}, ConverterParameter=250}"
                         util:GridViewSort.PropertyName="Maximum.Temperature"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
-                        <GridViewColumnHeader>Maximum Temperature</GridViewColumnHeader>
+
+                        <GridViewColumnHeader
+                            Content="Maximum Temperature °C"
+                            Visibility="{Binding Path=IsTemperatureCelsius, Converter={StaticResource visibilityConverter}}"
+                            util:GridViewCollapsibleColumn.CollapsibleColumn="True" />
+
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
@@ -140,10 +159,15 @@
                     </GridViewColumn>
 
                     <GridViewColumn 
-                        Width="250"
+                        Width="{Binding Path=IsTemperatureFahrenheit, Converter={StaticResource columnWidthConverter}, ConverterParameter=250}"
                         util:GridViewSort.PropertyName="Maximum.Temperature"
                         HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
-                        <GridViewColumnHeader>Maximum Temperature</GridViewColumnHeader>
+
+                        <GridViewColumnHeader
+                            Content="Maximum Temperature °F"
+                            Visibility="{Binding Path=IsTemperatureFahrenheit, Converter={StaticResource visibilityConverter}}"
+                            util:GridViewCollapsibleColumn.CollapsibleColumn="True" />
+                        
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
@@ -176,10 +200,15 @@
                     </GridViewColumn>
 
                     <GridViewColumn 
-                        Width="100"
+                        Width="{Binding Path=IsTemperatureCelsius, Converter={StaticResource columnWidthConverter}, ConverterParameter=100}"
                         util:GridViewSort.PropertyName="Difference"
-                        HeaderContainerStyle="{StaticResource listviewColumnStyleRight}" >
-                        <GridViewColumnHeader>Difference</GridViewColumnHeader>
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+                        
+                        <GridViewColumnHeader
+                            Content="Difference °C"
+                            Visibility="{Binding Path=IsTemperatureCelsius, Converter={StaticResource visibilityConverter}}"
+                            util:GridViewCollapsibleColumn.CollapsibleColumn="True" />
+
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
@@ -193,10 +222,15 @@
                     </GridViewColumn>
 
                     <GridViewColumn 
-                        Width="100"
-                        util:GridViewSort.PropertyName="Difference"
-                        HeaderContainerStyle="{StaticResource listviewColumnStyleRight}" >
-                        <GridViewColumnHeader>Difference</GridViewColumnHeader>
+                        Width="{Binding Path=IsTemperatureFahrenheit, Converter={StaticResource columnWidthConverter}, ConverterParameter=100}"
+                        util:GridViewSort.PropertyName="DifferenceF"
+                        HeaderContainerStyle="{StaticResource listviewColumnStyleLeft}" >
+
+                        <GridViewColumnHeader
+                            Content="Difference °F"
+                            Visibility="{Binding Path=IsTemperatureFahrenheit, Converter={StaticResource visibilityConverter}}"
+                            util:GridViewCollapsibleColumn.CollapsibleColumn="True" />
+
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock

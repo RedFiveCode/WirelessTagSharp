@@ -140,11 +140,15 @@
     <Compile Include="Commands\DelegatedCommand.cs" />
     <Compile Include="Commands\RefreshMinMaxTagsCommand.cs" />
     <Compile Include="Commands\RefreshViewCommand.cs" />
+    <Compile Include="Commands\ToggleTemperatureUnitsCommand.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\ColumnWidthConverter.cs" />
     <Compile Include="Converters\TimeIntervalValueConverter.cs" />
     <Compile Include="Interfaces\IClipboardWriter.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Interfaces\IProcessStarter.cs" />
     <Compile Include="Commands\NavigateHyperlinkCommand.cs" />
+    <Compile Include="Utils\GridViewCollapseableColumn.cs" />
     <Compile Include="Utils\ClipboardWriter.cs" />
     <Compile Include="Utils\CSVWriter.cs" />
     <Compile Include="Utils\GridViewSort.cs" />
