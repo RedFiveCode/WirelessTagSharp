@@ -25,7 +25,7 @@ namespace WirelessTagClientLib
         {
             var options = new RestClientOptions(url)
             {
-                MaxTimeout = (int)requestTimeout.TotalMilliseconds,
+                Timeout = requestTimeout,
                 Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(accessToken, "Bearer")
             };
 
