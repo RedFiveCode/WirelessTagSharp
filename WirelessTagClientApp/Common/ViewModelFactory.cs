@@ -73,8 +73,8 @@ namespace WirelessTagClientApp.Common
                 return null; // no data points within time range
             }
 
-            var coldest = dataPointsInTimeInterval.MinBy(tdp => tdp.Temperature).First();
-            var warmest = dataPointsInTimeInterval.MaxBy(tdp => tdp.Temperature).First();
+            var coldest = dataPointsInTimeInterval.Minima(tdp => tdp.Temperature).First();
+            var warmest = dataPointsInTimeInterval.Maxima(tdp => tdp.Temperature).First();
 
             var row = new MinMaxMeasurementViewModel()
             {
