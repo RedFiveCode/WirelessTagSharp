@@ -17,10 +17,10 @@ namespace WirelessTagClientLib
     {
         private IRestClient client;
 
-        public WirelessTagAsyncClient()
+        public WirelessTagAsyncClient(string accessToken)
         {
             Url = WirelessTagConstants.Url;
-            client = new RestClientWrapper(Url);
+            client = new RestClientWrapper(Url, accessToken);
         }
 
         /// <summary>

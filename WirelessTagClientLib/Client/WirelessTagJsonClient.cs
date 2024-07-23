@@ -12,10 +12,10 @@ namespace WirelessTagClientLib
     {
         private IRestClient client;
 
-        public WirelessTagJsonClient()
+        public WirelessTagJsonClient(string accessToken)
         {
             Url = WirelessTagConstants.Url;
-            client = new RestClientWrapper(Url);
+            client = new RestClientWrapper(Url, accessToken);
         }
 
         /// <summary>

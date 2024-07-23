@@ -51,10 +51,10 @@ namespace WirelessTagClientConsole
             // simple synchronous client returning json strings
             //
 
-            var client = new WirelessTagJsonClient();
+            var client = new WirelessTagJsonClient(options.AccessToken);
 
-            var response = client.Login(options.Username, options.Password);
-            var loggedIn = client.IsLoggedIn();
+            //var response = client.Login(options.Username, options.Password);
+            //var loggedIn = client.IsLoggedIn();
 
             var tagList = client.GetTagList();
             Console.WriteLine(tagList);
@@ -77,8 +77,8 @@ namespace WirelessTagClientConsole
             //
             // simple synchronous client returning strongly typed DTO objects
             //
-            var client = new WirelessTagClient();
-            bool loggedIn = client.Login(options.Username, options.Password);
+            var client = new WirelessTagClient(options.AccessToken);
+           // bool loggedIn = client.Login(options.Username, options.Password);
 
             var tagList = client.GetTagList();
 
@@ -93,7 +93,7 @@ namespace WirelessTagClientConsole
 
             var temperatureStats = client.GetTemperatureStats(1);
 
-            var data = client.GetTemperatureRawData(1, DateTime.Today, DateTime.Today);
+           // var data = client.GetTemperatureRawData(1, DateTime.Today, DateTime.Today);
         }
 
         private static void AsyncClient(Options options)
@@ -101,18 +101,18 @@ namespace WirelessTagClientConsole
             //
             // simple asynchronous client returning strongly typed DTO objects
             //
-            var client = new WirelessTagAsyncClient();
+            var client = new WirelessTagAsyncClient(options.AccessToken);
 
             Console.WriteLine($"Connecting to {client.Url}...");
 
-            var loggedIn = client.LoginAsync(options.Username, options.Password);
-            Task.WaitAll(loggedIn);
+            //var loggedIn = client.LoginAsync(options.Username, options.Password);
+            //Task.WaitAll(loggedIn);
 
-            if (!loggedIn.Result)
-            {
-                Console.WriteLine($"Unable to connect to {client.Url}");
-                return;
-            }
+            //if (!loggedIn.Result)
+            //{
+            //    Console.WriteLine($"Unable to connect to {client.Url}");
+            //    return;
+            //}
 
             var tagListTask = client.GetTagListAsync();
 
@@ -133,11 +133,11 @@ namespace WirelessTagClientConsole
 
             DisplayRecentTemperatures(client, "Today:", tagList, today, today);
 
-            DisplayRecentTemperatures(client, "This week:", tagList, today.AddDays(-7), today);
+            //DisplayRecentTemperatures(client, "This week:", tagList, today.AddDays(-7), today);
 
-            DisplayRecentTemperatures(client, "This month:", tagList, today.AddDays(-today.Day + 1), DateTime.Today);
+            //DisplayRecentTemperatures(client, "This month:", tagList, today.AddDays(-today.Day + 1), DateTime.Today);
 
-            DisplayRecentTemperatures(client, "This year:", tagList, today.AddDays(-today.DayOfYear + 1), DateTime.Today);
+            //DisplayRecentTemperatures(client, "This year:", tagList, today.AddDays(-today.DayOfYear + 1), DateTime.Today);
          }
 
         private static void DisplayRecentTemperatures(IWirelessTagAsyncClient client, string caption, List<TagInfo> tags, DateTime from, DateTime to)

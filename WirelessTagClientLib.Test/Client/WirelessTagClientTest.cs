@@ -22,7 +22,7 @@ namespace WirelessTagClientLib.Test
         [TestMethod]
         public void Ctor_Sets_Url_Property()
         {
-            var target = new WirelessTagClient();
+            var target = new WirelessTagClient(string.Empty);
 
             Assert.AreEqual(WirelessTagConstants.Url, target.Url);
         }

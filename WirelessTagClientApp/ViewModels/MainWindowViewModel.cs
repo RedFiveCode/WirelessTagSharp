@@ -43,7 +43,7 @@ namespace WirelessTagClientApp.ViewModels
         /// Ctor
         /// </summary>
         /// <param name="options"></param>
-        public MainWindowViewModel(Options options) : this(new WirelessTagAsyncClient(), options)
+        public MainWindowViewModel(Options options) : this(new WirelessTagAsyncClient(options.AccessToken), options)
         { }
 
         /// <summary>
