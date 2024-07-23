@@ -40,10 +40,7 @@ Three client APIs are provided:
 // simple synchronous client returning json strings
 //
 
-var client = new WirelessTagJsonClient();
-
-var response = client.Login("username", "password");
-var loggedIn = client.IsLoggedIn();
+var client = new WirelessTagJsonClient("*** secret access token ***");
 
 var tagList = client.GetTagList();
 Console.WriteLine(tagList);
@@ -60,8 +57,7 @@ Console.WriteLine(data);
 //
 // simple synchronous client returning strongly typed DTO objects
 //
-var client = new WirelessTagClient();
-bool loggedIn = client.Login("username", "password");
+var client = new WirelessTagClient(*** secret access token ***);
 
 var tagList = client.GetTagList();
 
@@ -80,12 +76,9 @@ foreach (var tag in tagList.OrderByDescending(t => t.LastCommunication))
 //
 // simple asynchronous client returning strongly typed DTO objects
 //
-var client = new WirelessTagAsyncClient();
+var client = new WirelessTagAsyncClient(*** secret access token ***);
 
 Console.WriteLine($"Connecting to {client.Url}...");
-
-var loggedIn = client.Login("username", "password");
-Task.WaitAll(loggedIn);
 
 var tagList = client.GetTagListAsync();
 Task.WaitAll(tagList);
@@ -131,18 +124,19 @@ This project is based on the REST API documented at https://wirelesstag.net/apid
 Some of the  Wireless Sensor Tags JSON Web Service API Documentation requires login to discover the API.
 
 ## Security considerations
-Requires username and password for https://www.mytaglist.com; these are passed into the client layer using command line parameters.
+Requires OAuth2 access token; see [here](https://wirelesstag.net/eth/oauth2_apps.html).
+The access token is passed into the client layer using command line parameters in clear text.
 
 Connects to the REST service on the internet at https://www.mytaglist.com
 
-Uses a cookie to authenticate with https://www.mytaglist.com
+Uses a cookie to authenticate with https://www.mytaglist.com. Requires OAuth2 access token; see [here](https://wirelesstag.net/eth/oauth2_apps.html).
 
 Once successfully authenticated, then API calls can be made for the duration of that cookie session.
 
 ## Author and License
 RedFiveCode (https://github.com/RedFiveCode)
 
-Copyright (c) 2014-2022 RedFiveCode (https://github.com/RedFiveCode) All rights reserved.
+Copyright (c) 2014-2024 RedFiveCode (https://github.com/RedFiveCode) All rights reserved.
 
 Released under MIT License (see License.txt file).
 
