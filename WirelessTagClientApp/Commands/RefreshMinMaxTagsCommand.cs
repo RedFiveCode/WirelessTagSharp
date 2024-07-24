@@ -84,11 +84,12 @@ namespace WirelessTagClientApp.Commands
                 // Ideally should call GetTagSpanStatsAsync/GetMultiTagStatsSpan to get time range for each tag.
                 //
                 // Uses an arbitrary cutoff date as staring point for oldest data.
-                var cutoffDate = new DateTime(2015, 1, 1);
+                //var cutoffDate = new DateTime(2015, 1, 1);
 
                 foreach (var tag in tagList)
                 {
-                    //if (viewModel.ContainsDataForTagAndInterval(tag.SlaveId, TimeInterval.Today))
+
+                    var cutoffDate = new DateTime(2015, 1, 1);
 
                     if (viewModel.RawDataCache.ContainsDataForTag(tag.SlaveId, DateTime.Today))
                     {
