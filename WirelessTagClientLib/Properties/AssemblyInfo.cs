@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WirelessTagClientLib")]
-[assembly: AssemblyCopyright("Copyright © 2014-2024 RedFiveCode (https://github.com/RedFiveCode)")]
+[assembly: AssemblyCopyright("Copyright © 2014-2025 RedFiveCode (https://github.com/RedFiveCode)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
