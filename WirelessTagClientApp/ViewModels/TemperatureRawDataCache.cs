@@ -5,17 +5,26 @@ using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.ViewModels
 {
+    /// <summary>
+    /// Data cache for temperature measurements, indexed by tagId.
+    /// </summary>
     public class TemperatureRawDataCache
     {
         private Dictionary<int, HashSet<TemperatureDataPoint>> rawDataMap;
         private TemperatureDataPointComparer comparer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TemperatureRawDataCache"/> class
+        /// </summary>
         public TemperatureRawDataCache()
         {
             rawDataMap = new Dictionary<int, HashSet<TemperatureDataPoint>>();
             comparer = new TemperatureDataPointComparer();
         }
 
+        /// <summary>
+        /// Updates the cache with new temperature data for the specified tagId.
+        /// </summary>
         public void Update(int tagId, IEnumerable<TemperatureDataPoint> data)
         {
             // FYI
@@ -88,16 +97,25 @@ namespace WirelessTagClientApp.ViewModels
             //Console.WriteLine($"Tag {tagId} : Update finish: now {rawDataSet.Count()}");
         }
 
+        /// <summary>
+        /// Returns the raw temperature data for the specified tagId
+        /// </summary>
         public IEnumerable<TemperatureDataPoint> GetData(int tagId)
         {
             return rawDataMap[tagId];
         }
 
+        /// <summary>
+        /// Returns true if the cache contains data for the specified tagId
+        /// </summary>
         public bool ContainsDataForTag(int tagId)
         {
             return rawDataMap.ContainsKey(tagId);
         }
 
+        /// <summary>
+        /// Returns true if the cache contains data for the specified tagId and date
+        /// </summary>
         public bool ContainsDataForTag(int tagId, DateTime date)
         {
             if (!rawDataMap.ContainsKey(tagId))
@@ -129,11 +147,18 @@ namespace WirelessTagClientApp.ViewModels
 
             return rawDataMap[tagId].Any(d => d.Time >= start && d.Time <= finish);
         }
+
+        /// <summary>
+        /// Returns the number of tags in the cache.
+        /// </summary>
         public int Count
         {
             get { return rawDataMap.Count; }
         }
 
+        /// <summary>
+        /// Returns the total number of measurements in the cache across all tags
+        /// </summary>
         public int ItemCount
         {
             get { return rawDataMap.Sum(x => x.Value.Count); }
