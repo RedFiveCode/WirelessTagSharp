@@ -2,16 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
-using System.Windows.Media;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.Test.ViewModel
 {
     /// <summary>
-    /// Unit tests for teh TemperatureRawDataCache class
+    /// Unit tests for the TemperatureRawDataCache class
     /// </summary>
     [TestClass]
     public class TemperatureRawDataCacheTest
@@ -235,6 +232,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             AssertValue(data2[1], 2023, 2, 2, 21);
         }
 
+        #region ContainsDataForTag(int, DateTime) tests
         [TestMethod]
         public void ContainsDataForTag_Hit_ReturnsTrue()
         {
@@ -277,7 +275,6 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.IsTrue(result);
         }
 
-
         [TestMethod]
         public void ContainsDataForTag_MissDate_ReturnsFalse()
         {
@@ -319,6 +316,91 @@ namespace WirelessTagClientApp.Test.ViewModel
             // assert
             Assert.IsFalse(result);
         }
+        #endregion
+
+        #region ContainsDataForTag(int, DateTime, DateTime) tests
+        [TestMethod]
+        public void ContainsDataForTag3_Hit_ReturnsTrue()
+        {
+            // arrange
+            const int tagId = 42;
+            var data = new List<TemperatureDataPoint>()
+            {
+                new TemperatureDataPoint(new DateTime(2023, 1, 1, 13, 0, 0), 10), // 13:00:00
+                new TemperatureDataPoint(new DateTime(2023, 1, 1, 14, 0, 0), 10), // 14:00:00
+            };
+
+            var target = new TemperatureRawDataCache();
+            target.Update(tagId, data);
+
+            // act
+            var result = target.ContainsDataForTag(tagId, new DateTime(2023, 1, 1), new DateTime(2023, 12, 31));
+
+            // assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void ContainsDataForTag3_MissDate_ReturnsFalse()
+        {
+            // arrange
+            const int tagId = 42;
+            var data = new List<TemperatureDataPoint>()
+            {
+                CreateTemperatureDataPoint(2023, 1, 1, 10),
+                CreateTemperatureDataPoint(2023, 1, 2, 11)
+            };
+
+            var target = new TemperatureRawDataCache();
+            target.Update(tagId, data);
+
+            // act
+            var result = target.ContainsDataForTag(tagId, new DateTime(2023, 12, 1), new DateTime(2023, 12, 31));
+
+            // assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void ContainsDataForTag3_MissTagId_ReturnsFalse()
+        {
+            // arrange
+            const int tagId = 42;
+            var data = new List<TemperatureDataPoint>()
+            {
+                CreateTemperatureDataPoint(2023, 1, 1, 10),
+                CreateTemperatureDataPoint(2023, 1, 2, 11)
+            };
+
+            var target = new TemperatureRawDataCache();
+            target.Update(tagId, data);
+
+            // act
+            var result = target.ContainsDataForTag(99, new DateTime(2023, 1, 11), new DateTime(2023, 12, 31));
+
+            // assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void ContainsDataForTag3_EndBeforeStart_ThrowsArgumentOutOfRangeException()
+        {
+            // arrange
+            const int tagId = 42;
+            var data = new List<TemperatureDataPoint>()
+            {
+                CreateTemperatureDataPoint(2023, 1, 1, 10),
+                CreateTemperatureDataPoint(2023, 1, 2, 11)
+            };
+
+            var target = new TemperatureRawDataCache();
+            target.Update(tagId, data);
+
+            // act; should throw
+            var result = target.ContainsDataForTag(42, new DateTime(2025, 1, 1), new DateTime(2023, 1, 1));
+        }
+        #endregion
 
         private TemperatureDataPoint CreateTemperatureDataPoint(int year, int month, int day, double temperature)
         {

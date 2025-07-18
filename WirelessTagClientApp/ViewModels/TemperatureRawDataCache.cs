@@ -108,6 +108,27 @@ namespace WirelessTagClientApp.ViewModels
             return rawDataMap[tagId].Any(d => d.Time.Date == date.Date);
         }
 
+        /// <summary>
+        /// Returns true if the cache contains data for the specified tagId and date range
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public bool ContainsDataForTag(int tagId, DateTime from, DateTime to)
+        {
+            if (from.Date > to.Date)
+            {
+                throw new ArgumentOutOfRangeException("From date must be less than or equal to To date.");
+            }
+
+            if (!rawDataMap.ContainsKey(tagId))
+            {
+                return false;
+            }
+
+            var start = from.Date;
+            var finish = to.Date.AddHours(23).AddMinutes(59).AddSeconds(59); // to be inclusive need to extend to the end of the day
+
+            return rawDataMap[tagId].Any(d => d.Time >= start && d.Time <= finish);
+        }
         public int Count
         {
             get { return rawDataMap.Count; }
