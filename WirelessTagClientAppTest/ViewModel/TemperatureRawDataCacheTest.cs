@@ -402,6 +402,74 @@ namespace WirelessTagClientApp.Test.ViewModel
         }
         #endregion
 
+        [TestMethod]
+        public void GetAllData_NoData_ReturnsEmpty()
+        {
+            // arrange
+            var target = new TemperatureRawDataCache();
+
+            // act
+            var allData = target.GetAllData();
+
+            // assert
+            Assert.IsNotNull(allData);
+            Assert.AreEqual(0, allData.Count());
+        }
+
+        [TestMethod]
+        public void GetAllData_OneTag_ReturnsAllDataWithCorrectTagId()
+        {
+            // arrange
+            var target = new TemperatureRawDataCache();
+            const int tagId = 1;
+            var data = new List<TemperatureDataPoint>
+            {
+                CreateTemperatureDataPoint(2023, 1, 1, 10),
+                CreateTemperatureDataPoint(2023, 1, 2, 11)
+            };
+            target.Update(tagId, data);
+
+            // act
+            var allData = target.GetAllData().ToList();
+
+            // assert
+            Assert.AreEqual(2, allData.Count);
+            AssertTagMeasurementValue(allData[0], tagId, 2023, 1, 1, 10);
+            AssertTagMeasurementValue(allData[1], tagId, 2023, 1, 2, 11);
+        }
+
+        [TestMethod]
+        public void GetAllData_MultipleTags_ReturnsAllDataWithCorrectTagIds()
+        {
+            // arrange
+            var target = new TemperatureRawDataCache();
+            const int tagId1 = 1;
+            const int tagId2 = 2;
+            var data1 = new List<TemperatureDataPoint>
+            {
+                CreateTemperatureDataPoint(2023, 1, 1, 10),
+                CreateTemperatureDataPoint(2023, 1, 2, 11)
+            };
+            var data2 = new List<TemperatureDataPoint>
+            {
+                CreateTemperatureDataPoint(2023, 2, 1, 20),
+                CreateTemperatureDataPoint(2023, 2, 2, 21)
+            };
+            target.Update(tagId1, data1);
+            target.Update(tagId2, data2);
+
+            // act
+            var allData = target.GetAllData().ToList();
+
+            // assert
+            Assert.AreEqual(4, allData.Count);
+            // The order is not guaranteed, so check that all expected values are present
+            Assert.IsTrue(allData.Any(d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 1) && d.Temperature == 10));
+            Assert.IsTrue(allData.Any(d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 2) && d.Temperature == 11));
+            Assert.IsTrue(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 1) && d.Temperature == 20));
+            Assert.IsTrue(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 2) && d.Temperature == 21));
+        }
+
         private TemperatureDataPoint CreateTemperatureDataPoint(int year, int month, int day, double temperature)
         {
             return new TemperatureDataPoint(new DateTime(year, month, day), temperature);
@@ -411,6 +479,14 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             var dt = new DateTime(year, month, day);
 
+            Assert.AreEqual(dt, item.Time);
+            Assert.AreEqual(temperature, item.Temperature);
+        }
+
+        private void AssertTagMeasurementValue(TagMeasurementDataPoint item, int tagId, int year, int month, int day, double temperature)
+        {
+            var dt = new DateTime(year, month, day);
+            Assert.AreEqual(tagId, item.TagId);
             Assert.AreEqual(dt, item.Time);
             Assert.AreEqual(temperature, item.Temperature);
         }

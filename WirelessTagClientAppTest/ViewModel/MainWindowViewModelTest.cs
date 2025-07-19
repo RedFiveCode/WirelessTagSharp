@@ -54,6 +54,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.IsNotNull(target.SummaryViewCommand);
             Assert.IsNotNull(target.MinMaxViewCommand);
             Assert.IsNotNull(target.CopyCommand);
+            Assert.IsNotNull(target.CopyRawDataCommand);
             Assert.IsNotNull(target.ToggleUnitsCommand);
 
             // view-model(s)

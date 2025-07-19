@@ -106,6 +106,14 @@ namespace WirelessTagClientApp.ViewModels
         }
 
         /// <summary>
+        /// Returns the all raw temperature data for all tags.
+        /// </summary>
+        public IEnumerable<TagMeasurementDataPoint> GetAllData()
+        {
+            return rawDataMap.SelectMany(kvp => kvp.Value.Select(item => new TagMeasurementDataPoint(kvp.Key, item.Time, item.Temperature, item.Humidity, item.Lux, item.Battery)));
+        }
+
+        /// <summary>
         /// Returns true if the cache contains data for the specified tagId
         /// </summary>
         public bool ContainsDataForTag(int tagId)

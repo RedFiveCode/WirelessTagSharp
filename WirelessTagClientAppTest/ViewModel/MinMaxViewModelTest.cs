@@ -31,6 +31,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.AreEqual(DateTime.MinValue, target.LastUpdated);
             Assert.AreEqual(TemperatureUnits.Celsius, target.TemperatureUnits);
             Assert.IsNotNull(target.CopyCommand);
+            Assert.IsNotNull(target.CopyRawDataCommand);
             Assert.IsNotNull(target.ToggleTemperatureUnitsCommand);
             Assert.IsNotNull(target.RawDataCache);
         }

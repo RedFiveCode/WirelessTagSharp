@@ -1,10 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
+using System.Windows.Documents;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.Interfaces;
 using WirelessTagClientApp.ViewModels;
+using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.Test.Commands
 {
@@ -17,7 +20,7 @@ namespace WirelessTagClientApp.Test.Commands
         [TestMethod]
         public void Command_Implements_ICommand()
         {
-            var target = new CopyMinMaxTagsCommand();
+            var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
 
             Assert.IsInstanceOfType(target.Command, typeof(ICommand));
         }
@@ -25,7 +28,7 @@ namespace WirelessTagClientApp.Test.Commands
         [TestMethod]
         public void CanExecute_Null_Should_Return_False()
         {
-            var target = new CopyMinMaxTagsCommand();
+            var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
             MinMaxViewModel viewModel = null;
 
             var result = target.Command.CanExecute(viewModel);
@@ -36,7 +39,7 @@ namespace WirelessTagClientApp.Test.Commands
         [TestMethod]
         public void CanExecute_Data_Null_Should_Return_False()
         {
-            var target = new CopyMinMaxTagsCommand();
+            var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
             var viewModel = new MinMaxViewModel()
             {
                 Data = null
@@ -50,7 +53,7 @@ namespace WirelessTagClientApp.Test.Commands
         [TestMethod]
         public void CanExecute_Data_Empty_Should_Return_False()
         {
-            var target = new CopyMinMaxTagsCommand();
+            var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
             var viewModel = new MinMaxViewModel();
 
             Assert.AreEqual(0, viewModel.Data.Count);
@@ -64,7 +67,7 @@ namespace WirelessTagClientApp.Test.Commands
         public void Execute_Should_WriteToClipboard()
         {
             var mock = CreateMockClipboardWriter();
-            var target = new CopyMinMaxTagsCommand(mock.Object);
+            var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary, mock.Object);
             var viewModel = CreateMinMaxViewModel();
 
             target.Command.Execute(viewModel);
@@ -73,10 +76,10 @@ namespace WirelessTagClientApp.Test.Commands
         }
 
         [TestMethod]
-        public void Execute_Should_WriteExpectedDataToClipboard()
+        public void Execute_Should_WriteExpectedMinMaxDataToClipboard()
         {
             var mock = CreateMockClipboardWriter();
-            var target = new CopyMinMaxTagsCommand(mock.Object);
+            var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary, mock.Object);
             var viewModel = CreateMinMaxViewModel();
 
             target.Command.Execute(viewModel);
@@ -87,13 +90,30 @@ namespace WirelessTagClientApp.Test.Commands
             mock.Verify(x => x.WriteText(It.Is<string>(csv => csv.StartsWith(expectedDataHeader))), Times.Once());
         }
 
+        [TestMethod]
+        public void Execute_Should_WriteExpectedRawDataToClipboard()
+        {
+            var mock = CreateMockClipboardWriter();
+            var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.RawData, mock.Object);
+            var viewModel = CreateMinMaxViewModel();
+
+            target.Command.Execute(viewModel);
+
+            // only check header, so we can avoid timestamp comparisons
+            string expectedDataHeader = "#Id, Timestamp, Temperature, Humidity, Lux, Battery";
+
+            mock.Verify(x => x.WriteText(It.Is<string>(csv => csv.StartsWith(expectedDataHeader))), Times.Once());
+        }
+
         private MinMaxViewModel CreateMinMaxViewModel()
         {
             var viewModel = new MinMaxViewModel();
 
+            const int tagId = 42;
+
             viewModel.Data.Add(new MinMaxMeasurementViewModel()
             {
-                TagId = 42,
+                TagId = tagId,
                 TagName = "My tag",
                 Interval = TimeInterval.ThisYear,
                 Minimum = new Measurement(2d, new DateTime(2022, 1, 1, 12, 0, 0)),
@@ -102,6 +122,14 @@ namespace WirelessTagClientApp.Test.Commands
                 IntervalTo = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59),
                 Count = 42
             });
+
+            var data = new List<TemperatureDataPoint>
+            {
+                new TemperatureDataPoint(new DateTime(2022, 1, 1, 12, 0, 0), 2d),
+                new TemperatureDataPoint(new DateTime(2022, 7, 1, 15, 0, 0), 25d)
+            };
+
+            viewModel.RawDataCache.Update(tagId, data);
 
             return viewModel;
         }

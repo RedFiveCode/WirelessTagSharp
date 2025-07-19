@@ -13,6 +13,7 @@ namespace WirelessTagClientApp.ViewModels
         private ObservableCollection<MinMaxMeasurementViewModel> data;
         private DateTime lastUpdated;
         private CopyMinMaxTagsCommand copyCommand;
+        private CopyMinMaxTagsCommand copyRawDataCommand;
         private ToggleTemperatureUnitsCommand toggleUnitsCommand;
         private TemperatureRawDataCache rawDataCache;
         private TemperatureUnits temperatureUnits;
@@ -24,7 +25,8 @@ namespace WirelessTagClientApp.ViewModels
         {
             data = new ObservableCollection<MinMaxMeasurementViewModel>();
             lastUpdated = DateTime.MinValue;
-            copyCommand = new CopyMinMaxTagsCommand();
+            copyCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
+            copyRawDataCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.RawData);
             toggleUnitsCommand = new ToggleTemperatureUnitsCommand();
             rawDataCache = new TemperatureRawDataCache();
             temperatureUnits = TemperatureUnits.Celsius;
@@ -92,6 +94,14 @@ namespace WirelessTagClientApp.ViewModels
         public ICommand CopyCommand
         {
             get { return copyCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the command to copy raw data to the clipboard
+        /// </summary>
+        public ICommand CopyRawDataCommand
+        {
+            get { return copyRawDataCommand.Command; }
         }
 
         /// <summary>
