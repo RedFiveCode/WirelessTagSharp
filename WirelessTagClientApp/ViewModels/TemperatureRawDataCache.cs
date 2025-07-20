@@ -84,9 +84,12 @@ namespace WirelessTagClientApp.ViewModels
             //Console.WriteLine($"Tag {tagId} : Before common {commonItems.Count}, differences {differenceItems.Count}");
 
             // add to existing set of values; no duplicates (set)
-            foreach (var item in data)
+            if (data != null)
             {
-                rawDataSet.Add(item);
+                foreach (var item in data)
+                {
+                    rawDataSet.Add(item);
+                }
             }
 
             //var commonItems2 = rawDataSet.Intersect(data).ToList();
