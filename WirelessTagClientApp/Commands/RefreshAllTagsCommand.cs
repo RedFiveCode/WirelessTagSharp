@@ -36,9 +36,12 @@ namespace WirelessTagClientApp.Commands
                 // uncomment to simulate a very long delay in getting response
                 //await Task.Delay(5000);
 
-                var loginTask = client.LoginAsync(options.Username, options.Password);
+                //var loginTask = client.LoginAsync(options.Username, options.Password);
 
-                await loginTask;
+                //await loginTask;
+
+                // set busy overlay
+                viewModel.ParentViewModel.IsBusy = true;
 
                 await client.GetTagListAsync()
                         .ContinueWith(tt =>
@@ -50,6 +53,12 @@ namespace WirelessTagClientApp.Commands
             catch (Exception ex)
             {
                 throw;
+            }
+            finally
+            {
+                // reset busy overlay
+                viewModel.ParentViewModel.LastUpdated = DateTime.Now;
+                viewModel.ParentViewModel.IsBusy = false;
             }
         }
 
