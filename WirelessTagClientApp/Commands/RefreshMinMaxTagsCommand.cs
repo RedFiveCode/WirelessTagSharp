@@ -362,8 +362,6 @@ namespace WirelessTagClientApp.Commands
                 var data = await client.GetTemperatureRawDataAsync(tagId, from, to);
 
                 // back on UI thread
-                viewModel.RawDataCache.Update(tagId, data);
-
                 UpdateViewModel(viewModel, tag, data, true);
             }
 
@@ -410,8 +408,6 @@ namespace WirelessTagClientApp.Commands
                 }
 
                 // back on UI thread
-                viewModel.RawDataCache.Update(tagId, data);
-
                 UpdateViewModel(viewModel, tag, data, false);
             }
 
