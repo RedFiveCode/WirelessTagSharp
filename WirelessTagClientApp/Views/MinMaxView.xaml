@@ -128,6 +128,13 @@
         </ContextMenu>
     </UserControl.Resources>
 
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding Path=CopyCommand}" Key="C" Modifiers="Ctrl" CommandParameter="{Binding}"/>
+        <KeyBinding Command="{Binding Path=CopyRawDataCommand}" Key="C" Modifiers="Ctrl+Shift" CommandParameter="{Binding}"/>
+        <KeyBinding Command="{Binding Path=RefreshCommand}" Key="F5" CommandParameter="{Binding}"/>
+    </UserControl.InputBindings>
+
+
     <Grid x:Name="RootGrid" ContextMenu="{StaticResource contextMenu}">
         <ListView
             HorizontalAlignment="Stretch"

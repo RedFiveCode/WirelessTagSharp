@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.Common;
@@ -33,6 +35,11 @@ namespace WirelessTagClientApp.ViewModels
             togglePreviousViewCommand = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
             copyCommand = new CopyAllTagsCommand();
             refreshCommand = new RefreshAllTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
+        }
+
+        public async Task RefreshAsync()
+        {
+            await refreshCommand.ExecuteAsync(this);
         }
 
         /// <summary>

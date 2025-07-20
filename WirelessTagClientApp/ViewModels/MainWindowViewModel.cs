@@ -261,18 +261,18 @@ namespace WirelessTagClientApp.ViewModels
         {
             try
             {
-                IsBusy = true;
+                //IsBusy = true;
 
+                // TODO - delegate to each view model to refresh using the respective command
                 if (mode == ViewMode.SummaryView)
                 {
-                    var command = new RefreshAllTagsCommand(client, options);
                     var viewModel = viewModelMap[mode] as AllTagsViewModel;
 
-                    await command.ExecuteAsync(viewModel)
+                    await viewModel.RefreshAsync()
                                  .ContinueWith(refreshTask =>
                                  {
-                                     LastUpdated = DateTime.Now;
-                                     IsBusy = false;
+                                     //LastUpdated = DateTime.Now;
+                                     //IsBusy = false;
 
                                      if (refreshTask.IsFaulted)
                                      {
@@ -283,20 +283,30 @@ namespace WirelessTagClientApp.ViewModels
                 }
                 else if (mode == ViewMode.MinMaxView)
                 {
-                    var command = new RefreshMinMaxTagsCommand(client, options);
                     var viewModel = viewModelMap[mode] as MinMaxViewModel;
 
-                    await command.ExecuteAsync(viewModel)
-                                 .ContinueWith(refreshTask =>
-                                 {
-                                     LastUpdated = DateTime.Now;
-                                     IsBusy = false;
+                    await viewModel.RefreshAsync()
+                                   .ContinueWith(refreshTask =>
+                                    {
+                                        //LastUpdated = DateTime.Now;
+                                        //IsBusy = false;
+                                        if (refreshTask.IsFaulted)
+                                        {
+                                            SetError(refreshTask.Exception.ToString());
+                                        }
+                                    }, TaskScheduler.FromCurrentSynchronizationContext());
 
-                                     if (refreshTask.IsFaulted)
-                                     {
-                                         SetError(refreshTask.Exception.ToString());
-                                     }
-                                 }, TaskScheduler.FromCurrentSynchronizationContext());
+                    //await command.ExecuteAsync(viewModel)
+                    //             .ContinueWith(refreshTask =>
+                    //             {
+                    //                 LastUpdated = DateTime.Now;
+                    //                 IsBusy = false;
+
+                    //                 if (refreshTask.IsFaulted)
+                    //                 {
+                    //                     SetError(refreshTask.Exception.ToString());
+                    //                 }
+                    //             }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
                 else
                 {

@@ -3,6 +3,7 @@ using WirelessTagClientApp.Common;
 using WirelessTagClientApp.Commands;
 using System.Windows.Input;
 using System;
+using System.Threading.Tasks;
 
 namespace WirelessTagClientApp.ViewModels
 {
@@ -37,6 +38,11 @@ namespace WirelessTagClientApp.ViewModels
 
             rawDataCache = new TemperatureRawDataCache();
             temperatureUnits = TemperatureUnits.Celsius;
+        }
+
+        public async Task RefreshAsync()
+        {
+            await refreshCommand.ExecuteAsync(this);
         }
 
         /// <summary>
