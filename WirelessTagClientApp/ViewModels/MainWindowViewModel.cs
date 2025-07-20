@@ -60,8 +60,8 @@ namespace WirelessTagClientApp.ViewModels
             errorMessage = String.Empty;
 
             viewModelMap = new Dictionary<ViewMode, ViewModelBase>();
-            var summaryViewModel = new AllTagsViewModel();
-            var minMaxViewModel = new MinMaxViewModel();
+            var summaryViewModel = new AllTagsViewModel(this);
+            var minMaxViewModel = new MinMaxViewModel(this);
 
             viewModelMap[ViewMode.SummaryView] = summaryViewModel;
             viewModelMap[ViewMode.MinMaxView] = minMaxViewModel;
@@ -238,6 +238,16 @@ namespace WirelessTagClientApp.ViewModels
 
                 NotifyPropertyChanged();
             }
+        }
+
+        public IWirelessTagAsyncClient Client
+        {
+            get { return client; }
+        }
+
+        public Options Options
+        {
+            get { return options; }
         }
 
         public void SetError(string message)

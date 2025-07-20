@@ -7,18 +7,86 @@
              xmlns:converters="clr-namespace:ValueConverters;assembly=ValueConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+   
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
+
+            <ContextMenu x:Key="contextMenu" >
+                <MenuItem 
+                    Header="Refresh"
+                    Command="{Binding Path=RefreshCommand}"
+                    CommandParameter="{Binding}" >
+                    <MenuItem.Icon>
+                        <Image Source="/Images/Refresh.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem 
+                    Header="Copy"
+                    Command="{Binding Path=CopyCommand}"
+                    CommandParameter="{Binding}" >
+                        <MenuItem.Icon>
+                            <Image Source="/Images/Copy.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                        </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem 
+                    Header="Toggle Next View"
+                    Command="{Binding Path=ToggleNextViewCommand}"
+                    CommandParameter="{Binding}" >
+                </MenuItem>
+
+                <MenuItem 
+                    Header="Toggle Previous View"
+                    Command="{Binding Path=TogglePreviousViewCommand}"
+                    CommandParameter="{Binding}" >
+                </MenuItem>
+
+                <Separator />
+
+                <!-- Navigation to other views and operations through the main view follow -->
+                <MenuItem 
+                    Header="Min-Max View"
+                    Command="{Binding Path=ParentViewModel.MinMaxViewCommand}"
+                    CommandParameter="{Binding Path=ParentViewModel}" >
+                    <MenuItem.Icon>
+                        <Image Source="/WirelessTagClientApp;component/Images/FlagPurple.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <Separator />
+                
+                <MenuItem 
+                    Header="About..."
+                    Command="{Binding Path=ParentViewModel.AboutCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/StatusInformation.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+
+                <MenuItem 
+                    Header="Close"
+                    Command="{Binding Path=ParentViewModel.CloseCommand}"
+                CommandParameter="{Binding}" >
+                    <MenuItem.Icon>
+                        <Image Source="/Images/Close.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+            </ContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <UserControl.InputBindings>
+        <KeyBinding Command="{Binding Path=CopyCommand}" Key="C" Modifiers="Ctrl" CommandParameter="{Binding}"/>
+        <KeyBinding Command="{Binding Path=RefreshCommand}" Key="F5" CommandParameter="{Binding}"/>
         <KeyBinding Command="{Binding Path=ToggleNextViewCommand}" Key="F9" CommandParameter="{Binding}"/>
-        <KeyBinding Command="{Binding Path=TogglePreviousViewCommand}" Key="F9" Modifiers="Ctrl" CommandParameter="{Binding}"/>
+        <KeyBinding Command="{Binding Path=TogglePreviousViewCommand}" Key="F9" Modifiers="Shift" CommandParameter="{Binding}"/>
     </UserControl.InputBindings>
 
-    <Grid>
+    <Grid ContextMenu="{StaticResource contextMenu}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />

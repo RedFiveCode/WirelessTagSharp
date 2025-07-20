@@ -10,23 +10,29 @@ namespace WirelessTagClientApp.ViewModels
     [DebuggerDisplay("Count={tagList.Count}")]
     public class AllTagsViewModel : ViewModelBase
     {
+        private readonly MainWindowViewModel parentViewModel;
+
         private ToggleViewCommand toggleNextViewCommand;
         private ToggleViewCommand togglePreviousViewCommand;
         private CopyAllTagsCommand copyCommand;
+        private readonly RefreshAllTagsCommand refreshCommand;
         private ObservableCollection<TagViewModel> tagList;
         private DateTime lastUpdated;
 
         /// <summary>
         /// Ctor
         /// </summary>
-        public AllTagsViewModel()
+        public AllTagsViewModel(MainWindowViewModel parentViewModel = null)
         {
+            this.parentViewModel = parentViewModel;
+
             Tags = new ObservableCollection<TagViewModel>();
             lastUpdated = DateTime.MinValue;
 
             toggleNextViewCommand = new ToggleViewCommand();
             togglePreviousViewCommand = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
             copyCommand = new CopyAllTagsCommand();
+            refreshCommand = new RefreshAllTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
         }
 
         /// <summary>
@@ -77,6 +83,22 @@ namespace WirelessTagClientApp.ViewModels
         public ICommand CopyCommand
         {
             get { return copyCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the command to refresh the view
+        /// </summary>
+        public ICommand RefreshCommand
+        {
+            get { return refreshCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the parent view-model (for command routing)
+        /// </summary>
+        public MainWindowViewModel ParentViewModel
+        {
+            get { return parentViewModel; }
         }
     }
 }

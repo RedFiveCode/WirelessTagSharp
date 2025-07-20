@@ -10,24 +10,31 @@ namespace WirelessTagClientApp.ViewModels
 
     public class MinMaxViewModel : ViewModelBase
     {
+        private readonly MainWindowViewModel parentViewModel;
+
         private ObservableCollection<MinMaxMeasurementViewModel> data;
         private DateTime lastUpdated;
         private CopyMinMaxTagsCommand copyCommand;
         private CopyMinMaxTagsCommand copyRawDataCommand;
         private ToggleTemperatureUnitsCommand toggleUnitsCommand;
+        private readonly RefreshMinMaxTagsCommand refreshCommand;
         private TemperatureRawDataCache rawDataCache;
         private TemperatureUnits temperatureUnits;
 
         /// <summary>
         /// ctor
         /// </summary>
-        public MinMaxViewModel()
+        public MinMaxViewModel(MainWindowViewModel parentViewModel = null)
         {
+            this.parentViewModel = parentViewModel;
+
             data = new ObservableCollection<MinMaxMeasurementViewModel>();
             lastUpdated = DateTime.MinValue;
             copyCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
             copyRawDataCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.RawData);
             toggleUnitsCommand = new ToggleTemperatureUnitsCommand();
+            refreshCommand = new RefreshMinMaxTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
+
             rawDataCache = new TemperatureRawDataCache();
             temperatureUnits = TemperatureUnits.Celsius;
         }
@@ -110,6 +117,22 @@ namespace WirelessTagClientApp.ViewModels
         public ICommand ToggleTemperatureUnitsCommand
         {
             get { return toggleUnitsCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the command to refresh the view
+        /// </summary>
+        public ICommand RefreshCommand
+        {
+            get { return refreshCommand.Command; }
+        }
+
+        /// <summary>
+        /// Get the parent view-model (for command routing)
+        /// </summary>
+        public MainWindowViewModel ParentViewModel
+        {
+            get { return parentViewModel; }
         }
     }
 }

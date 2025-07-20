@@ -23,8 +23,11 @@ namespace WirelessTagClientApp.Test.ViewModel
         [TestMethod]
         public void Ctor_Should_Initialise_Properties_To_Expected_Values()
         {
+            // arrange
+            var parentViewModel = new MainWindowViewModel();
+
             // act
-            var target = new AllTagsViewModel();
+            var target = new AllTagsViewModel(parentViewModel);
 
             // assert
             Assert.IsNotNull(target.Tags);
@@ -34,6 +37,8 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.IsNotNull(target.ToggleNextViewCommand);
             Assert.IsNotNull(target.TogglePreviousViewCommand);
             Assert.IsNotNull(target.CopyCommand);
+            Assert.IsNotNull(target.RefreshCommand);
+            Assert.AreSame(parentViewModel, target.ParentViewModel);
         }
 
         [TestMethod]
