@@ -7,14 +7,14 @@ namespace WirelessTagClientApp.Commands
 {
     public class NavigateHyperlinkCommand
     {
-        private readonly IProcessStarter processStarter;
+        private readonly IProcessStarter _processStarter;
 
         public NavigateHyperlinkCommand() : this(new ProcessStarter())
         { }
 
         public NavigateHyperlinkCommand(IProcessStarter processStarter)
         {
-            this.processStarter = processStarter;
+            this._processStarter = processStarter;
             Command = new RelayCommandT<string>(p => Navigate(p));
         }
 
@@ -25,7 +25,7 @@ namespace WirelessTagClientApp.Commands
 
         private void Navigate(string uri)
         {
-            processStarter.Start(uri);
+            _processStarter.Start(uri);
         }
     }
 }

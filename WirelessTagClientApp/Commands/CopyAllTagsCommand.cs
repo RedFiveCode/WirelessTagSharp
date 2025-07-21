@@ -9,7 +9,7 @@ namespace WirelessTagClientApp.Commands
 {
     public class CopyAllTagsCommand
     {
-        private readonly IClipboardWriter clipboardWriter;
+        private readonly IClipboardWriter _clipboardWriter;
 
         /// <summary>
         /// Get the command object.
@@ -19,18 +19,18 @@ namespace WirelessTagClientApp.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyAllTagsCommand"/> class
         /// </summary>
-        /// <param name="mode"></param>
+        /// <param _name="mode"></param>
         public CopyAllTagsCommand() : this(new ClipboardWriter())
         { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyAllTagsCommand"/> class for unit testing
         /// </summary>
-        /// <param name="clipboardWriter">Clipboard writer</param>
+        /// <param _name="clipboardWriter">Clipboard writer</param>
         public CopyAllTagsCommand(IClipboardWriter clipboardWriter)
         {
             Command = new RelayCommandT<AllTagsViewModel>(p => Copy(p), p => CanCopy(p));
-            this.clipboardWriter = clipboardWriter;
+            _clipboardWriter = clipboardWriter;
         }
 
         private bool CanCopy(AllTagsViewModel viewModel)
@@ -47,7 +47,7 @@ namespace WirelessTagClientApp.Commands
 
             var csv = GetCSVData(viewModel);
 
-            clipboardWriter.WriteText(csv);
+            _clipboardWriter.WriteText(csv);
         }
 
         private string GetCSVData(AllTagsViewModel viewModel)

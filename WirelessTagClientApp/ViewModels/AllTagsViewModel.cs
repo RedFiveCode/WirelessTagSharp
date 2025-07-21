@@ -12,34 +12,34 @@ namespace WirelessTagClientApp.ViewModels
     [DebuggerDisplay("Count={tagList.Count}")]
     public class AllTagsViewModel : ViewModelBase
     {
-        private readonly MainWindowViewModel parentViewModel;
+        private readonly MainWindowViewModel _parentViewModel;
 
-        private readonly ToggleViewCommand toggleNextViewCommand;
-        private readonly ToggleViewCommand togglePreviousViewCommand;
-        private readonly CopyAllTagsCommand copyCommand;
-        private readonly RefreshAllTagsCommand refreshCommand;
-        private ObservableCollection<TagViewModel> tagList;
-        private DateTime lastUpdated;
+        private readonly ToggleViewCommand _toggleNextViewCommand;
+        private readonly ToggleViewCommand _togglePreviousViewCommand;
+        private readonly CopyAllTagsCommand _copyCommand;
+        private readonly RefreshAllTagsCommand _refreshCommand;
+        private ObservableCollection<TagViewModel> _tagList;
+        private DateTime _lastUpdated;
 
         /// <summary>
         /// Ctor
         /// </summary>
         public AllTagsViewModel(MainWindowViewModel parentViewModel = null)
         {
-            this.parentViewModel = parentViewModel;
+            _parentViewModel = parentViewModel;
 
             Tags = new ObservableCollection<TagViewModel>();
-            lastUpdated = DateTime.MinValue;
+            _lastUpdated = DateTime.MinValue;
 
-            toggleNextViewCommand = new ToggleViewCommand();
-            togglePreviousViewCommand = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
-            copyCommand = new CopyAllTagsCommand();
-            refreshCommand = new RefreshAllTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
+            _toggleNextViewCommand = new ToggleViewCommand();
+            _togglePreviousViewCommand = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
+            _copyCommand = new CopyAllTagsCommand();
+            _refreshCommand = new RefreshAllTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
         }
 
         public async Task RefreshAsync()
         {
-            await refreshCommand.ExecuteAsync(this);
+            await _refreshCommand.ExecuteAsync(this);
         }
 
         /// <summary>
@@ -47,10 +47,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ObservableCollection<TagViewModel> Tags
         {
-            get { return tagList; }
+            get { return _tagList; }
             set
             {
-                tagList = value;
+                _tagList = value;
                 NotifyPropertyChanged();
             }
         }
@@ -60,10 +60,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public DateTime LastUpdated
         {
-            get { return lastUpdated; }
+            get { return _lastUpdated; }
             set
             {
-                lastUpdated = value;
+                _lastUpdated = value;
                 NotifyPropertyChanged();
             }
         }
@@ -73,7 +73,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand ToggleNextViewCommand
         {
-            get { return toggleNextViewCommand.Command; }
+            get { return _toggleNextViewCommand.Command; }
         }
 
         /// <summary>
@@ -81,15 +81,15 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand TogglePreviousViewCommand
         {
-            get { return togglePreviousViewCommand.Command; }
+            get { return _togglePreviousViewCommand.Command; }
         }
 
         /// <summary>
-        /// Get the command to copy the data for all tags to the clipboard
+        /// Get the command to copy the _data for all tags to the clipboard
         /// </summary>
         public ICommand CopyCommand
         {
-            get { return copyCommand.Command; }
+            get { return _copyCommand.Command; }
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand RefreshCommand
         {
-            get { return refreshCommand.Command; }
+            get { return _refreshCommand.Command; }
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public MainWindowViewModel ParentViewModel
         {
-            get { return parentViewModel; }
+            get { return _parentViewModel; }
         }
     }
 }

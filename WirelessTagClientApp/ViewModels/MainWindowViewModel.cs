@@ -11,26 +11,26 @@ namespace WirelessTagClientApp.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly IWirelessTagAsyncClient client;
-        private readonly Options options;
+        private readonly IWirelessTagAsyncClient _client;
+        private readonly Options _options;
 
-        private DateTime lastUpdated;
-        private bool isBusy;
-        private bool isError;
-        private string errorMessage;
+        private DateTime _lastUpdated;
+        private bool _isBusy;
+        private bool _isError;
+        private string _errorMessage;
 
-        private readonly RefreshViewCommand refreshCommand;
-        private readonly CloseCommand closeCommand;
-        private readonly AboutCommand aboutCommand;
-        private readonly ChangeViewCommand summaryViewCommand;
-        private readonly ChangeViewCommand minMaxViewCommand;
-        private readonly DelegatedCommand copyCommand;
-        private readonly DelegatedCommand toggleUnitsCommand;
-        private readonly DelegatedCommand copyRawDataCommand;
+        private readonly RefreshViewCommand _refreshCommand;
+        private readonly CloseCommand _closeCommand;
+        private readonly AboutCommand _aboutCommand;
+        private readonly ChangeViewCommand _summaryViewCommand;
+        private readonly ChangeViewCommand _minMaxViewCommand;
+        private readonly DelegatedCommand _copyCommand;
+        private readonly DelegatedCommand _toggleUnitsCommand;
+        private readonly DelegatedCommand _copyRawDataCommand;
 
-        private ViewMode mode;
-        private ViewModelBase activeViewModel;
-        private readonly Dictionary<ViewMode, ViewModelBase> viewModelMap;
+        private ViewMode _mode;
+        private ViewModelBase _activeViewModel;
+        private readonly Dictionary<ViewMode, ViewModelBase> _viewModelMap;
 
         public enum ViewMode { SummaryView = 0, MinMaxView }
 
@@ -53,37 +53,37 @@ namespace WirelessTagClientApp.ViewModels
         /// <param name="client"></param>
         public MainWindowViewModel(IWirelessTagAsyncClient client, Options options)
         {
-            this.client = client;
-            this.options = options;
-            isBusy = false;
-            isError = false;
-            errorMessage = String.Empty;
+            this._client = client;
+            this._options = options;
+            _isBusy = false;
+            _isError = false;
+            _errorMessage = String.Empty;
 
-            viewModelMap = new Dictionary<ViewMode, ViewModelBase>();
+            _viewModelMap = new Dictionary<ViewMode, ViewModelBase>();
             var summaryViewModel = new AllTagsViewModel(this);
             var minMaxViewModel = new MinMaxViewModel(this);
 
-            viewModelMap[ViewMode.SummaryView] = summaryViewModel;
-            viewModelMap[ViewMode.MinMaxView] = minMaxViewModel;
+            _viewModelMap[ViewMode.SummaryView] = summaryViewModel;
+            _viewModelMap[ViewMode.MinMaxView] = minMaxViewModel;
 
             Mode = ViewMode.SummaryView;
 
-            refreshCommand = new RefreshViewCommand();
-            closeCommand = new CloseCommand();
-            aboutCommand = new AboutCommand();
-            summaryViewCommand = new ChangeViewCommand(ViewMode.SummaryView);
-            minMaxViewCommand = new ChangeViewCommand(ViewMode.MinMaxView);
-            copyCommand = new DelegatedCommand();
-            toggleUnitsCommand = new DelegatedCommand();
-            copyRawDataCommand = new DelegatedCommand();
+            _refreshCommand = new RefreshViewCommand();
+            _closeCommand = new CloseCommand();
+            _aboutCommand = new AboutCommand();
+            _summaryViewCommand = new ChangeViewCommand(ViewMode.SummaryView);
+            _minMaxViewCommand = new ChangeViewCommand(ViewMode.MinMaxView);
+            _copyCommand = new DelegatedCommand();
+            _toggleUnitsCommand = new DelegatedCommand();
+            _copyRawDataCommand = new DelegatedCommand();
 
             // associate commands for main view that are delegated to the active child view(s)
-            copyCommand.Register(ViewMode.SummaryView, summaryViewModel.CopyCommand);
-            copyCommand.Register(ViewMode.MinMaxView, minMaxViewModel.CopyCommand);
+            _copyCommand.Register(ViewMode.SummaryView, summaryViewModel.CopyCommand);
+            _copyCommand.Register(ViewMode.MinMaxView, minMaxViewModel.CopyCommand);
 
-            toggleUnitsCommand.Register(ViewMode.MinMaxView, minMaxViewModel.ToggleTemperatureUnitsCommand);
+            _toggleUnitsCommand.Register(ViewMode.MinMaxView, minMaxViewModel.ToggleTemperatureUnitsCommand);
 
-            copyRawDataCommand.Register(ViewMode.MinMaxView, minMaxViewModel.CopyRawDataCommand);
+            _copyRawDataCommand.Register(ViewMode.MinMaxView, minMaxViewModel.CopyRawDataCommand);
         }
 
 
@@ -100,10 +100,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public DateTime LastUpdated
         {
-            get { return lastUpdated; }
+            get { return _lastUpdated; }
             set
             {
-                lastUpdated = value;
+                _lastUpdated = value;
                 NotifyPropertyChanged();
             }
         }
@@ -113,10 +113,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public bool IsBusy
         {
-            get { return isBusy; }
+            get { return _isBusy; }
             set
             {
-                isBusy = value;
+                _isBusy = value;
                 NotifyPropertyChanged();
             }
         }
@@ -126,10 +126,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public bool IsError
         {
-            get { return isError; }
+            get { return _isError; }
             set
             {
-                isError = value;
+                _isError = value;
                 NotifyPropertyChanged();
             }
         }
@@ -142,10 +142,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </remarks>
         public string ErrorMessage
         {
-            get { return errorMessage; }
+            get { return _errorMessage; }
             set
             {
-                errorMessage = value;
+                _errorMessage = value;
 
                 IsError = !String.IsNullOrEmpty(value);
                 NotifyPropertyChanged();
@@ -157,7 +157,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand RefreshCommand
         {
-            get { return refreshCommand.Command; }
+            get { return _refreshCommand.Command; }
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand CloseCommand
         {
-            get { return closeCommand.Command; }
+            get { return _closeCommand.Command; }
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand AboutCommand
         {
-            get { return aboutCommand.Command; }
+            get { return _aboutCommand.Command; }
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand SummaryViewCommand
         {
-            get { return summaryViewCommand.Command; }
+            get { return _summaryViewCommand.Command; }
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand MinMaxViewCommand
         {
-            get { return minMaxViewCommand.Command; }
+            get { return _minMaxViewCommand.Command; }
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand CopyCommand
         {
-            get { return copyCommand.Command; }
+            get { return _copyCommand.Command; }
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand CopyRawDataCommand
         {
-            get { return copyRawDataCommand.Command; }
+            get { return _copyRawDataCommand.Command; }
         }
 
         /// <summary>
@@ -213,28 +213,28 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand ToggleUnitsCommand
         {
-            get { return toggleUnitsCommand.Command; }
+            get { return _toggleUnitsCommand.Command; }
         }
 
         public ViewModelBase ActiveViewModel
         {
-            get { return activeViewModel; }
+            get { return _activeViewModel; }
 
             set
             {
-                activeViewModel = value;
+                _activeViewModel = value;
                 NotifyPropertyChanged();
             }
         }
 
         public ViewMode Mode
         {
-            get { return mode; }
+            get { return _mode; }
 
             set
             {
-                mode = value;
-                ActiveViewModel = viewModelMap[value];
+                _mode = value;
+                ActiveViewModel = _viewModelMap[value];
 
                 NotifyPropertyChanged();
             }
@@ -242,12 +242,12 @@ namespace WirelessTagClientApp.ViewModels
 
         public IWirelessTagAsyncClient Client
         {
-            get { return client; }
+            get { return _client; }
         }
 
         public Options Options
         {
-            get { return options; }
+            get { return _options; }
         }
 
         public void SetError(string message)
@@ -264,9 +264,9 @@ namespace WirelessTagClientApp.ViewModels
                 //IsBusy = true;
 
                 // TODO - delegate to each view model to refresh using the respective command
-                if (mode == ViewMode.SummaryView)
+                if (_mode == ViewMode.SummaryView)
                 {
-                    var viewModel = viewModelMap[mode] as AllTagsViewModel;
+                    var viewModel = _viewModelMap[_mode] as AllTagsViewModel;
 
                     await viewModel.RefreshAsync()
                                  .ContinueWith(refreshTask =>
@@ -281,9 +281,9 @@ namespace WirelessTagClientApp.ViewModels
                                  }, TaskScheduler.FromCurrentSynchronizationContext());
 
                 }
-                else if (mode == ViewMode.MinMaxView)
+                else if (_mode == ViewMode.MinMaxView)
                 {
-                    var viewModel = viewModelMap[mode] as MinMaxViewModel;
+                    var viewModel = _viewModelMap[_mode] as MinMaxViewModel;
 
                     await viewModel.RefreshAsync()
                                    .ContinueWith(refreshTask =>
@@ -310,7 +310,7 @@ namespace WirelessTagClientApp.ViewModels
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException($"Cannot refresh active view '{mode}'");
+                    throw new ArgumentOutOfRangeException($"Cannot refresh active view '{_mode}'");
                 }
             }
             catch (Exception ex)

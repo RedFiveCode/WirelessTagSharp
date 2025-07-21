@@ -15,12 +15,12 @@ namespace WirelessTagClientLib
     /// </summary>
     public class WirelessTagAsyncClient : IWirelessTagAsyncClient
     {
-        private readonly IRestClient client;
+        private readonly IRestClient _client;
 
         public WirelessTagAsyncClient(string accessToken)
         {
             Url = WirelessTagConstants.Url;
-            client = new RestClientWrapper(Url, accessToken);
+            _client = new RestClientWrapper(Url, accessToken);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace WirelessTagClientLib
         /// <param name="restClient"></param>
         public WirelessTagAsyncClient(IRestClient restClient)
         {
-            client = restClient;
+            _client = restClient;
             Url = WirelessTagConstants.Url;
         }
 
@@ -49,7 +49,7 @@ namespace WirelessTagClientLib
                 Password = password
             };
 
-            var response = await client.ExecuteAsync(request.AsRestRequest);
+            var response = await _client.ExecuteAsync(request.AsRestRequest);
 
             // get InternalServerError (500) if Email or password is incorrect
             return response != null && response.StatusCode == HttpStatusCode.OK;
@@ -130,7 +130,7 @@ namespace WirelessTagClientLib
 
         private async Task<RestSharp.RestResponse> ExecuteAsync(RestSharp.RestRequest request)
         {
-            var response = await client.ExecuteAsync(request);
+            var response = await _client.ExecuteAsync(request);
 
             if (response == null)
             {

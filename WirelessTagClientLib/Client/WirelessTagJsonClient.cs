@@ -10,12 +10,12 @@ namespace WirelessTagClientLib
     /// </summary>
     public class WirelessTagJsonClient : IWirelessTagJsonClient
     {
-        private readonly IRestClient client;
+        private readonly IRestClient _client;
 
         public WirelessTagJsonClient(string accessToken)
         {
             Url = WirelessTagConstants.Url;
-            client = new RestClientWrapper(Url, accessToken);
+            _client = new RestClientWrapper(Url, accessToken);
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace WirelessTagClientLib
         /// <param name="restClient"></param>
         public WirelessTagJsonClient(IRestClient restClient)
         {
-            client = restClient;
+            _client = restClient;
         }
 
         public string Url { get; private set; }
@@ -45,7 +45,7 @@ namespace WirelessTagClientLib
                 Password = password
             };
 
-            var response = client.Execute(request.AsRestRequest);
+            var response = _client.Execute(request.AsRestRequest);
 
             // get InternalServerError (500) if Email or password is incorrect
             return response.Content;
@@ -148,7 +148,7 @@ namespace WirelessTagClientLib
         /// <exception cref="HttpStatusException"></exception>
         private string Execute(JsonPostRequest request)
         {
-            var response = client.Execute(request.AsRestRequest);
+            var response = _client.Execute(request.AsRestRequest);
 
             if (response.StatusCode != HttpStatusCode.OK) // 200
             {

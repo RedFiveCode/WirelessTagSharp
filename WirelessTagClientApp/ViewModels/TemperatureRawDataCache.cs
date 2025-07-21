@@ -2,25 +2,24 @@
 using System.Linq;
 using System.Collections.Generic;
 using WirelessTagClientLib.DTO;
-using System.Collections.ObjectModel;
 
 namespace WirelessTagClientApp.ViewModels
 {
     /// <summary>
-    /// Data cache for temperature measurements, indexed by tagId.
+    /// Data cache for _temperature measurements, indexed by tagId.
     /// </summary>
     public class TemperatureRawDataCache
     {
-        private readonly Dictionary<int, HashSet<TemperatureDataPoint>> rawDataMap;
-        private readonly TemperatureDataPointComparer comparer;
+        private readonly Dictionary<int, HashSet<TemperatureDataPoint>> _rawDataMap;
+        private readonly TemperatureDataPointComparer _comparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemperatureRawDataCache"/> class
         /// </summary>
         public TemperatureRawDataCache()
         {
-            rawDataMap = new Dictionary<int, HashSet<TemperatureDataPoint>>();
-            comparer = new TemperatureDataPointComparer();
+            _rawDataMap = new Dictionary<int, HashSet<TemperatureDataPoint>>();
+            _comparer = new TemperatureDataPointComparer();
         }
 
         /// <summary>
@@ -37,7 +36,7 @@ namespace WirelessTagClientApp.ViewModels
             //[0]: Time ={ 18-Aug-2015 13:38:41}, Temperature = 20.964792251586914, Humidity = 56.5, Lux = -1, Battery = 2.4708389506362045
             //[1]: Time ={ 18-Aug-2015 13:38:41}, Temperature = 20.975517272949219, Humidity = 56.49237060546875, Lux = -1, Battery = 2.470835032645573
 
-            // Underlying json response data is
+            // Underlying json response _data is
             //{
             //            "__type": "MyTagList.ethLogs+TemperatureDataPoint",
             //  "time": "2015-07-20T13:32:02+01:00",
@@ -55,7 +54,7 @@ namespace WirelessTagClientApp.ViewModels
             //  "battery_volts": 2.6572811200207851
             //},
 
-            //var duplicates = data.GroupBy(x => x.Time)
+            //var duplicates = _data.GroupBy(x => x.Time)
             //                    .Where(x => x.Count() > 1)
             //                    .Select(x => x.Key)
             //                    .ToList();
@@ -66,21 +65,21 @@ namespace WirelessTagClientApp.ViewModels
             //    Console.WriteLine("Duplicates");
             //}
 
-            // these duplicates will be filtered out by the respective HashSet<TemperatureDataPoint> with the TemperatureDataPointComparer comparer
+            // these duplicates will be filtered out by the respective HashSet<TemperatureDataPoint> with the TemperatureDataPointComparer _comparer
 
-            if (!rawDataMap.ContainsKey(tagId))
+            if (!_rawDataMap.ContainsKey(tagId))
             {
-                rawDataMap.Add(tagId, new HashSet<TemperatureDataPoint>(comparer));
+                _rawDataMap.Add(tagId, new HashSet<TemperatureDataPoint>(_comparer));
             }
 
-            var rawDataSet = rawDataMap[tagId];
+            var rawDataSet = _rawDataMap[tagId];
 
             var originalItem = rawDataSet.ToList();
 
-            //Console.WriteLine($"Tag {tagId} : Update start: current {rawDataSet.Count()}, merging {data.Count()}");
+            //Console.WriteLine($"Tag {tagId} : Update start: current {rawDataSet.Count()}, merging {_data.Count()}");
 
-            //var commonItems = originalItem.Intersect(data).ToList();
-            //var differenceItems = originalItem.Except(data).ToList();
+            //var commonItems = originalItem.Intersect(_data).ToList();
+            //var differenceItems = originalItem.Except(_data).ToList();
 
             //Console.WriteLine($"Tag {tagId} : Before common {commonItems.Count}, differences {differenceItems.Count}");
 
@@ -93,8 +92,8 @@ namespace WirelessTagClientApp.ViewModels
                 }
             }
 
-            //var commonItems2 = rawDataSet.Intersect(data).ToList();
-            //var differenceItems2 = rawDataSet.Except(data).ToList();
+            //var commonItems2 = rawDataSet.Intersect(_data).ToList();
+            //var differenceItems2 = rawDataSet.Except(_data).ToList();
 
             //Console.WriteLine($"Tag {tagId} : After common {commonItems2.Count}, differences {differenceItems2.Count}");
 
@@ -106,7 +105,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public IEnumerable<TemperatureDataPoint> GetData(int tagId)
         {
-            return rawDataMap[tagId];
+            return _rawDataMap[tagId];
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public IEnumerable<TagMeasurementDataPoint> GetAllData()
         {
-            return rawDataMap.SelectMany(kvp => kvp.Value.Select(item => new TagMeasurementDataPoint(kvp.Key, item.Time, item.Temperature, item.Humidity, item.Lux, item.Battery)));
+            return _rawDataMap.SelectMany(kvp => kvp.Value.Select(item => new TagMeasurementDataPoint(kvp.Key, item.Time, item.Temperature, item.Humidity, item.Lux, item.Battery)));
         }
 
         /// <summary>
@@ -122,7 +121,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public bool ContainsDataForTag(int tagId)
         {
-            return rawDataMap.ContainsKey(tagId);
+            return _rawDataMap.ContainsKey(tagId);
         }
 
         /// <summary>
@@ -130,12 +129,12 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public bool ContainsDataForTag(int tagId, DateTime date)
         {
-            if (!rawDataMap.ContainsKey(tagId))
+            if (!_rawDataMap.ContainsKey(tagId))
             {
                 return false;
             }
 
-            return rawDataMap[tagId].Any(d => d.Time.Date == date.Date);
+            return _rawDataMap[tagId].Any(d => d.Time.Date == date.Date);
         }
 
         /// <summary>
@@ -149,7 +148,7 @@ namespace WirelessTagClientApp.ViewModels
                 throw new ArgumentOutOfRangeException("From date must be less than or equal to To date.");
             }
 
-            if (!rawDataMap.ContainsKey(tagId))
+            if (!_rawDataMap.ContainsKey(tagId))
             {
                 return false;
             }
@@ -157,7 +156,7 @@ namespace WirelessTagClientApp.ViewModels
             var start = from.Date;
             var finish = to.Date.AddHours(23).AddMinutes(59).AddSeconds(59); // to be inclusive need to extend to the end of the day
 
-            return rawDataMap[tagId].Any(d => d.Time >= start && d.Time <= finish);
+            return _rawDataMap[tagId].Any(d => d.Time >= start && d.Time <= finish);
         }
 
         /// <summary>
@@ -165,7 +164,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public int Count
         {
-            get { return rawDataMap.Count; }
+            get { return _rawDataMap.Count; }
         }
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public int ItemCount
         {
-            get { return rawDataMap.Sum(x => x.Value.Count); }
+            get { return _rawDataMap.Sum(x => x.Value.Count); }
         }
     }
 }

@@ -11,14 +11,14 @@ namespace WirelessTagClientApp.Commands
     /// </summary>
     public class AboutCommand
     {
-        private readonly IDialogService dialogService;
+        private readonly IDialogService _dialogService;
 
         public AboutCommand() : this(new AboutDialogService())
         {}
 
         public AboutCommand(IDialogService dialogService)
         {
-            this.dialogService = dialogService;
+            _dialogService = dialogService;
             Command = new RelayCommandT<Window>(p => ShowAboutDialog(p));
         }
 
@@ -34,7 +34,7 @@ namespace WirelessTagClientApp.Commands
                 owner = Application.Current.MainWindow;
             }
 
-            dialogService.ShowDialog(owner);
+            _dialogService.ShowDialog(owner);
         }
 
         /// <summary>

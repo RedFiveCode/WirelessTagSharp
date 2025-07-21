@@ -11,18 +11,18 @@ namespace WirelessTagClientApp.ViewModels
     [DebuggerDisplay("Tag={Name}, Temperature={Temperature}")]
     public class TagViewModel : ViewModelBase
     {
-        private ViewMode mode;
-        private string name;
-        private string description;
-        private int id;
-        private Guid uuid;
-        private DateTime lastCommunication;
-        private int signalStrength;
-        private double temperature;
-        private double relativeHumidity;
-        private double batteryVoltage;
-        private double batteryRemaining;
-        private bool isHumidityTag;
+        private ViewMode _mode;
+        private string _name;
+        private string _description;
+        private int _id;
+        private Guid _uuid;
+        private DateTime _lastCommunication;
+        private int _signalStrength;
+        private double _temperature;
+        private double _relativeHumidity;
+        private double _batteryVoltage;
+        private double _batteryRemaining;
+        private bool _isHumidityTag;
 
         public enum ViewMode { Temperature = 0, TemperatureF, Humidity, BatteryVoltage, BatteryPercent, VerboseDetails }
 
@@ -38,11 +38,11 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ViewMode Mode
         {
-            get { return mode; }
+            get { return _mode; }
 
             set
             {
-                mode = value;
+                _mode = value;
 
                 NotifyPropertyChanged();
             }
@@ -53,11 +53,11 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public string Name
         {
-            get { return name; }
+            get { return _name; }
 
             set
             {
-                name = value;
+                _name = value;
 
                 NotifyPropertyChanged();
             }
@@ -68,11 +68,11 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public string Description
         {
-            get { return description; }
+            get { return _description; }
 
             set
             {
-                description = value;
+                _description = value;
 
                 NotifyPropertyChanged();
             }
@@ -83,10 +83,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public int Id
         {
-            get { return id; }
+            get { return _id; }
             set
             {
-                id = value;
+                _id = value;
                 NotifyPropertyChanged();
             }
         }
@@ -96,10 +96,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public Guid Uuid
         {
-            get { return uuid; }
+            get { return _uuid; }
             set
             {
-                uuid = value;
+                _uuid = value;
                 NotifyPropertyChanged();
             }
         }
@@ -109,10 +109,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public double Temperature
         {
-            get { return temperature; }
+            get { return _temperature; }
             set
             {
-                temperature = value;
+                _temperature = value;
                 NotifyPropertyChanged();
                 NotifyPropertyChanged("TemperatureFahrenheit");
             }
@@ -123,7 +123,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public double TemperatureFahrenheit
         {
-            get { return TemperatureConvertor.ConvertToFahrenheit(temperature); }
+            get { return TemperatureConvertor.ConvertToFahrenheit(_temperature); }
         }
 
         /// <summary>
@@ -131,10 +131,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public double RelativeHumidity
         {
-            get { return relativeHumidity; }
+            get { return _relativeHumidity; }
             set
             {
-                relativeHumidity = value;
+                _relativeHumidity = value;
                 NotifyPropertyChanged();
             }
         }
@@ -144,10 +144,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public DateTime LastCommunication
         {
-            get { return lastCommunication; }
+            get { return _lastCommunication; }
             set
             {
-                lastCommunication = value;
+                _lastCommunication = value;
                 NotifyPropertyChanged();
             }
         }
@@ -157,10 +157,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public int SignalStrength
         {
-            get { return signalStrength; }
+            get { return _signalStrength; }
             set
             {
-                signalStrength = value;
+                _signalStrength = value;
                 NotifyPropertyChanged();
             }
         }
@@ -170,10 +170,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public double BatteryVoltage
         {
-            get { return batteryVoltage; }
+            get { return _batteryVoltage; }
             set
             {
-                batteryVoltage = value;
+                _batteryVoltage = value;
                 NotifyPropertyChanged();
             }
         }
@@ -183,10 +183,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public double BatteryRemaining
         {
-            get { return batteryRemaining; }
+            get { return _batteryRemaining; }
             set
             {
-                batteryRemaining = value;
+                _batteryRemaining = value;
                 NotifyPropertyChanged();
             }
         }
@@ -196,10 +196,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public bool IsHumidityTag
         {
-            get { return isHumidityTag; }
+            get { return _isHumidityTag; }
             set
             {
-                isHumidityTag = value;
+                _isHumidityTag = value;
                 NotifyPropertyChanged();
             }
         }

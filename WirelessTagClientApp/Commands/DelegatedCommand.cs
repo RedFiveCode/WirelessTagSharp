@@ -14,7 +14,7 @@ namespace WirelessTagClientApp.Commands
     /// </summary>
     public class DelegatedCommand
     {
-        private readonly Dictionary<MainWindowViewModel.ViewMode, ICommand> commandMap;
+        private readonly Dictionary<MainWindowViewModel.ViewMode, ICommand> _commandMap;
 
         /// <summary>
         /// Get the command object
@@ -27,7 +27,7 @@ namespace WirelessTagClientApp.Commands
         /// <param name="mode"></param>
         public DelegatedCommand()
         {
-            commandMap = new Dictionary<MainWindowViewModel.ViewMode, ICommand>();
+            _commandMap = new Dictionary<MainWindowViewModel.ViewMode, ICommand>();
             Command = new RelayCommandT<MainWindowViewModel>(p => Execute(p), p => CanExecute(p));
         }
 
@@ -40,7 +40,7 @@ namespace WirelessTagClientApp.Commands
         {
             ThrowIf.Argument.IsNull(command, nameof(command));
 
-            commandMap[mode] = command;
+            _commandMap[mode] = command;
         }
 
         private bool CanExecute(MainWindowViewModel p)
@@ -81,9 +81,9 @@ namespace WirelessTagClientApp.Commands
             }
 
             var mode = p.Mode;
-            if (commandMap.ContainsKey(mode))
+            if (_commandMap.ContainsKey(mode))
             {
-                return commandMap[mode];
+                return _commandMap[mode];
             }
 
             return null;

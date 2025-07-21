@@ -12,7 +12,7 @@ namespace WirelessTagClientApp.Commands
     {
         public enum Direction { Next = 0, Previous = -1 }
 
-        private readonly Direction direction;
+        private readonly Direction _direction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ToggleViewCommand"/> class.
@@ -24,7 +24,7 @@ namespace WirelessTagClientApp.Commands
         /// </summary>
         public ToggleViewCommand(Direction direction)
         {
-            this.direction = direction;
+            _direction = direction;
             Command = new RelayCommandT<AllTagsViewModel>(p => ToggleView(p));
         }
 
@@ -32,7 +32,7 @@ namespace WirelessTagClientApp.Commands
         {
             foreach (var tag in viewModel.Tags)
             {
-                tag.Mode = (direction == Direction.Next ? EnumHelper.NextEnum<TagViewModel.ViewMode>(tag.Mode)
+                tag.Mode = (_direction == Direction.Next ? EnumHelper.NextEnum<TagViewModel.ViewMode>(tag.Mode)
                                                         : EnumHelper.PreviousEnum<TagViewModel.ViewMode>(tag.Mode));
             }
         }

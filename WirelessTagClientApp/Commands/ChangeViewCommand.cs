@@ -9,7 +9,7 @@ namespace WirelessTagClientApp.Commands
     /// </summary>
     public class ChangeViewCommand
     {
-        private readonly MainWindowViewModel.ViewMode mode;
+        private readonly MainWindowViewModel.ViewMode _mode;
 
         /// <summary>
         /// Get the command object.
@@ -22,13 +22,13 @@ namespace WirelessTagClientApp.Commands
         /// <param name="mode"></param>
         public ChangeViewCommand(MainWindowViewModel.ViewMode mode)
         {
-            this.mode = mode;
+            _mode = mode;
             Command = new RelayCommandT<MainWindowViewModel>(p => ChangeView(p));
         }
 
         private void ChangeView(MainWindowViewModel p)
         {
-            p.Mode = mode; // this will change the active view-model as well
+            p.Mode = _mode; // this will change the active view-model as well
 
             // update main view LastUpdated from active child's view-model
             if (p.Mode == MainWindowViewModel.ViewMode.SummaryView)

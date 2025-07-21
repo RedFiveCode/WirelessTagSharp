@@ -11,38 +11,38 @@ namespace WirelessTagClientApp.ViewModels
 
     public class MinMaxViewModel : ViewModelBase
     {
-        private readonly MainWindowViewModel parentViewModel;
+        private readonly MainWindowViewModel _parentViewModel;
+        private readonly CopyMinMaxTagsCommand _copyCommand;
+        private readonly CopyMinMaxTagsCommand _copyRawDataCommand;
+        private readonly ToggleTemperatureUnitsCommand _toggleUnitsCommand;
+        private readonly RefreshMinMaxTagsCommand _refreshCommand;
+        private readonly TemperatureRawDataCache _rawDataCache;
 
-        private ObservableCollection<MinMaxMeasurementViewModel> data;
-        private DateTime lastUpdated;
-        private readonly CopyMinMaxTagsCommand copyCommand;
-        private readonly CopyMinMaxTagsCommand copyRawDataCommand;
-        private readonly ToggleTemperatureUnitsCommand toggleUnitsCommand;
-        private readonly RefreshMinMaxTagsCommand refreshCommand;
-        private readonly TemperatureRawDataCache rawDataCache;
-        private TemperatureUnits temperatureUnits;
+        private ObservableCollection<MinMaxMeasurementViewModel> _data;
+        private DateTime _lastUpdated;
+        private TemperatureUnits _temperatureUnits;
 
         /// <summary>
         /// ctor
         /// </summary>
         public MinMaxViewModel(MainWindowViewModel parentViewModel = null)
         {
-            this.parentViewModel = parentViewModel;
+            _parentViewModel = parentViewModel;
 
-            data = new ObservableCollection<MinMaxMeasurementViewModel>();
-            lastUpdated = DateTime.MinValue;
-            copyCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
-            copyRawDataCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.RawData);
-            toggleUnitsCommand = new ToggleTemperatureUnitsCommand();
-            refreshCommand = new RefreshMinMaxTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
+            _data = new ObservableCollection<MinMaxMeasurementViewModel>();
+            _lastUpdated = DateTime.MinValue;
+            _copyCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
+            _copyRawDataCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.RawData);
+            _toggleUnitsCommand = new ToggleTemperatureUnitsCommand();
+            _refreshCommand = new RefreshMinMaxTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
 
-            rawDataCache = new TemperatureRawDataCache();
-            temperatureUnits = TemperatureUnits.Celsius;
+            _rawDataCache = new TemperatureRawDataCache();
+            _temperatureUnits = TemperatureUnits.Celsius;
         }
 
         public async Task RefreshAsync()
         {
-            await refreshCommand.ExecuteAsync(this);
+            await _refreshCommand.ExecuteAsync(this);
         }
 
         /// <summary>
@@ -50,10 +50,10 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ObservableCollection<MinMaxMeasurementViewModel> Data
         {
-            get { return data; }
+            get { return _data; }
             set
             {
-                data = value;
+                _data = value;
                 NotifyPropertyChanged();
             }
         }
@@ -63,20 +63,20 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public DateTime LastUpdated
         {
-            get { return lastUpdated; }
+            get { return _lastUpdated; }
             set
             {
-                lastUpdated = value;
+                _lastUpdated = value;
                 NotifyPropertyChanged();
             }
         }
 
         public TemperatureUnits TemperatureUnits
         {
-            get { return temperatureUnits; }
+            get { return _temperatureUnits; }
             set
             {
-                temperatureUnits = value;
+                _temperatureUnits = value;
                 NotifyPropertyChanged();
                 NotifyPropertyChanged("IsTemperatureCelsius");
                 NotifyPropertyChanged("IsTemperatureFahrenheit");
@@ -85,12 +85,12 @@ namespace WirelessTagClientApp.ViewModels
 
         public bool IsTemperatureCelsius
         {
-            get { return temperatureUnits == TemperatureUnits.Celsius; }
+            get { return _temperatureUnits == TemperatureUnits.Celsius; }
         }
 
         public bool IsTemperatureFahrenheit
         {
-            get { return temperatureUnits == TemperatureUnits.Farenheit; }
+            get { return _temperatureUnits == TemperatureUnits.Farenheit; }
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public TemperatureRawDataCache RawDataCache
         {
-            get { return rawDataCache; }
+            get { return _rawDataCache; }
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand CopyCommand
         {
-            get { return copyCommand.Command; }
+            get { return _copyCommand.Command; }
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand CopyRawDataCommand
         {
-            get { return copyRawDataCommand.Command; }
+            get { return _copyRawDataCommand.Command; }
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand ToggleTemperatureUnitsCommand
         {
-            get { return toggleUnitsCommand.Command; }
+            get { return _toggleUnitsCommand.Command; }
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public ICommand RefreshCommand
         {
-            get { return refreshCommand.Command; }
+            get { return _refreshCommand.Command; }
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public MainWindowViewModel ParentViewModel
         {
-            get { return parentViewModel; }
+            get { return _parentViewModel; }
         }
     }
 }

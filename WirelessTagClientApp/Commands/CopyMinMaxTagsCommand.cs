@@ -12,8 +12,8 @@ namespace WirelessTagClientApp.Commands
 {
     public class CopyMinMaxTagsCommand
     {
-        private readonly IClipboardWriter clipboardWriter;
-        private readonly DataSource dataSource;
+        private readonly IClipboardWriter _clipboardWriter;
+        private readonly DataSource _dataSource;
 
         public enum DataSource { MinMaxSummary, RawData }
 
@@ -36,8 +36,8 @@ namespace WirelessTagClientApp.Commands
         /// <param name="clipboardWriter">Clipboard writer</param>
         public CopyMinMaxTagsCommand(DataSource dataSource, IClipboardWriter clipboardWriter)
         {
-            this.dataSource = dataSource;
-            this.clipboardWriter = clipboardWriter;
+            _dataSource = dataSource;
+            _clipboardWriter = clipboardWriter;
 
             Command = new RelayCommandT<MinMaxViewModel>(p => Copy(p), p => CanCopy(p));
         }
@@ -56,21 +56,21 @@ namespace WirelessTagClientApp.Commands
 
             var csv = GetCSVData(viewModel);
 
-            clipboardWriter.WriteText(csv);
+            _clipboardWriter.WriteText(csv);
         }
 
         private string GetCSVData(MinMaxViewModel viewModel)
         {
-            if (dataSource == DataSource.MinMaxSummary)
+            if (_dataSource == DataSource.MinMaxSummary)
             {
                 return GetCSVData(viewModel.Data);
             }
-            else if (dataSource == DataSource.RawData)
+            else if (_dataSource == DataSource.RawData)
             {
                 return GetCSVData(viewModel.RawDataCache.GetAllData());
             }
 
-            throw new InvalidOperationException($"Unknown data source ({dataSource}) for CopyMinMaxTagsCommand");
+            throw new InvalidOperationException($"Unknown data source ({_dataSource}) for CopyMinMaxTagsCommand");
         }
 
         private string GetCSVData(IEnumerable<MinMaxMeasurementViewModel> data)

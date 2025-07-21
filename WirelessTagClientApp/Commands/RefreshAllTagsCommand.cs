@@ -12,15 +12,15 @@ namespace WirelessTagClientApp.Commands
 {
     public class RefreshAllTagsCommand
     {
-        private readonly IWirelessTagAsyncClient client;
-        private readonly Options options;
+        private readonly IWirelessTagAsyncClient _client;
+        private readonly Options _options;
 
         public IAsyncCommand<AllTagsViewModel> Command { get; private set; }
 
         public RefreshAllTagsCommand(IWirelessTagAsyncClient client, Options options)
         {
-            this.client = client;
-            this.options = options;
+            _client = client;
+            _options = options;
             Command = new AsyncCommand<AllTagsViewModel>(p => ExecuteAsync(p), p => CanExecute(p));
         }
 
@@ -36,14 +36,14 @@ namespace WirelessTagClientApp.Commands
                 // uncomment to simulate a very long delay in getting response
                 //await Task.Delay(5000);
 
-                //var loginTask = client.LoginAsync(options.Username, options.Password);
+                //var loginTask = _client.LoginAsync(_options.Username, _options.Password);
 
                 //await loginTask;
 
                 // set busy overlay
                 viewModel.ParentViewModel.IsBusy = true;
 
-                await client.GetTagListAsync()
+                await _client.GetTagListAsync()
                         .ContinueWith(tt =>
                         {
                             // UI thread

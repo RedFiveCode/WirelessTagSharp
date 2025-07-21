@@ -66,8 +66,8 @@ namespace WirelessTagClientApp.Common
     public class RelayCommandT<T> : ICommand where T : class
     {
         #region Fields
-        readonly Action<T> _execute;
-        readonly Predicate<T> _canExecute;
+        private readonly Action<T> _execute;
+        private readonly Predicate<T> _canExecute;
         #endregion // Fields
 
         #region Constructors

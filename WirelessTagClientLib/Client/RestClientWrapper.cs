@@ -1,5 +1,4 @@
 ﻿using RestSharp;
-using RestSharp.Authenticators;
 using RestSharp.Authenticators.OAuth2;
 using System;
 using System.Threading.Tasks;
@@ -11,11 +10,11 @@ namespace WirelessTagClientLib
     /// </summary>
     internal class RestClientWrapper : IRestClient
     {
-        private readonly RestClient client;
+        private readonly RestClient _client;
 
         public RestClientWrapper()
         {
-            client = new RestClient();
+            _client = new RestClient();
         }
 
         public RestClientWrapper(string url, string accessToken) : this(url, accessToken, TimeSpan.FromSeconds(120))
@@ -29,22 +28,22 @@ namespace WirelessTagClientLib
                 Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(accessToken, "Bearer")
             };
 
-            client = new RestClient(options);
+            _client = new RestClient(options);
         }
 
         public RestClientWrapper(RestClient client)
         {
-            this.client = client;
+            this._client = client;
         }
 
         public RestResponse Execute(RestRequest request)
         {
-            return client.Execute(request);
+            return _client.Execute(request);
         }
 
         public Task<RestResponse> ExecuteAsync(RestRequest request)
         {
-            return client.ExecuteAsync(request);
+            return _client.ExecuteAsync(request);
         }
     }
 }

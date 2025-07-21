@@ -7,9 +7,9 @@ namespace WirelessTagClientApp.Utils
 {
     public class CSVWriter<T>
     {
-        private readonly string headerDelimiter = "#";
-        private readonly string separator = ", ";
-        private readonly string newline = Environment.NewLine;
+        private readonly string _headerDelimiter = "#";
+        private readonly string _separator = ", ";
+        private readonly string _lineTerminator = Environment.NewLine;
 
         private List<Func<T, string>> _expressionList;
         private string _columnHeader;
@@ -30,8 +30,8 @@ namespace WirelessTagClientApp.Utils
         /// <param name="newline">Separator between records; usually newline.</param>
         public CSVWriter(string separator, string newline) : this()
         {
-            this.separator = separator;
-            this.newline = newline;
+            _separator = separator;
+            _lineTerminator = newline;
         }
 
         /// <summary>
@@ -59,17 +59,17 @@ namespace WirelessTagClientApp.Utils
             ThrowIf.Argument.IsNull(expression, nameof(expression));
             _expressionList.Add(expression);
 
-            // append optional column name for header
+            // append optional column _name for header
             if (columnName != null)
             {
                 if (_columnHeader == null)
                 {
-                    _columnHeader = headerDelimiter + columnName;
+                    _columnHeader = _headerDelimiter + columnName;
                 }
                 else
                 {
-                    // append separator and next column name
-                    _columnHeader += separator;
+                    // append _separator and next column _name
+                    _columnHeader += _separator;
                     _columnHeader += columnName;
                 }
             }
@@ -85,7 +85,7 @@ namespace WirelessTagClientApp.Utils
             if (!String.IsNullOrEmpty(_columnHeader))
             {
                 builder.Append(_columnHeader);
-                builder.Append(newline);
+                builder.Append(_lineTerminator);
             }
 
             for (int i = 0; i < list.Count; i++)
@@ -101,25 +101,25 @@ namespace WirelessTagClientApp.Utils
                         value = "(null)";
                     }
 
-                    // check if value already contains a comma separator
-                    if (value.Contains(separator))
+                    // check if value already contains a comma _separator
+                    if (value.Contains(_separator))
                     {
-                        value = value.Replace(separator, @"\" + separator);
+                        value = value.Replace(_separator, @"\" + _separator);
                     }
 
                     builder.Append(value);
 
-                    // append separator for all values except the last
+                    // append _separator for all values except the last
                     if (expression != _expressionList.Last())
                     {
-                        builder.Append(separator);
+                        builder.Append(_separator);
                     }
                 }
 
-                // append newline separator for all lines except the last
+                // append _lineTerminator _separator for all lines except the last
                 if (i != list.Count - 1)
                 {
-                    builder.Append(newline);
+                    builder.Append(_lineTerminator);
                 }
             }
 
