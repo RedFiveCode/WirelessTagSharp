@@ -12,8 +12,8 @@ namespace WirelessTagClientApp.ViewModels
             TagId = -1;
             TagName = String.Empty;
             Interval = TimeInterval.All;
-            Minimum = new Measurement();
-            Maximum = new Measurement();
+            Minimum = new TemperatureMeasurement();
+            Maximum = new TemperatureMeasurement();
             Count = -1;
         }
 
@@ -45,12 +45,12 @@ namespace WirelessTagClientApp.ViewModels
         /// <summary>
         /// Minimum temperature measurement
         /// </summary>
-        public Measurement Minimum { get; set; }
+        public TemperatureMeasurement Minimum { get; set; }
 
         /// <summary>
         /// Maximum temperature measurement
         /// </summary>
-        public Measurement Maximum { get; set; }
+        public TemperatureMeasurement Maximum { get; set; }
 
         /// <summary>
         /// Number of temperature measurements in the time interval

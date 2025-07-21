@@ -6,11 +6,11 @@ namespace WirelessTagClientApp.ViewModels
     /// <summary>
     /// Stores a temperature measurement (temperature and timestamp)
     /// </summary>
-    public class Measurement
+    public class TemperatureMeasurement
     {
-        public Measurement() : this(0d, DateTime.MinValue) { }
+        public TemperatureMeasurement() : this(0d, DateTime.MinValue) { }
 
-        public Measurement(double temperature, DateTime timestamp)
+        public TemperatureMeasurement(double temperature, DateTime timestamp)
         {
             Temperature = temperature;
             TemperatureF = TemperatureConvertor.ConvertToFahrenheit(temperature);

@@ -116,8 +116,8 @@ namespace WirelessTagClientApp.Test.Commands
                 TagId = tagId,
                 TagName = "My tag",
                 Interval = TimeInterval.ThisYear,
-                Minimum = new Measurement(2d, new DateTime(2022, 1, 1, 12, 0, 0)),
-                Maximum = new Measurement(25d, new DateTime(2022, 7, 1, 15, 0, 0)),
+                Minimum = new TemperatureMeasurement(2d, new DateTime(2022, 1, 1, 12, 0, 0)),
+                Maximum = new TemperatureMeasurement(25d, new DateTime(2022, 7, 1, 15, 0, 0)),
                 IntervalFrom = new DateTime(2022, 1, 1),
                 IntervalTo = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59),
                 Count = 42

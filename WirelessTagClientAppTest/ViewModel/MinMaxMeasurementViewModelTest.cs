@@ -29,8 +29,8 @@ namespace WirelessTagClientApp.Test.ViewModel
             // act
             var target = new MinMaxMeasurementViewModel()
             {
-                Minimum = new Measurement(-10d, DateTime.MinValue),
-                Maximum = new Measurement(25d, DateTime.MinValue)
+                Minimum = new TemperatureMeasurement(-10d, DateTime.MinValue),
+                Maximum = new TemperatureMeasurement(25d, DateTime.MinValue)
             };
 
             // assert
@@ -43,8 +43,8 @@ namespace WirelessTagClientApp.Test.ViewModel
             // act
             var target = new MinMaxMeasurementViewModel()
             {
-                Minimum = new Measurement(0d, DateTime.MinValue), // 32 F
-                Maximum = new Measurement(100d, DateTime.MinValue) // 212 F
+                Minimum = new TemperatureMeasurement(0d, DateTime.MinValue), // 32 F
+                Maximum = new TemperatureMeasurement(100d, DateTime.MinValue) // 212 F
             };
 
             // assert
