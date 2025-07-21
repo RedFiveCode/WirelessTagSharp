@@ -15,7 +15,7 @@ namespace WirelessTagClientLib
     /// </summary>
     public class WirelessTagAsyncClient : IWirelessTagAsyncClient
     {
-        private IRestClient client;
+        private readonly IRestClient client;
 
         public WirelessTagAsyncClient(string accessToken)
         {

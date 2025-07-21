@@ -13,7 +13,7 @@ namespace WirelessTagClientLib
     /// </summary>
     public class WirelessTagClient : IWirelessTagClient
     {
-        private IRestClient client;
+        private readonly IRestClient client;
 
         public WirelessTagClient(string accessToken)
         {

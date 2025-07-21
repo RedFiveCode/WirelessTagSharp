@@ -11,7 +11,7 @@ namespace WirelessTagClientLib
     /// </summary>
     internal class RestClientWrapper : IRestClient
     {
-        private RestClient client;
+        private readonly RestClient client;
 
         public RestClientWrapper()
         {

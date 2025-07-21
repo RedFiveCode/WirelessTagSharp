@@ -10,7 +10,7 @@ namespace WirelessTagClientLib
     /// </summary>
     public class WirelessTagJsonClient : IWirelessTagJsonClient
     {
-        private IRestClient client;
+        private readonly IRestClient client;
 
         public WirelessTagJsonClient(string accessToken)
         {
