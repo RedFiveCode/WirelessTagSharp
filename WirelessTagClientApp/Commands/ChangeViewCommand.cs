@@ -9,7 +9,7 @@ namespace WirelessTagClientApp.Commands
     /// </summary>
     public class ChangeViewCommand
     {
-        private MainWindowViewModel.ViewMode mode;
+        private readonly MainWindowViewModel.ViewMode mode;
 
         /// <summary>
         /// Get the command object.

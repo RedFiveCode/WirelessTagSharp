@@ -11,7 +11,7 @@ namespace WirelessTagClientApp.Commands
     /// </summary>
     public class AboutCommand
     {
-        private IDialogService dialogService;
+        private readonly IDialogService dialogService;
 
         public AboutCommand() : this(new AboutDialogService())
         {}

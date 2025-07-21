@@ -7,7 +7,7 @@ namespace WirelessTagClientApp.Commands
 {
     public class NavigateHyperlinkCommand
     {
-        private IProcessStarter processStarter;
+        private readonly IProcessStarter processStarter;
 
         public NavigateHyperlinkCommand() : this(new ProcessStarter())
         { }

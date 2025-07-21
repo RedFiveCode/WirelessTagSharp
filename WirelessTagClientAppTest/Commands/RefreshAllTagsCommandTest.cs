@@ -10,6 +10,7 @@ using WirelessTagClientApp.ViewModels;
 using WirelessTagClientAppTest.TestHelpers;
 using WirelessTagClientLib;
 using WirelessTagClientLib.DTO;
+using System.Linq;
 
 namespace WirelessTagClientApp.Test.Commands
 {
@@ -65,7 +66,8 @@ namespace WirelessTagClientApp.Test.Commands
 
             var target = new RefreshAllTagsCommand(clientMock.Object, options);
 
-            var viewModel = new AllTagsViewModel();
+            var parentViewModel = new MainWindowViewModel();
+            var viewModel = new AllTagsViewModel(parentViewModel);
 
             // act - await async operations returning
             await target.ExecuteAsync(viewModel);
@@ -85,7 +87,8 @@ namespace WirelessTagClientApp.Test.Commands
 
             var target = new RefreshAllTagsCommand(clientMock.Object, options);
 
-            var viewModel = new AllTagsViewModel();
+            var parentViewModel = new MainWindowViewModel();
+            var viewModel = new AllTagsViewModel(parentViewModel);
 
             // add some tags to the view model
             var tagViewModel = new TagViewModel()
@@ -124,7 +127,8 @@ namespace WirelessTagClientApp.Test.Commands
 
             var target = new RefreshAllTagsCommand(clientMock.Object, options);
 
-            var viewModel = new AllTagsViewModel();
+                        var parentViewModel = new MainWindowViewModel();
+            var viewModel = new AllTagsViewModel(parentViewModel);
 
             // act - await async operations returning
             await target.ExecuteAsync(viewModel);
@@ -134,7 +138,7 @@ namespace WirelessTagClientApp.Test.Commands
         }
 
         [TestMethod]
-        public async Task Execute_Sets_LastUpdated_Property()
+        public async Task Execute_Sets_LastUpdated_Property_OnParentViewModel()
         {
             // arrange
             var clientMock = CreateAsyncClientMock();
@@ -142,15 +146,39 @@ namespace WirelessTagClientApp.Test.Commands
 
             var target = new RefreshAllTagsCommand(clientMock.Object, options);
 
-            var viewModel = new AllTagsViewModel();
+            var parentViewModel = new MainWindowViewModel();
 
-            var observer = new PropertyChangedObserver(viewModel);
+            var viewModel = new AllTagsViewModel(parentViewModel);
+
+            var observer = new PropertyChangedObserver(parentViewModel);
 
             // act - await async operations returning
             await target.ExecuteAsync(viewModel);
 
             // assert
             observer.AssertPropertyChangedEvent("LastUpdated");
+        }
+
+        [TestMethod]
+        public async Task Execute_SetsIsBusy_Property_OnParentViewModel()
+        {
+            // arrange
+            var clientMock = CreateAsyncClientMock();
+            var options = new Options();
+
+            var target = new RefreshAllTagsCommand(clientMock.Object, options);
+
+            var parentViewModel = new MainWindowViewModel();
+
+            var viewModel = new AllTagsViewModel(parentViewModel);
+
+            var observer = new PropertyChangedObserver(parentViewModel);
+
+            // act - await async operations returning
+            await target.ExecuteAsync(viewModel);
+
+            // assert
+            observer.AssertPropertyChangedEvent("IsBusy", 2); // set then reset
         }
 
         private Mock<IWirelessTagAsyncClient> CreateAsyncClientMock()

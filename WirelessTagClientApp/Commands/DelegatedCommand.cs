@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WirelessTagClientApp.Common;
 using WirelessTagClientApp.Utils;
@@ -13,7 +14,7 @@ namespace WirelessTagClientApp.Commands
     /// </summary>
     public class DelegatedCommand
     {
-        private Dictionary<MainWindowViewModel.ViewMode, ICommand> commandMap;
+        private readonly Dictionary<MainWindowViewModel.ViewMode, ICommand> commandMap;
 
         /// <summary>
         /// Get the command object
