@@ -15,11 +15,11 @@ namespace WirelessTagClientApp.ViewModels
 
         private ObservableCollection<MinMaxMeasurementViewModel> data;
         private DateTime lastUpdated;
-        private CopyMinMaxTagsCommand copyCommand;
-        private CopyMinMaxTagsCommand copyRawDataCommand;
-        private ToggleTemperatureUnitsCommand toggleUnitsCommand;
+        private readonly CopyMinMaxTagsCommand copyCommand;
+        private readonly CopyMinMaxTagsCommand copyRawDataCommand;
+        private readonly ToggleTemperatureUnitsCommand toggleUnitsCommand;
         private readonly RefreshMinMaxTagsCommand refreshCommand;
-        private TemperatureRawDataCache rawDataCache;
+        private readonly TemperatureRawDataCache rawDataCache;
         private TemperatureUnits temperatureUnits;
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using WirelessTagClientLib.DTO;
+using System.Collections.ObjectModel;
 
 namespace WirelessTagClientApp.ViewModels
 {
@@ -10,8 +11,8 @@ namespace WirelessTagClientApp.ViewModels
     /// </summary>
     public class TemperatureRawDataCache
     {
-        private Dictionary<int, HashSet<TemperatureDataPoint>> rawDataMap;
-        private TemperatureDataPointComparer comparer;
+        private readonly Dictionary<int, HashSet<TemperatureDataPoint>> rawDataMap;
+        private readonly TemperatureDataPointComparer comparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemperatureRawDataCache"/> class

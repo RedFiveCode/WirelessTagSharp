@@ -14,9 +14,9 @@ namespace WirelessTagClientApp.ViewModels
     {
         private readonly MainWindowViewModel parentViewModel;
 
-        private ToggleViewCommand toggleNextViewCommand;
-        private ToggleViewCommand togglePreviousViewCommand;
-        private CopyAllTagsCommand copyCommand;
+        private readonly ToggleViewCommand toggleNextViewCommand;
+        private readonly ToggleViewCommand togglePreviousViewCommand;
+        private readonly CopyAllTagsCommand copyCommand;
         private readonly RefreshAllTagsCommand refreshCommand;
         private ObservableCollection<TagViewModel> tagList;
         private DateTime lastUpdated;

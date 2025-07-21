@@ -10,7 +10,7 @@ namespace WirelessTagClientApp.ViewModels
 {
     public class AboutViewModel : ViewModelBase
     {
-        private NavigateHyperlinkCommand navigateCommand;
+        private readonly NavigateHyperlinkCommand navigateCommand;
 
         public AboutViewModel()
         {

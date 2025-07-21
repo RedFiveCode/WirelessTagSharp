@@ -19,14 +19,14 @@ namespace WirelessTagClientApp.ViewModels
         private bool isError;
         private string errorMessage;
 
-        private RefreshViewCommand refreshCommand;
-        private CloseCommand closeCommand;
-        private AboutCommand aboutCommand;
-        private ChangeViewCommand summaryViewCommand;
-        private ChangeViewCommand minMaxViewCommand;
-        private DelegatedCommand copyCommand;
-        private DelegatedCommand toggleUnitsCommand;
-        private DelegatedCommand copyRawDataCommand;
+        private readonly RefreshViewCommand refreshCommand;
+        private readonly CloseCommand closeCommand;
+        private readonly AboutCommand aboutCommand;
+        private readonly ChangeViewCommand summaryViewCommand;
+        private readonly ChangeViewCommand minMaxViewCommand;
+        private readonly DelegatedCommand copyCommand;
+        private readonly DelegatedCommand toggleUnitsCommand;
+        private readonly DelegatedCommand copyRawDataCommand;
 
         private ViewMode mode;
         private ViewModelBase activeViewModel;
