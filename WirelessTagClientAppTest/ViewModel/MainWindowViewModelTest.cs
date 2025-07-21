@@ -274,9 +274,9 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                       .Callback(() => Console.WriteLine("Mocked GetTemperatureRawDataAsync callback"))
-                      .ReturnsAsync(new List<TemperatureDataPoint>()
+                      .ReturnsAsync(new List<Measurement>()
                       {
-                          new TemperatureDataPoint(DateTime.Today.Date, 10d)
+                          new Measurement(DateTime.Today.Date, 10d)
                       }); ;
 
             return clientMock;

@@ -33,7 +33,7 @@ namespace WirelessTagClientLib
                                     .ToList();
         }
 
-        public static List<TemperatureDataPoint> Create(TemperatureRawDataResponse response)
+        public static List<Measurement> Create(TemperatureRawDataResponse response)
         {
             return response.Data.Select(item => Create(item))
                                 .OrderBy(t => t.Time)
@@ -76,9 +76,9 @@ namespace WirelessTagClientLib
             return result;
         }
 
-        private static TemperatureDataPoint Create(TemperatureRawDataItem data)
+        private static Measurement Create(TemperatureRawDataItem data)
         {
-            var result = new TemperatureDataPoint()
+            var result = new Measurement()
             {
                 //data.Type is not used
                 Time = data.Time,

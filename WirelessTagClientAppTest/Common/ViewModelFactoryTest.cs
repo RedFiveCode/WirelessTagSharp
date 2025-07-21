@@ -97,7 +97,7 @@ namespace WirelessTagClientApp.Test.Common
         public void CreateRowViewModel_DataEmpty_Should_Return_Null()
         {
             var tag = CreateTagInfo();
-            var data = new List<TemperatureDataPoint>(); // empty list
+            var data = new List<Measurement>(); // empty list
 
             var result = ViewModelFactory.CreateRowViewModel(data, tag, TimeInterval.Today);
 
@@ -111,7 +111,7 @@ namespace WirelessTagClientApp.Test.Common
 
             var today = DateTime.Now.Date;
 
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 // only data for today
                 CreateTemperatureDataPoint(today.AddHours(10), 10d),
@@ -131,7 +131,7 @@ namespace WirelessTagClientApp.Test.Common
             var tag = CreateTagInfo();
 
             var today = DateTime.Now.Date;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(today.AddHours(10), 10d),
                 CreateTemperatureDataPoint(today.AddHours(11), 9d), // lowest temperature
@@ -166,7 +166,7 @@ namespace WirelessTagClientApp.Test.Common
             var today = DateTime.Now.Date;
             var yesterday = today.AddDays(-1);
 
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(yesterday.AddHours(0), 10d),
                 CreateTemperatureDataPoint(yesterday.AddHours(2), 9d), // lowest temperature
@@ -205,7 +205,7 @@ namespace WirelessTagClientApp.Test.Common
 
             var today = DateTime.Now.Date;
 
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(today.AddDays(-8).AddHours(1), 1d), // lowest temperature, but beyond 7 days ago
                 CreateTemperatureDataPoint(today.AddDays(-8).AddHours(2), 25d), // highest temperature, but beyond 7 days ago
@@ -263,7 +263,7 @@ namespace WirelessTagClientApp.Test.Common
 
             var today = DateTime.Now.Date;
 
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(today.AddDays(-31).AddHours(1), 1d), // lowest temperature, but beyond 30 days ago
                 CreateTemperatureDataPoint(today.AddDays(31).AddHours(2), 25d), // highest temperature, but beyond 30 days ago
@@ -328,7 +328,7 @@ namespace WirelessTagClientApp.Test.Common
 
 
 
-            var data = new List<TemperatureDataPoint>();
+            var data = new List<Measurement>();
 
 
             DateTime dt = today;
@@ -378,9 +378,9 @@ namespace WirelessTagClientApp.Test.Common
             };
         }
 
-        private TemperatureDataPoint CreateTemperatureDataPoint(DateTime dateTime, double temperature)
+        private Measurement CreateTemperatureDataPoint(DateTime dateTime, double temperature)
         {
-            return new TemperatureDataPoint(dateTime, temperature);
+            return new Measurement(dateTime, temperature);
         }
     }
 }

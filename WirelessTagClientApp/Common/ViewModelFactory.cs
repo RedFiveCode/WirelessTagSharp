@@ -57,7 +57,7 @@ namespace WirelessTagClientApp.Common
             return collection;
         }
 
-        public static MinMaxMeasurementViewModel CreateRowViewModel(IEnumerable<TemperatureDataPoint> rawData, TagInfo tag, TimeInterval interval)
+        public static MinMaxMeasurementViewModel CreateRowViewModel(IEnumerable<Measurement> rawData, TagInfo tag, TimeInterval interval)
         {
             if (rawData == null || !rawData.Any())
             {

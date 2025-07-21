@@ -4,9 +4,9 @@ using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.ViewModels
 {
-    public class TemperatureDataPointComparer : IEqualityComparer<TemperatureDataPoint>
+    public class MeasurmentComparer : IEqualityComparer<Measurement>
     {
-        public bool Equals(TemperatureDataPoint x, TemperatureDataPoint y)
+        public bool Equals(Measurement x, Measurement y)
         {
             if (Object.ReferenceEquals(x, y))
             {
@@ -21,7 +21,7 @@ namespace WirelessTagClientApp.ViewModels
             return x.Time == y.Time;
         }
 
-        public int GetHashCode(TemperatureDataPoint p)
+        public int GetHashCode(Measurement p)
         {
             return p.Time.GetHashCode();
         }

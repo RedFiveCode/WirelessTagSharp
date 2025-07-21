@@ -85,7 +85,7 @@
     <Compile Include="ViewModel\MainWindowViewModelTest.cs" />
     <Compile Include="ViewModel\AboutViewModelTest.cs" />
     <Compile Include="ViewModel\MinMaxViewModelTest.cs" />
-    <Compile Include="ViewModel\TemperatureDataPointComparerTest.cs" />
+    <Compile Include="ViewModel\MeasurmentComparerTest.cs" />
     <Compile Include="ViewModel\TemperatureRawDataCacheTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -110,7 +110,7 @@ namespace WirelessTagClientLib
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public List<TemperatureDataPoint> GetTemperatureRawData(int tagId, DateTime from, DateTime to)
+        public List<Measurement> GetTemperatureRawData(int tagId, DateTime from, DateTime to)
         {
             var request = new GetTemperatureRawDataRequest()
             {

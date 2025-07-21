@@ -10,22 +10,22 @@ namespace WirelessTagClientApp.ViewModels
     /// </summary>
     public class TemperatureRawDataCache
     {
-        private readonly Dictionary<int, HashSet<TemperatureDataPoint>> _rawDataMap;
-        private readonly TemperatureDataPointComparer _comparer;
+        private readonly Dictionary<int, HashSet<Measurement>> _rawDataMap;
+        private readonly MeasurmentComparer _comparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemperatureRawDataCache"/> class
         /// </summary>
         public TemperatureRawDataCache()
         {
-            _rawDataMap = new Dictionary<int, HashSet<TemperatureDataPoint>>();
-            _comparer = new TemperatureDataPointComparer();
+            _rawDataMap = new Dictionary<int, HashSet<Measurement>>();
+            _comparer = new MeasurmentComparer();
         }
 
         /// <summary>
         /// Updates the cache with new temperature data for the specified tagId.
         /// </summary>
-        public void Update(int tagId, IEnumerable<TemperatureDataPoint> data)
+        public void Update(int tagId, IEnumerable<Measurement> data)
         {
             // FYI
             // GetTemperatureRawDataAsync can return duplicate items
@@ -69,7 +69,7 @@ namespace WirelessTagClientApp.ViewModels
 
             if (!_rawDataMap.ContainsKey(tagId))
             {
-                _rawDataMap.Add(tagId, new HashSet<TemperatureDataPoint>(_comparer));
+                _rawDataMap.Add(tagId, new HashSet<Measurement>(_comparer));
             }
 
             var rawDataSet = _rawDataMap[tagId];
@@ -103,7 +103,7 @@ namespace WirelessTagClientApp.ViewModels
         /// <summary>
         /// Returns the raw temperature data for the specified tagId
         /// </summary>
-        public IEnumerable<TemperatureDataPoint> GetData(int tagId)
+        public IEnumerable<Measurement> GetData(int tagId)
         {
             return _rawDataMap[tagId];
         }

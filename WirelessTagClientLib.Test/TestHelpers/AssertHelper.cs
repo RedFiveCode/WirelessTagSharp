@@ -20,7 +20,7 @@ namespace WirelessTagClientLib.Test
             Assert.AreNotEqual(0, actual.TagType);
         }
 
-        public static void AssertTemperatureInfo(TemperatureDataPoint actual, DateTime expectedTime, double expectedTemperature)
+        public static void AssertTemperatureInfo(Measurement actual, DateTime expectedTime, double expectedTemperature)
         {
             Assert.IsNotNull(actual);
 

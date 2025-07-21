@@ -44,7 +44,7 @@ namespace WirelessTagClientLib
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        List<TemperatureDataPoint> GetTemperatureRawData(int tagId, DateTime from, DateTime to);
+        List<Measurement> GetTemperatureRawData(int tagId, DateTime from, DateTime to);
     }
 }
 

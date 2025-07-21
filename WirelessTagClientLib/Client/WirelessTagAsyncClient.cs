@@ -113,7 +113,7 @@ namespace WirelessTagClientLib
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public async Task<List<TemperatureDataPoint>> GetTemperatureRawDataAsync(int tagId, DateTime from, DateTime to)
+        public async Task<List<Measurement>> GetTemperatureRawDataAsync(int tagId, DateTime from, DateTime to)
         {
             var request = new GetTemperatureRawDataRequest()
             {

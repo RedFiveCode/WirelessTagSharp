@@ -123,10 +123,10 @@ namespace WirelessTagClientApp.Test.Commands
                 Count = 42
             });
 
-            var data = new List<TemperatureDataPoint>
+            var data = new List<Measurement>
             {
-                new TemperatureDataPoint(new DateTime(2022, 1, 1, 12, 0, 0), 2d),
-                new TemperatureDataPoint(new DateTime(2022, 7, 1, 15, 0, 0), 25d)
+                new Measurement(new DateTime(2022, 1, 1, 12, 0, 0), 2d),
+                new Measurement(new DateTime(2022, 7, 1, 15, 0, 0), 25d)
             };
 
             viewModel.RawDataCache.Update(tagId, data);

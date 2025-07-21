@@ -18,7 +18,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 20),
                 CreateTemperatureDataPoint(2023, 1, 2, 20)
@@ -40,14 +40,14 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId1 = 42;
-            var data1 = new List<TemperatureDataPoint>()
+            var data1 = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 20),
                 CreateTemperatureDataPoint(2023, 1, 2, 20)
             };
 
             const int tagId2 = 99;
-            var data2 = new List<TemperatureDataPoint>()
+            var data2 = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 20),
                 CreateTemperatureDataPoint(2023, 1, 2, 20)
@@ -72,11 +72,11 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var dataFirst = new List<TemperatureDataPoint>()
+            var dataFirst = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 20),
             };
-            var dataSecond = new List<TemperatureDataPoint>()
+            var dataSecond = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 25) // same time, different temperature
             };
@@ -100,11 +100,11 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var dataFirst = new List<TemperatureDataPoint>()
+            var dataFirst = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 20),
             };
-            var dataSecond = new List<TemperatureDataPoint>()
+            var dataSecond = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 25) // same time, different temperature
             };
@@ -131,12 +131,12 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var dataFirst = new List<TemperatureDataPoint>()
+            var dataFirst = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11),
             };
-            var dataSecond = new List<TemperatureDataPoint>()
+            var dataSecond = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 2, 1, 12),
                 CreateTemperatureDataPoint(2023, 2, 2, 13)
@@ -165,12 +165,12 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var dataFirst = new List<TemperatureDataPoint>()
+            var dataFirst = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11),
             };
-            var dataSecond = new List<TemperatureDataPoint>()
+            var dataSecond = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 1), // duplicate timestamp, different value than previous update
                 CreateTemperatureDataPoint(2023, 1, 2, 2), // ditto
@@ -201,14 +201,14 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId1 = 42;
-            var dataFirst = new List<TemperatureDataPoint>()
+            var dataFirst = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
             };
 
             const int tagId2 = 99;
-            var dataSecond = new List<TemperatureDataPoint>()
+            var dataSecond = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 2, 1, 20),
                 CreateTemperatureDataPoint(2023, 2, 2, 21)
@@ -238,7 +238,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
@@ -259,10 +259,10 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
-                new TemperatureDataPoint(new DateTime(2023, 1, 1, 13, 0, 0), 10), // 13:00:00
-                new TemperatureDataPoint(new DateTime(2023, 1, 1, 14, 0, 0), 10), // 14:00:00
+                new Measurement(new DateTime(2023, 1, 1, 13, 0, 0), 10), // 13:00:00
+                new Measurement(new DateTime(2023, 1, 1, 14, 0, 0), 10), // 14:00:00
             };
 
             var target = new TemperatureRawDataCache();
@@ -280,7 +280,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
@@ -301,7 +301,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
@@ -324,10 +324,10 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
-                new TemperatureDataPoint(new DateTime(2023, 1, 1, 13, 0, 0), 10), // 13:00:00
-                new TemperatureDataPoint(new DateTime(2023, 1, 1, 14, 0, 0), 10), // 14:00:00
+                new Measurement(new DateTime(2023, 1, 1, 13, 0, 0), 10), // 13:00:00
+                new Measurement(new DateTime(2023, 1, 1, 14, 0, 0), 10), // 14:00:00
             };
 
             var target = new TemperatureRawDataCache();
@@ -345,7 +345,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
@@ -366,7 +366,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
@@ -388,7 +388,7 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             // arrange
             const int tagId = 42;
-            var data = new List<TemperatureDataPoint>()
+            var data = new List<Measurement>()
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
@@ -422,7 +422,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             // arrange
             var target = new TemperatureRawDataCache();
             const int tagId = 1;
-            var data = new List<TemperatureDataPoint>
+            var data = new List<Measurement>
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
@@ -445,12 +445,12 @@ namespace WirelessTagClientApp.Test.ViewModel
             var target = new TemperatureRawDataCache();
             const int tagId1 = 1;
             const int tagId2 = 2;
-            var data1 = new List<TemperatureDataPoint>
+            var data1 = new List<Measurement>
             {
                 CreateTemperatureDataPoint(2023, 1, 1, 10),
                 CreateTemperatureDataPoint(2023, 1, 2, 11)
             };
-            var data2 = new List<TemperatureDataPoint>
+            var data2 = new List<Measurement>
             {
                 CreateTemperatureDataPoint(2023, 2, 1, 20),
                 CreateTemperatureDataPoint(2023, 2, 2, 21)
@@ -470,12 +470,12 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.IsTrue(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 2) && d.Temperature == 21));
         }
 
-        private TemperatureDataPoint CreateTemperatureDataPoint(int year, int month, int day, double temperature)
+        private Measurement CreateTemperatureDataPoint(int year, int month, int day, double temperature)
         {
-            return new TemperatureDataPoint(new DateTime(year, month, day), temperature);
+            return new Measurement(new DateTime(year, month, day), temperature);
         }
 
-        private void AssertValue(TemperatureDataPoint item, int year, int month, int day, double temperature)
+        private void AssertValue(Measurement item, int year, int month, int day, double temperature)
         {
             var dt = new DateTime(year, month, day);
 

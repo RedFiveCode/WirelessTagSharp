@@ -52,7 +52,7 @@
     <Compile Include="DTO\HourlyReadingInfo.cs" />
     <Compile Include="DTO\StatsSpanInfo.cs" />
     <Compile Include="DTO\TagInfo.cs" />
-    <Compile Include="DTO\TemperatureDataPoint.cs" />
+    <Compile Include="DTO\Measurement.cs" />
     <Compile Include="Interfaces\IWirelessTagAsyncClient.cs" />
     <Compile Include="Interfaces\IWirelessTagClient.cs" />
     <Compile Include="Mapper\Mapper.cs" />

@@ -6,16 +6,16 @@ using WirelessTagClientLib.DTO;
 namespace WirelessTagClientApp.Test.ViewModel
 {
     /// <summary>
-    /// Unit tests for the TemperatureDataPointComparer class
+    /// Unit tests for the MeasurmentComparer class
     /// </summary>
     [TestClass]
-    public class TemperatureDataPointComparerTest
+    public class MeasurmentComparerTest
     {
         [TestMethod]
         public void Equals_SameInstance_Returns_True()
         {
-            var target = new TemperatureDataPointComparer();
-            var x = new TemperatureDataPoint();
+            var target = new MeasurmentComparer();
+            var x = new Measurement();
 
             var result = target.Equals(x, x);
 
@@ -25,8 +25,8 @@ namespace WirelessTagClientApp.Test.ViewModel
         [TestMethod]
         public void Equals_FirstNull_Returns_False()
         {
-            var target = new TemperatureDataPointComparer();
-            var y = new TemperatureDataPoint();
+            var target = new MeasurmentComparer();
+            var y = new Measurement();
 
             var result = target.Equals(null, y);
 
@@ -36,8 +36,8 @@ namespace WirelessTagClientApp.Test.ViewModel
         [TestMethod]
         public void Equals_SecondNull_Returns_False()
         {
-            var target = new TemperatureDataPointComparer();
-            var x= new TemperatureDataPoint();
+            var target = new MeasurmentComparer();
+            var x= new Measurement();
 
             var result = target.Equals(x, null);
 
@@ -47,9 +47,9 @@ namespace WirelessTagClientApp.Test.ViewModel
         [TestMethod]
         public void Equals_SameTimeValuesSameTemperatureeValues_Returns_True()
         {
-            var target = new TemperatureDataPointComparer();
-            var x = new TemperatureDataPoint(new DateTime(2023, 1, 1), 20d);
-            var y = new TemperatureDataPoint(new DateTime(2023, 1, 1), 20d);
+            var target = new MeasurmentComparer();
+            var x = new Measurement(new DateTime(2023, 1, 1), 20d);
+            var y = new Measurement(new DateTime(2023, 1, 1), 20d);
 
             var result = target.Equals(x, y);
 
@@ -59,9 +59,9 @@ namespace WirelessTagClientApp.Test.ViewModel
         [TestMethod]
         public void Equals_SameTimeValuesDifferentTemperatureValues_Returns_True()
         {
-            var target = new TemperatureDataPointComparer();
-            var x = new TemperatureDataPoint(new DateTime(2023, 1, 1), 20d);
-            var y = new TemperatureDataPoint(new DateTime(2023, 1, 1), 21d);
+            var target = new MeasurmentComparer();
+            var x = new Measurement(new DateTime(2023, 1, 1), 20d);
+            var y = new Measurement(new DateTime(2023, 1, 1), 21d);
 
             var result = target.Equals(x, y);
 
@@ -71,9 +71,9 @@ namespace WirelessTagClientApp.Test.ViewModel
         [TestMethod]
         public void Equals_DifferentTimeValues_Returns_False()
         {
-            var target = new TemperatureDataPointComparer();
-            var x = new TemperatureDataPoint(new DateTime(2023, 1, 1), 20d);
-            var y = new TemperatureDataPoint(new DateTime(2023, 1, 2), 20d);
+            var target = new MeasurmentComparer();
+            var x = new Measurement(new DateTime(2023, 1, 1), 20d);
+            var y = new Measurement(new DateTime(2023, 1, 2), 20d);
 
             var result = target.Equals(x, y);
 

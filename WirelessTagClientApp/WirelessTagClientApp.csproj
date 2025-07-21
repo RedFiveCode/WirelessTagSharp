@@ -108,7 +108,7 @@
     <Compile Include="ViewModels\MinMaxMeasurementViewModel.cs" />
     <Compile Include="ViewModels\MinMaxViewModel.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />
-    <Compile Include="ViewModels\TemperatureDataPointComparer.cs" />
+    <Compile Include="ViewModels\MeasurmentComparer.cs" />
     <Compile Include="ViewModels\TemperatureRawDataCache.cs" />
     <Compile Include="Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
