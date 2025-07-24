@@ -1,44 +1,34 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 using System;
 using RestSharp;
 using System.Net;
 using System.Collections.Generic;
 using WirelessTagClientLib.Test.TestHelpers;
+using Xunit;
 
 namespace WirelessTagClientLib.Test
 {
-    [TestClass]
-    [DeploymentItem(@"TestData\GetTagListResponse.json")]
-    [DeploymentItem(@"TestData\GetMultiTagStatsSpanResponse.json")]
-    [DeploymentItem(@"TestData\GetTemperatureRawDataResponse.json")]
-    [DeploymentItem(@"TestData\LoginErrorResponse.json")]
-    [DeploymentItem(@"TestData\LoginResponse.json")]
-    [DeploymentItem(@"TestData\TemperatureStats2Response.json")]
     public class WirelessTagClientTest
     {
-        public TestContext TestContext { get; set; }
-
-        [TestMethod]
+        [Fact]
         public void Ctor_Sets_Url_Property()
         {
             var target = new WirelessTagClient(string.Empty);
 
-            Assert.AreEqual(WirelessTagConstants.Url, target.Url);
+            Assert.Equal(WirelessTagConstants.Url, target.Url);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ctor_IRestClient_Sets_Url_Property()
         {
             var clientMock = new Mock<IRestClient>();
 
             var target = new WirelessTagClient(clientMock.Object);
 
-            Assert.AreEqual(WirelessTagConstants.Url, target.Url);
+            Assert.Equal(WirelessTagConstants.Url, target.Url);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(HttpStatusException))]
+        [Fact]
         public void Execute_Response_Not_Ok_Should_Throw_HttpStatusException()
         {
             // arrange
@@ -50,16 +40,16 @@ namespace WirelessTagClientLib.Test
             var target = new WirelessTagClient(clientMock.Object);
 
             // assert
-            target.GetTagList();
+            Assert.Throws<HttpStatusException>(() => target.GetTagList());
         }
 
-        [TestMethod]
+        [Fact]
         public void Login_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "LoginResponse.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "LoginResponse.json"));
 
             var target = new WirelessTagClient(clientMock.Object);
 
@@ -67,30 +57,30 @@ namespace WirelessTagClientLib.Test
             var result = target.Login("user", "secret");
 
             // assert
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Login_Response_Error_Should_Throw_HttpStatusException()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "LoginErrorResponse.json", HttpStatusCode.InternalServerError));
+                      .Throws(new HttpStatusException(HttpStatusCode.InternalServerError, "Internal Server Error"));
 
             var target = new WirelessTagClient(clientMock.Object);
 
             // act - should throw
-            var result = target.Login("user", "secret");
+            Assert.Throws<HttpStatusException>(() => target.Login("user", "secret"));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTagList_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetTagListResponse.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetTagListResponse.json"));
 
             var target = new WirelessTagClient(clientMock.Object);
 
@@ -98,20 +88,20 @@ namespace WirelessTagClientLib.Test
             var result = target.GetTagList();
 
             // assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
 
-            Assert.AreEqual(2, result.Count);
+            Assert.Equal(2, result.Count);
             AssertHelper.AssertTagInfo(result[0], "AAAA", "Tag 1", Guid.Parse("11111111-2222-3333-4444-555555555555"));
             AssertHelper.AssertTagInfo(result[1], "BBBB", "Tag 2", Guid.Parse("22222222-2222-3333-4444-555555555555"));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTemperatureStats_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "TemperatureStats2Response.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "TemperatureStats2Response.json"));
 
             var target = new WirelessTagClient(clientMock.Object);
 
@@ -119,20 +109,20 @@ namespace WirelessTagClientLib.Test
             var result = target.GetTemperatureStats(1);
 
             // assert
-            Assert.IsNotNull(result.HourlyReadings);
+            Assert.NotNull(result.HourlyReadings);
 
-            Assert.AreEqual(2, result.HourlyReadings.Count);
+            Assert.Equal(2, result.HourlyReadings.Count);
             AssertHelper.AssertHourlyReading(result.HourlyReadings[0], new DateTime(2022, 7, 8));
             AssertHelper.AssertHourlyReading(result.HourlyReadings[1], new DateTime(2022, 7, 9));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTagSpanStats_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetMultiTagStatsSpanResponse.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetMultiTagStatsSpanResponse.json"));
 
             var target = new WirelessTagClient(clientMock.Object);
 
@@ -140,34 +130,34 @@ namespace WirelessTagClientLib.Test
             var result = target.GetTagSpanStats(new List<int>() { 1 });
 
             // assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
 
-            Assert.AreNotEqual(DateTime.MinValue, result.From);
-            Assert.AreNotEqual(DateTime.MinValue, result.To);
-            Assert.AreNotEqual(0, result.TimeZoneOffset);
+            Assert.NotEqual(DateTime.MinValue, result.From);
+            Assert.NotEqual(DateTime.MinValue, result.To);
+            Assert.NotEqual(0, result.TimeZoneOffset);
 
             // ids
-            Assert.IsNotNull(result.Ids);
-            Assert.AreEqual(3, result.Ids.Count);
-            CollectionAssert.Contains(result.Ids, 1);
-            CollectionAssert.Contains(result.Ids, 2);
-            CollectionAssert.Contains(result.Ids, 3);
+            Assert.NotNull(result.Ids);
+            Assert.Equal(3, result.Ids.Count);
+            Assert.Contains(1, result.Ids);
+            Assert.Contains(2, result.Ids);
+            Assert.Contains(3, result.Ids);
 
             // names
-            Assert.IsNotNull(result.Names);
-            Assert.AreEqual(3, result.Names.Count);
-            CollectionAssert.Contains(result.Names, "House");
-            CollectionAssert.Contains(result.Names, "Garden");
-            CollectionAssert.Contains(result.Names, "Garage");
+            Assert.NotNull(result.Names);
+            Assert.Equal(3, result.Names.Count);
+            Assert.Contains("House", result.Names);
+            Assert.Contains("Garden", result.Names);
+            Assert.Contains("Garage", result.Names);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTemperatureRawData_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetTemperatureRawDataResponse.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetTemperatureRawDataResponse.json"));
 
             var target = new WirelessTagClient(clientMock.Object);
 
@@ -175,9 +165,9 @@ namespace WirelessTagClientLib.Test
             var result = target.GetTemperatureRawData(1, DateTime.Today, DateTime.Today);
 
             // assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
 
-            Assert.AreEqual(3, result.Count);
+            Assert.Equal(3, result.Count);
             AssertHelper.AssertTemperatureInfo(result[0], new DateTime(2022, 7, 9, 0, 16, 7), 16.9);
             AssertHelper.AssertTemperatureInfo(result[1], new DateTime(2022, 7, 9, 14, 30, 36), 19.89);
             AssertHelper.AssertTemperatureInfo(result[2], new DateTime(2022, 7, 9, 15, 3, 10), 20.3);

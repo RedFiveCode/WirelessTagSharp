@@ -23,7 +23,7 @@ namespace WirelessTagClientLib.Test.TestHelpers
 
         public static string GetResponseDataFromFile(string deploymentDirectory, string filename)
         {
-            var dataFile = Path.Combine(deploymentDirectory, filename);
+            var dataFile = Path.Combine(deploymentDirectory, "TestData", filename);
 
             Assert.IsTrue(File.Exists(dataFile), "Did you forget to add a [DeploymentItem] attribute or set the file's Build Action to 'None' and Copy 'Always'?");
 

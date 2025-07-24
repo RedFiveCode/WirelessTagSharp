@@ -1,63 +1,56 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using WirelessTagClientLib.Test.TestHelpers;
+using Xunit;
 
 namespace WirelessTagClientLib.Test
 {
-    [TestClass]
-    [DeploymentItem(@"TestData\GetTagListResponse.json")]
-    [DeploymentItem(@"TestData\GetMultiTagStatsSpanResponse.json")]
-    [DeploymentItem(@"TestData\GetTemperatureRawDataResponse.json")]
-    [DeploymentItem(@"TestData\LoginErrorResponse.json")]
-    [DeploymentItem(@"TestData\LoginResponse.json")]
-    [DeploymentItem(@"TestData\TemperatureStats2Response.json")]
     public class WirelessTagJsonClientTest
     {
-        public TestContext TestContext { get; set; }
-
-        [TestMethod]
+        [Fact]
         public void Execute_Response_Not_Ok_Should_Throw_HttpStatusException()
         {
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "LoginErrorResponse.json", HttpStatusCode.InternalServerError));
+                      .Throws(new HttpStatusException(HttpStatusCode.InternalServerError, "Internal Server Error"));
 
             var target = new WirelessTagJsonClient(clientMock.Object);
             var request = new DummyRequest();
 
-            var response = target.Login(null, null);
+            Assert.Throws<HttpStatusException>(() => target.Login("user", "secret"));
         }
 
-        [TestMethod]
+        [Fact]
         public void Execute_Response_Ok_Should_Return_Valid_Response()
         {
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
                       .Returns(new RestResponse()
-                       {  StatusCode = HttpStatusCode.OK,
+                       { 
+                          StatusCode = HttpStatusCode.OK,
                           Content = "some response data",
-                          ContentType = "text/plain" });
+                          ContentType = "text/plain"
+                      });
 
             var target = new WirelessTagJsonClient(clientMock.Object);
             var request = new DummyRequest();
 
             var response = target.Login(null, null);
 
-            Assert.IsNotNull(response);
-            Assert.AreEqual("some response data", response);
+            Assert.NotNull(response);
+            Assert.Equal("some response data", response);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTagList_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetTagListResponse.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetTagListResponse.json"));
 
             var target = new WirelessTagJsonClient(clientMock.Object);
 
@@ -65,16 +58,16 @@ namespace WirelessTagClientLib.Test
             var result = target.GetTagList();
 
             // assert
-            Assert.IsFalse(String.IsNullOrEmpty(result));
+            Assert.False(String.IsNullOrEmpty(result));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTemperatureStats_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "TemperatureStats2Response.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "TemperatureStats2Response.json"));
 
             var target = new WirelessTagJsonClient(clientMock.Object);
 
@@ -82,16 +75,16 @@ namespace WirelessTagClientLib.Test
             var result = target.GetTemperatureStats(1);
 
             // assert
-            Assert.IsFalse(String.IsNullOrEmpty(result));
+            Assert.False(String.IsNullOrEmpty(result));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTagSpanStats_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetMultiTagStatsSpanResponse.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetMultiTagStatsSpanResponse.json"));
 
             var target = new WirelessTagJsonClient(clientMock.Object);
 
@@ -99,16 +92,16 @@ namespace WirelessTagClientLib.Test
             var result = target.GetTagSpanStats(new List<int>() { 1 });
 
             // assert
-            Assert.IsFalse(String.IsNullOrEmpty(result));
+            Assert.False(String.IsNullOrEmpty(result));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTemperatureRawData_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.Execute(It.IsAny<RestRequest>()))
-                      .Returns(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetTemperatureRawDataResponse.json"));
+                      .Returns(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetTemperatureRawDataResponse.json"));
 
             var target = new WirelessTagJsonClient(clientMock.Object);
 
@@ -116,7 +109,7 @@ namespace WirelessTagClientLib.Test
             var result = target.GetTemperatureRawData(1, DateTime.Today, DateTime.Today);
 
             // assert
-            Assert.IsFalse(String.IsNullOrEmpty(result));
+            Assert.False(String.IsNullOrEmpty(result));
         }
     }
 

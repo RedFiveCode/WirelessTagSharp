@@ -1,113 +1,101 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 using System;
+using System.Linq;
 using RestSharp;
 using System.Net;
 using WirelessTagClientLib.Test.TestHelpers;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Xunit;
 
 namespace WirelessTagClientLib.Test
 {
-    [TestClass]
-    [DeploymentItem(@"TestData\AuthenticationFailedResponse.json")]
-    [DeploymentItem(@"TestData\GetTagListResponse.json")]
-    [DeploymentItem(@"TestData\GetMultiTagStatsSpanResponse.json")]
-    [DeploymentItem(@"TestData\GetMultiTagStatsSpanErrorResponse.json")]
-    [DeploymentItem(@"TestData\GetTemperatureRawDataResponse.json")]
-    [DeploymentItem(@"TestData\GetTemperatureRawDataEmptyResponse.json")]
-    [DeploymentItem(@"TestData\GetTemperatureRawDataErrorResponse.json")]
-    [DeploymentItem(@"TestData\LoginErrorResponse.json")]
-    [DeploymentItem(@"TestData\LoginResponse.json")]
-    [DeploymentItem(@"TestData\TemperatureStats2Response.json")]
     public class WirelessTagAsyncClientTest
     {
-        public TestContext TestContext { get; set; }
-
-        [TestMethod]
+        [Fact]
         public void Ctor_Sets_Url_Property()
         {
             var target = new WirelessTagAsyncClient(string.Empty);
 
-            Assert.AreEqual(WirelessTagConstants.Url, target.Url);
+            Assert.Equal(WirelessTagConstants.Url, target.Url);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ctor_IRestClient_Sets_Url_Property()
         {
             var clientMock = new Mock<IRestClient>();
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
-            Assert.AreEqual(WirelessTagConstants.Url, target.Url);
+            Assert.Equal(WirelessTagConstants.Url, target.Url);
         }
 
         #region LoginAsync
-        [TestMethod]
-        public void LoginAsync_Response_Ok_Should_Return_Valid_Response()
+        [Fact]
+        public async Task LoginAsync_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "LoginResponse.json")));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "LoginResponse.json")));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
             // act
-            var result = target.LoginAsync("user", "secret");
+            var result = await target.LoginAsync("user", "secret");
 
             // assert
-            Assert.IsTrue(result.Result);
+            Assert.True(result);
         }
 
-        [TestMethod]
-        public void LoginAsync_Response_Error_Should_Return_Valid_Response()
+        [Fact]
+        public async Task LoginAsync_Response_Error_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "LoginErrorResponse.json", HttpStatusCode.InternalServerError)));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "LoginErrorResponse.json", HttpStatusCode.InternalServerError)));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
             // act
-            var result = target.LoginAsync("user", "badPassword");
+            var result = await target.LoginAsync("user", "badPassword");
 
             // assert
-            Assert.IsFalse(result.Result);
+            Assert.False(result);
         }
         #endregion
 
         #region GetTagListAsync
-        [TestMethod]
-        public void GetTagListAsync_Response_Ok_Should_Return_Valid_Response()
+        [Fact]
+        public async Task GetTagListAsync_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetTagListResponse.json")));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetTagListResponse.json")));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
             // act
-            var result = target.GetTagListAsync();
+            var result = await target.GetTagListAsync();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Result);
+            Assert.NotNull(result);
+            Assert.NotNull(result);
 
-            Assert.AreEqual(2, result.Result.Count);
-            AssertHelper.AssertTagInfo(result.Result[0], "AAAA", "Tag 1", Guid.Parse("11111111-2222-3333-4444-555555555555"));
-            AssertHelper.AssertTagInfo(result.Result[1], "BBBB", "Tag 2", Guid.Parse("22222222-2222-3333-4444-555555555555"));
+            Assert.Equal(2, result.Count);
+            AssertHelper.AssertTagInfo(result[0], "AAAA", "Tag 1", Guid.Parse("11111111-2222-3333-4444-555555555555"));
+            AssertHelper.AssertTagInfo(result[1], "BBBB", "Tag 2", Guid.Parse("22222222-2222-3333-4444-555555555555"));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTagListAsync_NotLoggedIn_Should_Throw_HttpStatusException()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "AuthenticationFailedResponse.json", HttpStatusCode.Unauthorized)));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "AuthenticationFailedResponse.json", HttpStatusCode.Unauthorized)));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
@@ -120,35 +108,34 @@ namespace WirelessTagClientLib.Test
         #endregion
 
         #region  GetTemperatureStatsAsync
-        [TestMethod]
-        public void GetTemperatureStatsAsync_Response_Ok_Should_Return_Valid_Response()
+        [Fact]
+        public async Task GetTemperatureStatsAsync_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "TemperatureStats2Response.json")));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "TemperatureStats2Response.json")));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
             // act
-            var result = target.GetTemperatureStatsAsync(1);
+            var result = await target.GetTemperatureStatsAsync(1);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Result);
+            Assert.NotNull(result);
 
-            Assert.AreEqual(2, result.Result.HourlyReadings.Count);
-            AssertHelper.AssertHourlyReading(result.Result.HourlyReadings[0], new DateTime(2022, 7, 8));
-            AssertHelper.AssertHourlyReading(result.Result.HourlyReadings[1], new DateTime(2022, 7, 9));
+            Assert.Equal(2, result.HourlyReadings.Count);
+            AssertHelper.AssertHourlyReading(result.HourlyReadings[0], new DateTime(2022, 7, 8));
+            AssertHelper.AssertHourlyReading(result.HourlyReadings[1], new DateTime(2022, 7, 9));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTemperatureStatsAsync_NotLoggedIn_Should_Throw_HttpStatusException()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "AuthenticationFailedResponse.json", HttpStatusCode.Unauthorized)));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "AuthenticationFailedResponse.json", HttpStatusCode.Unauthorized)));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
@@ -161,49 +148,48 @@ namespace WirelessTagClientLib.Test
         #endregion
 
         #region GetTagSpanStatsAsync
-        [TestMethod]
-        public void GetTagSpanStatsAsync_Response_Ok_Should_Return_Valid_Response()
+        [Fact]
+        public async Task GetTagSpanStatsAsync_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetMultiTagStatsSpanResponse.json")));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetMultiTagStatsSpanResponse.json")));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
             // act
-            var result = target.GetTagSpanStatsAsync(new List<int>() { 1 });
+            var result = await target.GetTagSpanStatsAsync(new List<int>() { 1 });
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Result);
+            Assert.NotNull(result);
 
-            Assert.AreEqual(new DateTime(2020, 1, 1, 0, 0, 1), result.Result.From);
-            Assert.AreEqual(new DateTime(2022, 7, 8, 0, 0, 1), result.Result.To);
-            Assert.AreNotEqual(0, result.Result.TimeZoneOffset);
+            Assert.Equal(new DateTime(2020, 1, 1, 0, 0, 1), result.From);
+            Assert.Equal(new DateTime(2022, 7, 8, 0, 0, 1), result.To);
+            Assert.NotEqual(0, result.TimeZoneOffset);
 
             // ids
-            Assert.IsNotNull(result.Result.Ids);
-            Assert.AreEqual(3, result.Result.Ids.Count);
-            CollectionAssert.Contains(result.Result.Ids, 1);
-            CollectionAssert.Contains(result.Result.Ids, 2);
-            CollectionAssert.Contains(result.Result.Ids, 3);
+            Assert.NotNull(result.Ids);
+            Assert.Equal(3, result.Ids.Count);
+            Assert.Contains(1, result.Ids);
+            Assert.Contains(2, result.Ids);
+            Assert.Contains(3, result.Ids);
 
             // names
-            Assert.IsNotNull(result.Result.Names);
-            Assert.AreEqual(3, result.Result.Names.Count);
-            CollectionAssert.Contains(result.Result.Names, "House");
-            CollectionAssert.Contains(result.Result.Names, "Garden");
-            CollectionAssert.Contains(result.Result.Names, "Garage");
+            Assert.NotNull(result.Names);
+            Assert.Equal(3, result.Names.Count);
+            Assert.Contains("House", result.Names);
+            Assert.Contains("Garden", result.Names);
+            Assert.Contains("Garage", result.Names);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTagSpanStatsAsync_TagNotFound_Should_Throw_HttpStatusException()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetMultiTagStatsSpanErrorResponse.json", HttpStatusCode.InternalServerError)));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetMultiTagStatsSpanErrorResponse.json", HttpStatusCode.InternalServerError)));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
@@ -216,56 +202,53 @@ namespace WirelessTagClientLib.Test
         #endregion
 
         #region GetTemperatureRawDataAsync
-        [TestMethod]
-        public void GetTemperatureRawDataAsync_Response_Ok_Should_Return_Valid_Response()
+        [Fact]
+        public async Task GetTemperatureRawDataAsync_Response_Ok_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetTemperatureRawDataResponse.json")));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetTemperatureRawDataResponse.json")));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
             // act
-            var result = target.GetTemperatureRawDataAsync(1, DateTime.MinValue, DateTime.MinValue);
+            var result = await target.GetTemperatureRawDataAsync(1, DateTime.MinValue, DateTime.MinValue);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Result);
+            Assert.NotNull(result);
 
-            Assert.AreEqual(3, result.Result.Count);
-            AssertHelper.AssertTemperatureInfo(result.Result[0], new DateTime(2022, 7, 9, 0, 16, 7), 16.9);
-            AssertHelper.AssertTemperatureInfo(result.Result[1], new DateTime(2022, 7, 9, 14, 30, 36), 19.89);
-            AssertHelper.AssertTemperatureInfo(result.Result[2], new DateTime(2022, 7, 9, 15, 3, 10), 20.3);
+            Assert.Equal(3, result.Count);
+            AssertHelper.AssertTemperatureInfo(result[0], new DateTime(2022, 7, 9, 0, 16, 7), 16.9);
+            AssertHelper.AssertTemperatureInfo(result[1], new DateTime(2022, 7, 9, 14, 30, 36), 19.89);
+            AssertHelper.AssertTemperatureInfo(result[2], new DateTime(2022, 7, 9, 15, 3, 10), 20.3);
         }
 
-        [TestMethod]
-        public void GetTemperatureRawDataAsync_EmptyResponse_Should_Return_Valid_Response()
+        [Fact]
+        public async Task GetTemperatureRawDataAsync_EmptyResponse_Should_Return_Valid_Response()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetTemperatureRawDataEmptyResponse.json")));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetTemperatureRawDataEmptyResponse.json")));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
             // act
-            var result = target.GetTemperatureRawDataAsync(1, DateTime.Today, DateTime.Today.AddDays(-7)); // end date is before start date
+            var result = await target.GetTemperatureRawDataAsync(1, DateTime.Today, DateTime.Today.AddDays(-7)); // end date is before start date
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Result);
-
-            Assert.AreEqual(0, result.Result.Count);
+            Assert.NotNull(result);
+            Assert.Empty(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetTemperatureRawDataAsync_TagNotFound_Should_Throw_HttpStatusException()
         {
             // arrange
             var clientMock = new Mock<IRestClient>();
             clientMock.Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>()))
-                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(TestContext.DeploymentDirectory, "GetTemperatureRawDataErrorResponse.json", HttpStatusCode.InternalServerError)));
+                      .Returns(Task.FromResult(TestHelper.GetRestResponseFromFile(AppContext.BaseDirectory, "GetTemperatureRawDataErrorResponse.json", HttpStatusCode.InternalServerError)));
 
             var target = new WirelessTagAsyncClient(clientMock.Object);
 
@@ -279,10 +262,11 @@ namespace WirelessTagClientLib.Test
 
         private void AssertError<T>(Task<T> task)
         {
-            Assert.IsNotNull(task);
-            Assert.IsTrue(task.IsFaulted);
-            Assert.IsNotNull(task.Exception.InnerException);
-            Assert.IsInstanceOfType(task.Exception.InnerException, typeof(HttpStatusException));
+            Assert.NotNull(task);
+
+            Assert.True(task.IsFaulted);
+            Assert.NotNull(task.Exception.InnerException);
+            Assert.IsAssignableFrom<HttpStatusException>(task.Exception.InnerException);
         }
     }
 }
