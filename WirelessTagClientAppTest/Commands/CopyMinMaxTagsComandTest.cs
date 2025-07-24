@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -14,18 +14,18 @@ namespace WirelessTagClientApp.Test.Commands
     /// <summary>
     /// Unit tests for the <see cref="CopyMinMaxTagsCommand"/> class
     /// </summary>
-    [TestClass]
+    
     public class CopyMinMaxTagsCommandTest
     {
-        [TestMethod]
+        [Fact]
         public void Command_Implements_ICommand()
         {
             var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
 
-            Assert.IsInstanceOfType(target.Command, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target.Command);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_Null_Should_Return_False()
         {
             var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
@@ -33,10 +33,10 @@ namespace WirelessTagClientApp.Test.Commands
 
             var result = target.Command.CanExecute(viewModel);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_Data_Null_Should_Return_False()
         {
             var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
@@ -47,23 +47,23 @@ namespace WirelessTagClientApp.Test.Commands
 
             var result = target.Command.CanExecute(viewModel);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_Data_Empty_Should_Return_False()
         {
             var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
             var viewModel = new MinMaxViewModel();
 
-            Assert.AreEqual(0, viewModel.Data.Count);
+            Assert.Equal(0, viewModel.Data.Count);
 
             var result = target.Command.CanExecute(viewModel);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Execute_Should_WriteToClipboard()
         {
             var mock = CreateMockClipboardWriter();
@@ -75,7 +75,7 @@ namespace WirelessTagClientApp.Test.Commands
             mock.Verify(x => x.WriteText(It.IsAny<string>()), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Execute_Should_WriteExpectedMinMaxDataToClipboard()
         {
             var mock = CreateMockClipboardWriter();
@@ -90,7 +90,7 @@ namespace WirelessTagClientApp.Test.Commands
             mock.Verify(x => x.WriteText(It.Is<string>(csv => csv.StartsWith(expectedDataHeader))), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Execute_Should_WriteExpectedRawDataToClipboard()
         {
             var mock = CreateMockClipboardWriter();

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Windows;
 using System.Windows.Data;
@@ -6,18 +6,18 @@ using WirelessTagClientApp.Converters;
 
 namespace WirelessTagClientApp.Test.Converters
 {
-    [TestClass]
+    
     public class BooleanToVisibilityConverterTest
     {
-        [TestMethod]
+        [Fact]
         public void Class_Should_Implement_IValueConverter_Interface()
         {
             var target = new BooleanToVisibilityConverter();
 
-            Assert.IsInstanceOfType(target, typeof(IValueConverter));
+            Assert.IsAssignableFrom<IValueConverter>(target);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_True_Should_Return_Visible()
         {
             // arrange
@@ -28,10 +28,10 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert(value, null, null, null);
 
             // assert
-            Assert.AreEqual(Visibility.Visible, result);
+            Assert.Equal(Visibility.Visible, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_False_Should_Return_Collapsed()
         {
             // arrange
@@ -42,10 +42,10 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert(value, null, null, null);
 
             // assert
-            Assert.AreEqual(Visibility.Collapsed, result);
+            Assert.Equal(Visibility.Collapsed, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_Inverted_True_Should_Return_Visible()
         {
             // arrange
@@ -61,10 +61,10 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert(value, null, null, null);
 
             // assert
-            Assert.AreEqual(Visibility.Hidden, result);
+            Assert.Equal(Visibility.Hidden, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_Inverted_False_Should_Return_Collapsed()
         {
             // arrange
@@ -80,10 +80,10 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert(value, null, null, null);
 
             // assert
-            Assert.AreEqual(Visibility.Visible, result);
+            Assert.Equal(Visibility.Visible, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_ParameterNotBooleanValue_Should_Return_Collapsed()
         {
             // arrange
@@ -93,18 +93,17 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert(123, null, null, null);
 
             // assert
-            Assert.AreEqual(Visibility.Collapsed, result);
+            Assert.Equal(Visibility.Collapsed, result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
+        [Fact]
         public void ConvertBack_Should_Throw_NotImplementedException()
         {
             // arrange
             var target = new BooleanToVisibilityConverter();
 
             // act - should throw
-            var result = target.ConvertBack(null, null, null, null);
+            Assert.Throws<NotImplementedException>(() => target.ConvertBack(null, null, null, null));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Linq;
 using System.Windows.Input;
@@ -7,18 +7,18 @@ using WirelessTagClientApp.ViewModels;
 
 namespace WirelessTagClientApp.Test.Commands
 {
-    [TestClass]
+    
     public class ToggleViewCommandTest
     {
-        [TestMethod]
+        [Fact]
         public void ToggleViewCommand_Implements_ICommand()
         {
             var target = new ToggleViewCommand();
 
-            Assert.IsInstanceOfType(target.Command, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target.Command);
         }
 
-        [TestMethod]
+        [Fact]
         public void ToggleViewCommand_SetsViewMode_ForAllTags()
         {
             // arrange
@@ -27,19 +27,19 @@ namespace WirelessTagClientApp.Test.Commands
             viewModel.Tags.Add(new TagViewModel() { Id = 1, Mode = TagViewModel.ViewMode.Temperature });
             viewModel.Tags.Add(new TagViewModel() { Id = 2, Mode = TagViewModel.ViewMode.Temperature });
 
-            Assert.AreEqual(TagViewModel.ViewMode.Temperature, viewModel.Tags[0].Mode);
-            Assert.AreEqual(TagViewModel.ViewMode.Temperature, viewModel.Tags[1].Mode);
+            Assert.Equal(TagViewModel.ViewMode.Temperature, viewModel.Tags[0].Mode);
+            Assert.Equal(TagViewModel.ViewMode.Temperature, viewModel.Tags[1].Mode);
 
 
             // act
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.AreEqual(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[0].Mode);
-            Assert.AreEqual(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[1].Mode);
+            Assert.Equal(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[0].Mode);
+            Assert.Equal(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[1].Mode);
         }
 
-        [TestMethod]
+        [Fact]
         public void ToggleViewCommand_SetsNextViewMode_And_WrapsRound()
         {
             // arrange
@@ -62,10 +62,10 @@ namespace WirelessTagClientApp.Test.Commands
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.AreEqual(first, tagViewModel.Mode);
+            Assert.Equal(first, tagViewModel.Mode);
         }
 
-        [TestMethod]
+        [Fact]
         public void ToggleViewCommand_SetsPreviousViewMode_ForAllTags()
         {
             // arrange
@@ -74,19 +74,19 @@ namespace WirelessTagClientApp.Test.Commands
             viewModel.Tags.Add(new TagViewModel() { Id = 1, Mode = TagViewModel.ViewMode.TemperatureF });
             viewModel.Tags.Add(new TagViewModel() { Id = 2, Mode = TagViewModel.ViewMode.TemperatureF });
 
-            Assert.AreEqual(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[0].Mode);
-            Assert.AreEqual(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[1].Mode);
+            Assert.Equal(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[0].Mode);
+            Assert.Equal(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[1].Mode);
 
 
             // act
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.AreEqual(TagViewModel.ViewMode.Temperature, viewModel.Tags[0].Mode);
-            Assert.AreEqual(TagViewModel.ViewMode.Temperature, viewModel.Tags[1].Mode);
+            Assert.Equal(TagViewModel.ViewMode.Temperature, viewModel.Tags[0].Mode);
+            Assert.Equal(TagViewModel.ViewMode.Temperature, viewModel.Tags[1].Mode);
         }
 
-        [TestMethod]
+        [Fact]
         public void ToggleViewCommand_SetsPreviousViewMode_And_WrapsRound()
         {
             // arrange
@@ -109,7 +109,7 @@ namespace WirelessTagClientApp.Test.Commands
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.AreEqual(last, tagViewModel.Mode);
+            Assert.Equal(last, tagViewModel.Mode);
         }
     }
 }

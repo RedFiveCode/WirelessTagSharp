@@ -1,24 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
-using System;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.Interfaces;
 
 namespace WirelessTagClientApp.Test.Commands
 {
-    [TestClass]
+    
     public class NavigateHyperlinkCommandTest
     {
-        [TestMethod]
+        [Fact]
         public void NavigateHyperlinkCommand_Implements_ICommand()
         {
             var target = new NavigateHyperlinkCommand();
 
-            Assert.IsInstanceOfType(target.Command, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target.Command);
         }
 
-        [TestMethod]
+        [Fact]
         public void NavigateHyperlinkCommand_Execute_OpensUrl()
         {
             // arrange

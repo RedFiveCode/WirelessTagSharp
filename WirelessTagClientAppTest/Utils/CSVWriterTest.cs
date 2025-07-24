@@ -1,30 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WirelessTagClientApp.Utils;
 
 namespace WirelessTagClientApp.Test.Utils
 {
-    [TestClass]
+    
     public class CSVWriterTest
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void AddColumn_Null_Expression_Should_Throw_ArgumentNullException()
         {
             var target = new CSVWriter<MyRecord>();
-            target.AddColumn(null);
+            Assert.Throws<ArgumentNullException>(() => target.AddColumn(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void WriteCSV_Null_List_Should_Throw_ArgumentNullException()
         {
             var target = new CSVWriter<MyRecord>();
-            target.WriteCSV(null);
+            Assert.Throws<ArgumentNullException>(() => target.WriteCSV(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteCSV_Empty_List_Should_Return_Empty_String()
         {
             // arrange
@@ -35,10 +33,10 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual(String.Empty, result);
+            Assert.Equal(String.Empty, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteCSV_Should_Return_String_With_Values_Separated_By_Comma_Except_For_Last_Value()
         {
             // arrange
@@ -55,10 +53,10 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42, 3.14, 42.10, hello", result);
+            Assert.Equal("42, 3.14, 42.10, hello", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteCSV_One_Item_In_List_Should_Return_Expected_String()
         {
             // arrange
@@ -73,10 +71,10 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42, 3.14", result);
+            Assert.Equal("42, 3.14", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteCSV_Two_Items_In_List_Should_Return_Expected_String()
         {
             // arrange
@@ -92,10 +90,10 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42, 3.14\r\n43, 2.72", result);
+            Assert.Equal("42, 3.14\r\n43, 2.72", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteCSV_With_Special_Delimiters_One_Item_In_List_Should_Return_Expected_String()
         {
             // arrange
@@ -110,10 +108,10 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42!3.14", result);
+            Assert.Equal("42!3.14", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteCSV_With_Value_Containing_Separator_Should_Return_Expected_String_Containing_Delimited_Separator()
         {
             // arrange
@@ -128,10 +126,10 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("42, hello\\, world!", result);
+            Assert.Equal("42, hello\\, world!", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteCSV_WithHeader_One_Item_In_List_Should_Return_Expected_String()
         {
             // arrange
@@ -146,10 +144,10 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("#IntValue, DoubleValue\r\n42, 3.14", result);
+            Assert.Equal("#IntValue, DoubleValue\r\n42, 3.14", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteCSV_Should_Return_String_With_Lines_Separated_By_Newline_Except_For_Last_Line()
         {
             // arrange
@@ -165,7 +163,7 @@ namespace WirelessTagClientApp.Test.Utils
             var result = target.WriteCSV(list);
 
             // assert
-            Assert.AreEqual("#IntValue, DoubleValue\r\n42, 3.14\r\n66, 1.62", result);
+            Assert.Equal("#IntValue, DoubleValue\r\n42, 3.14\r\n66, 1.62", result);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
@@ -9,34 +9,34 @@ namespace WirelessTagClientApp.Test.Commands
     /// <summary>
     /// Unit tests for the <see cref="ChangeViewCommand"/> command.
     /// </summary>
-    [TestClass]
+    
     public class ChangeViewCommandTest
     {
-        [TestMethod]
+        [Fact]
         public void ChangeViewCommand_Implements_ICommand()
         {
             var target = new ChangeViewCommand(ViewModels.MainWindowViewModel.ViewMode.SummaryView);
 
-            Assert.IsInstanceOfType(target.Command, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target.Command);
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangeViewCommand_Sets_MainWindowViewModel_Mode()
         {
             // arrange
             var viewModel = new MainWindowViewModel();
             var target = new ChangeViewCommand(ViewModels.MainWindowViewModel.ViewMode.MinMaxView);
 
-            Assert.AreNotEqual(MainWindowViewModel.ViewMode.MinMaxView, viewModel.Mode);
+            Assert.NotEqual(MainWindowViewModel.ViewMode.MinMaxView, viewModel.Mode);
 
             // act
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.AreEqual(MainWindowViewModel.ViewMode.MinMaxView, viewModel.Mode);
+            Assert.Equal(MainWindowViewModel.ViewMode.MinMaxView, viewModel.Mode);
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangeViewCommand_Updates_MainWindowViewModel_LastUpdated()
         {
             // arrange
@@ -47,13 +47,13 @@ namespace WirelessTagClientApp.Test.Commands
             UpdateChildViewModelTimestamp(viewModel, MainWindowViewModel.ViewMode.SummaryView, new DateTime(2023, 5, 28));
             UpdateChildViewModelTimestamp(viewModel, MainWindowViewModel.ViewMode.MinMaxView, new DateTime(2023, 9, 29));
 
-            Assert.AreNotEqual(MainWindowViewModel.ViewMode.MinMaxView, viewModel.Mode);
+            Assert.NotEqual(MainWindowViewModel.ViewMode.MinMaxView, viewModel.Mode);
 
             // act
             target.Command.Execute(viewModel); // change from SummaryView to MinMaxView
 
             // assert
-            Assert.AreEqual(new DateTime(2023, 9, 29), viewModel.LastUpdated);
+            Assert.Equal(new DateTime(2023, 9, 29), viewModel.LastUpdated);
         }
 
         private void UpdateChildViewModelTimestamp(MainWindowViewModel viewModel, MainWindowViewModel.ViewMode mode, DateTime timestamp)

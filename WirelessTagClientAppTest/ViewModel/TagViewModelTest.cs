@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.ComponentModel;
 using WirelessTagClientApp.ViewModels;
@@ -6,42 +6,42 @@ using WirelessTagClientAppTest.TestHelpers;
 
 namespace WirelessTagClientApp.Test.ViewModel
 {
-    [TestClass]
+    
     public class TagViewModelTest
     {
-        [TestMethod]
+        [Fact]
         public void Class_Should_Implement_INotifyPropertyChanged()
         {
             // act
             var target = new TagViewModel();
 
             // assert
-            Assert.IsInstanceOfType(target, typeof(INotifyPropertyChanged));
+            Assert.IsAssignableFrom<INotifyPropertyChanged>(target);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ctor_Should_Initialise_Properties_To_Expected_Values()
         {
             // act
             var target = new TagViewModel();
 
             // assert
-            Assert.AreEqual(TagViewModel.ViewMode.Temperature, target.Mode);
-            Assert.AreEqual(0, target.Id);
-            Assert.AreEqual(String.Empty, target.Name);
-            Assert.AreEqual(String.Empty, target.Description);
-            Assert.AreEqual(Guid.Empty, target.Uuid);
-            Assert.AreEqual(0d, target.Temperature);
-            Assert.AreEqual(32d, target.TemperatureFahrenheit);
-            Assert.AreEqual(0d, target.RelativeHumidity);
-            Assert.AreEqual(DateTime.MinValue, target.LastCommunication);
-            Assert.AreEqual(0, target.SignalStrength);
-            Assert.AreEqual(0d, target.BatteryVoltage);
-            Assert.AreEqual(0d, target.BatteryRemaining);
-            Assert.IsFalse(target.IsHumidityTag);
+            Assert.Equal(TagViewModel.ViewMode.Temperature, target.Mode);
+            Assert.Equal(0, target.Id);
+            Assert.Equal(String.Empty, target.Name);
+            Assert.Equal(String.Empty, target.Description);
+            Assert.Equal(Guid.Empty, target.Uuid);
+            Assert.Equal(0d, target.Temperature);
+            Assert.Equal(32d, target.TemperatureFahrenheit);
+            Assert.Equal(0d, target.RelativeHumidity);
+            Assert.Equal(DateTime.MinValue, target.LastCommunication);
+            Assert.Equal(0, target.SignalStrength);
+            Assert.Equal(0d, target.BatteryVoltage);
+            Assert.Equal(0d, target.BatteryRemaining);
+            Assert.False(target.IsHumidityTag);
         }
 
-        [TestMethod]
+        [Fact]
         public void Mode_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -55,7 +55,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("Mode");
         }
 
-        [TestMethod]
+        [Fact]
         public void Name_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -69,7 +69,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("Name");
         }
 
-        [TestMethod]
+        [Fact]
         public void Description_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -83,7 +83,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("Description");
         }
 
-        [TestMethod]
+        [Fact]
         public void Id_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -97,7 +97,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("Id");
         }
 
-        [TestMethod]
+        [Fact]
         public void Uuid_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -111,7 +111,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("Uuid");
         }
 
-        [TestMethod]
+        [Fact]
         public void Temperature_Setter_Should_Fire_PropertyChanged_Events()
         {
             // arrange
@@ -126,7 +126,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("TemperatureFahrenheit");
         }
 
-        [TestMethod]
+        [Fact]
         public void RelativeHumidity_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -140,7 +140,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("RelativeHumidity");
         }
 
-        [TestMethod]
+        [Fact]
         public void LastCommunication_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -154,7 +154,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("LastCommunication");
         }
 
-        [TestMethod]
+        [Fact]
         public void SignalStrength_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -168,7 +168,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("SignalStrength");
         }
 
-        [TestMethod]
+        [Fact]
         public void BatteryVoltage_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -182,7 +182,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("BatteryVoltage");
         }
 
-        [TestMethod]
+        [Fact]
         public void BatteryRemaining_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -196,7 +196,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("BatteryRemaining");
         }
 
-        [TestMethod]
+        [Fact]
         public void Temperature_Setter_Should_Set_TemperatureFahrenheit_Property()
         {
             // arrange
@@ -207,10 +207,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             target.Temperature = 100;
 
             // assert
-            Assert.AreEqual(212d, target.TemperatureFahrenheit);
+            Assert.Equal(212d, target.TemperatureFahrenheit);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsHumidityTag_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange

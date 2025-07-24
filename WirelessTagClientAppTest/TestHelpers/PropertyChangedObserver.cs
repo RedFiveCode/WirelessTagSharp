@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -31,13 +31,13 @@ namespace WirelessTagClientAppTest.TestHelpers
 
         public void AssertPropertyChangedEvent(string propertyName)
         {
-            Assert.IsTrue(propertyTable.ContainsKey(propertyName),
+            Assert.True(propertyTable.ContainsKey(propertyName),
                           $"Property '{propertyName}' has not raised a PropertyChanged event");
         }
 
         public void AssertPropertyChangedEvent(string propertyName, int expectedCount)
         {
-            Assert.IsTrue((propertyTable.ContainsKey(propertyName) && propertyTable[propertyName] == expectedCount),
+            Assert.True((propertyTable.ContainsKey(propertyName) && propertyTable[propertyName] == expectedCount),
                           $"Property '{propertyName}' has not raised a PropertyChanged event the expected number of times (expected {expectedCount}, actual {propertyTable[propertyName]})");
         }
 
@@ -45,7 +45,7 @@ namespace WirelessTagClientAppTest.TestHelpers
         {
             int eventCount = propertyTable.Values.Sum();
 
-            Assert.AreEqual(expectedEventCount, eventCount);
+            Assert.Equal(expectedEventCount, eventCount);
         }
     }
 }

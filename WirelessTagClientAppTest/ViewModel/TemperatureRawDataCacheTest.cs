@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +10,10 @@ namespace WirelessTagClientApp.Test.ViewModel
     /// <summary>
     /// Unit tests for the TemperatureRawDataCache class
     /// </summary>
-    [TestClass]
+    
     public class TemperatureRawDataCacheTest
     {
-        [TestMethod]
+        [Fact]
         public void Update_OneItem_SetsCount()
         {
             // arrange
@@ -25,17 +25,17 @@ namespace WirelessTagClientApp.Test.ViewModel
             };
             var target = new TemperatureRawDataCache();
 
-            Assert.AreEqual(0, target.Count);
+            Assert.Equal(0, target.Count);
 
             // act
             target.Update(tagId, data);
 
             // assert
-            Assert.AreEqual(1, target.Count);
-            Assert.AreEqual(2, target.ItemCount);
+            Assert.Equal(1, target.Count);
+            Assert.Equal(2, target.ItemCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void Update_TwoItems_SetsCount()
         {
             // arrange
@@ -56,18 +56,18 @@ namespace WirelessTagClientApp.Test.ViewModel
             var target = new TemperatureRawDataCache();
 
 
-            Assert.AreEqual(0, target.Count);
+            Assert.Equal(0, target.Count);
 
             // act
             target.Update(tagId1, data1);
             target.Update(tagId2, data2);
 
             // assert
-            Assert.AreEqual(2, target.Count);
-            Assert.AreEqual(4, target.ItemCount);
+            Assert.Equal(2, target.Count);
+            Assert.Equal(4, target.ItemCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void Update_DuplicateTimestamp_SetsCount()
         {
             // arrange
@@ -83,19 +83,19 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var target = new TemperatureRawDataCache();
 
-            Assert.AreEqual(0, target.Count);
+            Assert.Equal(0, target.Count);
 
             target.Update(tagId, dataFirst);
-            Assert.AreEqual(1, target.Count);
+            Assert.Equal(1, target.Count);
 
             // act
             target.Update(tagId, dataSecond);
 
             // assert
-            Assert.AreEqual(1, target.ItemCount);
+            Assert.Equal(1, target.ItemCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void Update_DuplicateTimestamp_StoresFirstValue()
         {
             // arrange
@@ -111,22 +111,22 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var target = new TemperatureRawDataCache();
 
-            Assert.AreEqual(0, target.Count);
+            Assert.Equal(0, target.Count);
 
             target.Update(tagId, dataFirst);
-            Assert.AreEqual(1, target.Count);
+            Assert.Equal(1, target.Count);
 
             // act
             target.Update(tagId, dataSecond);
 
             // assert
             var data = target.GetData(tagId);
-            Assert.AreEqual(1, data.Count());
+            Assert.Equal(1, data.Count());
 
             AssertValue(data.First(), 2023, 1, 1, 20);
         }
 
-        [TestMethod]
+        [Fact]
         public void Update_DistinctValues_AppendsValues()
         {
             // arrange
@@ -144,7 +144,7 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var target = new TemperatureRawDataCache();
 
-            Assert.AreEqual(0, target.Count);
+            Assert.Equal(0, target.Count);
 
             // act
             target.Update(tagId, dataFirst);
@@ -152,7 +152,7 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             // assert
             var data = target.GetData(tagId).ToList();
-            Assert.AreEqual(4, data.Count);
+            Assert.Equal(4, data.Count);
 
             AssertValue(data[0], 2023, 1, 1, 10);
             AssertValue(data[1], 2023, 1, 2, 11);
@@ -160,7 +160,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             AssertValue(data[3], 2023, 2, 2, 13);
         }
 
-        [TestMethod]
+        [Fact]
         public void Update_DistinctAndDuplicateValues_AppendsValues()
         {
             // arrange
@@ -180,7 +180,7 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var target = new TemperatureRawDataCache();
 
-            Assert.AreEqual(0, target.Count);
+            Assert.Equal(0, target.Count);
 
             // act
             target.Update(tagId, dataFirst);
@@ -188,7 +188,7 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             // assert
             var data = target.GetData(tagId).ToList();
-            Assert.AreEqual(4, data.Count);
+            Assert.Equal(4, data.Count);
 
             AssertValue(data[0], 2023, 1, 1, 10);
             AssertValue(data[1], 2023, 1, 2, 11);
@@ -196,7 +196,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             AssertValue(data[3], 2023, 2, 2, 13);
         }
 
-        [TestMethod]
+        [Fact]
         public void Update_MultipleTags_StoresVauesForExpectedTag()
         {
             // arrange
@@ -222,18 +222,18 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             // assert
             var data1 = target.GetData(tagId1).ToList();
-            Assert.AreEqual(2, data1.Count);
+            Assert.Equal(2, data1.Count);
             AssertValue(data1[0], 2023, 1, 1, 10);
             AssertValue(data1[1], 2023, 1, 2, 11);
 
             var data2 = target.GetData(tagId2).ToList();
-            Assert.AreEqual(2, data2.Count);
+            Assert.Equal(2, data2.Count);
             AssertValue(data2[0], 2023, 2, 1, 20);
             AssertValue(data2[1], 2023, 2, 2, 21);
         }
 
         #region ContainsDataForTag(int, DateTime) tests
-        [TestMethod]
+        [Fact]
         public void ContainsDataForTag_Hit_ReturnsTrue()
         {
             // arrange
@@ -251,10 +251,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             var result = target.ContainsDataForTag(tagId, new DateTime(2023, 1, 1));
 
             // assert
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void ContainsDataForTag_HitSameDayDifferentTime_ReturnsTrue()
         {
             // arrange
@@ -272,10 +272,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             var result = target.ContainsDataForTag(tagId, new DateTime(2023, 1, 1));
 
             // assert
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void ContainsDataForTag_MissDate_ReturnsFalse()
         {
             // arrange
@@ -293,10 +293,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             var result = target.ContainsDataForTag(tagId, new DateTime(2023, 12, 31));
 
             // assert
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void ContainsDataForTag_MissTagId_ReturnsFalse()
         {
             // arrange
@@ -314,12 +314,12 @@ namespace WirelessTagClientApp.Test.ViewModel
             var result = target.ContainsDataForTag(99, new DateTime(2023, 12, 31));
 
             // assert
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
         #endregion
 
         #region ContainsDataForTag(int, DateTime, DateTime) tests
-        [TestMethod]
+        [Fact]
         public void ContainsDataForTag3_Hit_ReturnsTrue()
         {
             // arrange
@@ -337,10 +337,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             var result = target.ContainsDataForTag(tagId, new DateTime(2023, 1, 1), new DateTime(2023, 12, 31));
 
             // assert
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void ContainsDataForTag3_MissDate_ReturnsFalse()
         {
             // arrange
@@ -358,10 +358,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             var result = target.ContainsDataForTag(tagId, new DateTime(2023, 12, 1), new DateTime(2023, 12, 31));
 
             // assert
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void ContainsDataForTag3_MissTagId_ReturnsFalse()
         {
             // arrange
@@ -379,11 +379,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             var result = target.ContainsDataForTag(99, new DateTime(2023, 1, 11), new DateTime(2023, 12, 31));
 
             // assert
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void ContainsDataForTag3_EndBeforeStart_ThrowsArgumentOutOfRangeException()
         {
             // arrange
@@ -398,11 +397,11 @@ namespace WirelessTagClientApp.Test.ViewModel
             target.Update(tagId, data);
 
             // act; should throw
-            var result = target.ContainsDataForTag(42, new DateTime(2025, 1, 1), new DateTime(2023, 1, 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => target.ContainsDataForTag(42, new DateTime(2025, 1, 1), new DateTime(2023, 1, 1)));
         }
         #endregion
 
-        [TestMethod]
+        [Fact]
         public void GetAllData_NoData_ReturnsEmpty()
         {
             // arrange
@@ -412,11 +411,11 @@ namespace WirelessTagClientApp.Test.ViewModel
             var allData = target.GetAllData();
 
             // assert
-            Assert.IsNotNull(allData);
-            Assert.AreEqual(0, allData.Count());
+           Assert.NotNull(allData);
+            Assert.Equal(0, allData.Count());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAllData_OneTag_ReturnsAllDataWithCorrectTagId()
         {
             // arrange
@@ -433,12 +432,12 @@ namespace WirelessTagClientApp.Test.ViewModel
             var allData = target.GetAllData().ToList();
 
             // assert
-            Assert.AreEqual(2, allData.Count);
+            Assert.Equal(2, allData.Count);
             AssertTagMeasurementValue(allData[0], tagId, 2023, 1, 1, 10);
             AssertTagMeasurementValue(allData[1], tagId, 2023, 1, 2, 11);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAllData_MultipleTags_ReturnsAllDataWithCorrectTagIds()
         {
             // arrange
@@ -462,12 +461,12 @@ namespace WirelessTagClientApp.Test.ViewModel
             var allData = target.GetAllData().ToList();
 
             // assert
-            Assert.AreEqual(4, allData.Count);
+            Assert.Equal(4, allData.Count);
             // The order is not guaranteed, so check that all expected values are present
-            Assert.IsTrue(allData.Any(d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 1) && d.Temperature == 10));
-            Assert.IsTrue(allData.Any(d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 2) && d.Temperature == 11));
-            Assert.IsTrue(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 1) && d.Temperature == 20));
-            Assert.IsTrue(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 2) && d.Temperature == 21));
+            Assert.True(allData.Any(d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 1) && d.Temperature == 10));
+            Assert.True(allData.Any(d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 2) && d.Temperature == 11));
+            Assert.True(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 1) && d.Temperature == 20));
+            Assert.True(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 2) && d.Temperature == 21));
         }
 
         private Measurement CreateTemperatureDataPoint(int year, int month, int day, double temperature)
@@ -479,16 +478,16 @@ namespace WirelessTagClientApp.Test.ViewModel
         {
             var dt = new DateTime(year, month, day);
 
-            Assert.AreEqual(dt, item.Time);
-            Assert.AreEqual(temperature, item.Temperature);
+            Assert.Equal(dt, item.Time);
+            Assert.Equal(temperature, item.Temperature);
         }
 
         private void AssertTagMeasurementValue(TagMeasurementDataPoint item, int tagId, int year, int month, int day, double temperature)
         {
             var dt = new DateTime(year, month, day);
-            Assert.AreEqual(tagId, item.TagId);
-            Assert.AreEqual(dt, item.Time);
-            Assert.AreEqual(temperature, item.Temperature);
+            Assert.Equal(tagId, item.TagId);
+            Assert.Equal(dt, item.Time);
+            Assert.Equal(temperature, item.Temperature);
         }
 
     }

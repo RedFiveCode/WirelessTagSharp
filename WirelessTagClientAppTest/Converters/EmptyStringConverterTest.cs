@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System.Windows.Data;
 using WirelessTagClientApp.Converters;
 
@@ -7,18 +7,18 @@ namespace WirelessTagClientApp.Test.Converters
     /// <summary>
     /// Unit tests for the <see cref="EmptyStringConverter"/> class.
     /// </summary>
-    [TestClass]
+    
     public class EmptyStringConverterTest
     {
-        [TestMethod]
+        [Fact]
         public void Class_Should_Implement_IValueConverter_Interface()
         {
             var target = new EmptyStringConverter();
 
-            Assert.IsInstanceOfType(target, typeof(IValueConverter));
+            Assert.IsAssignableFrom<IValueConverter>(target);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_Null_Should_Return_none()
         {
             // arrange
@@ -28,12 +28,12 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert(null, null, null, null);
 
             // assert
-            Assert.IsInstanceOfType(result, typeof(string));
+            Assert.IsAssignableFrom<string>(result);
 
-            Assert.AreEqual("(none)", result);
+            Assert.Equal("(none)", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_Empty_String_Should_Return_none()
         {
             // arrange
@@ -43,12 +43,12 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert("", null, null, null);
 
             // assert
-            Assert.IsInstanceOfType(result, typeof(string));
+            Assert.IsAssignableFrom<string>(result);
 
-            Assert.AreEqual("(none)", result);
+            Assert.Equal("(none)", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_Non_Empty_String_Should_Return_Original_String()
         {
             // arrange
@@ -58,12 +58,12 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert("hello", null, null, null);
 
             // assert
-            Assert.IsInstanceOfType(result, typeof(string));
+            Assert.IsAssignableFrom<string>(result);
 
-            Assert.AreEqual("hello", result);
+            Assert.Equal("hello", result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_Null_Should_Return_UnavailableText()
         {
             // arrange
@@ -76,9 +76,9 @@ namespace WirelessTagClientApp.Test.Converters
             var result = target.Convert(null, null, null, null);
 
             // assert
-            Assert.IsInstanceOfType(result, typeof(string));
+            Assert.IsAssignableFrom<string>(result);
 
-            Assert.AreEqual("Value not available", result);
+            Assert.Equal("Value not available", result);
         }
     }
 }

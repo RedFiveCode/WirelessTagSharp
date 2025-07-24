@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -12,10 +12,10 @@ using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.Test.ViewModel
 {
-    [TestClass]
+    
     public class MainWindowViewModelTest
     {
-        [TestInitialize]
+        
         public void TestSetup()
         {
             // Ensure we have a SynchronizationContext for task continuations in the view-model;
@@ -25,44 +25,44 @@ namespace WirelessTagClientApp.Test.ViewModel
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
         }
 
-        [TestMethod]
+        [Fact]
         public void Class_Should_Implement_INotifyPropertyChanged()
         {
             // act
             var target = new MainWindowViewModel();
 
             // assert
-            Assert.IsInstanceOfType(target, typeof(INotifyPropertyChanged));
+            Assert.IsAssignableFrom<INotifyPropertyChanged>(target);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ctor_Should_Initialise_Properties_To_Expected_Values()
         {
             // act
             var target = new MainWindowViewModel();
 
             // assert
-            Assert.AreEqual(DateTime.MinValue, target.LastUpdated);
-            Assert.IsFalse(target.IsBusy);
-            Assert.IsFalse(target.IsError);
-            Assert.AreEqual(String.Empty, target.ErrorMessage);
+            Assert.Equal(DateTime.MinValue, target.LastUpdated);
+            Assert.False(target.IsBusy);
+            Assert.False(target.IsError);
+            Assert.Equal(String.Empty, target.ErrorMessage);
 
             // commands
-            Assert.IsNotNull(target.CloseCommand);
-            Assert.IsNotNull(target.RefreshCommand);
-            Assert.IsNotNull(target.AboutCommand);
-            Assert.IsNotNull(target.SummaryViewCommand);
-            Assert.IsNotNull(target.MinMaxViewCommand);
-            Assert.IsNotNull(target.CopyCommand);
-            Assert.IsNotNull(target.CopyRawDataCommand);
-            Assert.IsNotNull(target.ToggleUnitsCommand);
+           Assert.NotNull(target.CloseCommand);
+           Assert.NotNull(target.RefreshCommand);
+           Assert.NotNull(target.AboutCommand);
+           Assert.NotNull(target.SummaryViewCommand);
+           Assert.NotNull(target.MinMaxViewCommand);
+           Assert.NotNull(target.CopyCommand);
+           Assert.NotNull(target.CopyRawDataCommand);
+           Assert.NotNull(target.ToggleUnitsCommand);
 
             // view-model(s)
-            Assert.AreEqual(MainWindowViewModel.ViewMode.SummaryView, target.Mode);
-            Assert.IsNotNull(target.ActiveViewModel);
+            Assert.Equal(MainWindowViewModel.ViewMode.SummaryView, target.Mode);
+           Assert.NotNull(target.ActiveViewModel);
         }
 
-        [TestMethod]
+        [Fact]
         public void LastUpdated_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -76,7 +76,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("LastUpdated");
         }
 
-        [TestMethod]
+        [Fact]
         public void IsBusy_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -90,7 +90,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("IsBusy");
         }
 
-        [TestMethod]
+        [Fact]
         public void IsError_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -104,7 +104,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("IsError");
         }
 
-        [TestMethod]
+        [Fact]
         public void ErrorMessage_Setter_Should_Fire_PropertyChanged_Events()
         {
             // arrange
@@ -119,7 +119,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("IsError");
         }
 
-        [TestMethod]
+        [Fact]
         public void ErrorMessage_Setter_Should_Set_IsError_Property()
         {
             // arrange
@@ -130,10 +130,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             target.ErrorMessage = "Error message";
 
             // assert
-           Assert.IsTrue(target.IsError);
+           Assert.True(target.IsError);
         }
 
-        [TestMethod]
+        [Fact]
         public void ErrorMessage_Setter_Should_Reset_IsError_Property()
         {
             // arrange
@@ -144,10 +144,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             target.ErrorMessage = "";
 
             // assert
-            Assert.IsFalse(target.IsError);
+            Assert.False(target.IsError);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetError_Should_Set_Depedent_Properties()
         {
             // arrange
@@ -162,12 +162,12 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("ErrorMessage");
             observer.AssertPropertyChangedEvent("IsBusy");
 
-            Assert.IsTrue(target.IsError);
-            Assert.AreEqual("my error message", target.ErrorMessage);
-            Assert.IsFalse(target.IsBusy);
+            Assert.True(target.IsError);
+            Assert.Equal("my error message", target.ErrorMessage);
+            Assert.False(target.IsBusy);
         }
 
-        [TestMethod]
+        [Fact]
         public void Mode_Setter_Should_Fire_PropertyChanged_Events()
         {
             // arrange
@@ -182,7 +182,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("ActiveViewModel");
         }
 
-        [TestMethod]
+        [Fact]
         public void Mode_Setter_Should_Set_ActiveViewModel()
         {
             // arrange
@@ -193,10 +193,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             target.Mode = MainWindowViewModel.ViewMode.MinMaxView;
 
             // assert
-            Assert.AreNotSame(originalValue, target.ActiveViewModel);
+            Assert.NotSame(originalValue, target.ActiveViewModel);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Refresh_SummaryView_Should_Set_IsBusy_Property()
         {
             // arrange
@@ -212,7 +212,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("IsBusy", 2); // should set then reset IsBusy
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Refresh_SummaryView_Should_Set_LastUpdated_Property()
         {
             // arrange
@@ -228,7 +228,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("LastUpdated");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Refresh_MinMaxView_Should_Set_IsBusy_Property()
         {
             // arrange
@@ -244,7 +244,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("IsBusy", 2); // should set then reset IsBusy
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Refresh_MinMaxView_Should_Set_LastUpdated_Property()
         {
             // arrange

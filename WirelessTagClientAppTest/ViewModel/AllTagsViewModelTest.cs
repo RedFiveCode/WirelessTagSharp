@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,20 +7,20 @@ using WirelessTagClientAppTest.TestHelpers;
 
 namespace WirelessTagClientApp.Test.ViewModel
 {
-    [TestClass]
+    
     public class AllTagsViewModelTest
     {
-        [TestMethod]
+        [Fact]
         public void Class_Should_Implement_INotifyPropertyChanged()
         {
             // act
             var target = new AllTagsViewModel();
 
             // assert
-            Assert.IsInstanceOfType(target, typeof(INotifyPropertyChanged));
+            Assert.IsAssignableFrom<INotifyPropertyChanged>(target);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ctor_Should_Initialise_Properties_To_Expected_Values()
         {
             // arrange
@@ -30,18 +30,18 @@ namespace WirelessTagClientApp.Test.ViewModel
             var target = new AllTagsViewModel(parentViewModel);
 
             // assert
-            Assert.IsNotNull(target.Tags);
-            Assert.AreEqual(0, target.Tags.Count);
-            Assert.AreEqual(DateTime.MinValue, target.LastUpdated);
+            Assert.NotNull(target.Tags);
+            Assert.Empty(target.Tags);
+            Assert.Equal(DateTime.MinValue, target.LastUpdated);
 
-            Assert.IsNotNull(target.ToggleNextViewCommand);
-            Assert.IsNotNull(target.TogglePreviousViewCommand);
-            Assert.IsNotNull(target.CopyCommand);
-            Assert.IsNotNull(target.RefreshCommand);
-            Assert.AreSame(parentViewModel, target.ParentViewModel);
+            Assert.NotNull(target.ToggleNextViewCommand);
+            Assert.NotNull(target.TogglePreviousViewCommand);
+            Assert.NotNull(target.CopyCommand);
+            Assert.NotNull(target.RefreshCommand);
+            Assert.Same(parentViewModel, target.ParentViewModel);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tags_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -55,7 +55,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("Tags");
         }
 
-        [TestMethod]
+        [Fact]
         public void LastUpdated_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange

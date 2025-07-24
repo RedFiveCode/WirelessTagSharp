@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WirelessTagClientApp.Utils;
 
 namespace WirelessTagClientApp.Test.Utils
@@ -7,19 +7,18 @@ namespace WirelessTagClientApp.Test.Utils
     /// <summary>
     /// Unit tests for <see cref="ThrowIf"/> class.
     /// </summary>
-    [TestClass]
+    
     public class ThrowIfTest
     {
-        [ExpectedException(typeof(ArgumentNullException))]
-        [TestMethod]
+        [Fact]
         public void Argument_IsNull_Throws_ArgumentNullException()
         {
             object value = null;
 
-            ThrowIf.Argument.IsNull(value, nameof(value));
+            Assert.Throws<ArgumentNullException>(() => ThrowIf.Argument.IsNull(value, nameof(value)));
         }
 
-        [TestMethod]
+        [Fact]
         public void Argument_IsNull_DoesNot_Throw_Exception()
         {
             object value = this;
@@ -27,16 +26,15 @@ namespace WirelessTagClientApp.Test.Utils
             ThrowIf.Argument.IsNull(value, nameof(value));
         }
 
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
+        [Fact]
         public void Argument_IsNotEqual_Throws_ArgumentException()
         {
             bool value = true;
 
-            ThrowIf.Argument.IsNotEqual(value, nameof(value));
+            Assert.Throws<ArgumentException>(() => ThrowIf.Argument.IsNotEqual(value, nameof(value)));
         }
 
-        [TestMethod]
+        [Fact]
         public void Argument_IsNotEqual_DoesNot_Throw_Exceptionn()
         {
             bool value = false;

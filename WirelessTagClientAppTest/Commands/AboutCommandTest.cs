@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using System.Windows;
 using System.Windows.Input;
@@ -7,18 +7,18 @@ using WirelessTagClientApp.Interfaces;
 
 namespace WirelessTagClientApp.Test.Commands
 {
-    [TestClass]
+    
     public class AboutCommandTest
     {
-        [TestMethod]
+        [Fact]
         public void AboutCommand_Implements_ICommand()
         {
             var target = new AboutCommand();
 
-            Assert.IsInstanceOfType(target.Command, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target.Command);
         }
 
-        [TestMethod]
+        [Fact]
         public void AboutCommand_Execute_OpensDialogBox()
         {
             // arrange

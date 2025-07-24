@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientLib.DTO;
@@ -8,10 +8,10 @@ namespace WirelessTagClientApp.Test.ViewModel
     /// <summary>
     /// Unit tests for the MeasurmentComparer class
     /// </summary>
-    [TestClass]
+    
     public class MeasurmentComparerTest
     {
-        [TestMethod]
+        [Fact]
         public void Equals_SameInstance_Returns_True()
         {
             var target = new MeasurmentComparer();
@@ -19,10 +19,10 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var result = target.Equals(x, x);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_FirstNull_Returns_False()
         {
             var target = new MeasurmentComparer();
@@ -30,10 +30,10 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var result = target.Equals(null, y);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_SecondNull_Returns_False()
         {
             var target = new MeasurmentComparer();
@@ -41,10 +41,10 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var result = target.Equals(x, null);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_SameTimeValuesSameTemperatureeValues_Returns_True()
         {
             var target = new MeasurmentComparer();
@@ -53,10 +53,10 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var result = target.Equals(x, y);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_SameTimeValuesDifferentTemperatureValues_Returns_True()
         {
             var target = new MeasurmentComparer();
@@ -65,10 +65,10 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var result = target.Equals(x, y);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_DifferentTimeValues_Returns_False()
         {
             var target = new MeasurmentComparer();
@@ -77,7 +77,7 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             var result = target.Equals(x, y);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
     }
 }

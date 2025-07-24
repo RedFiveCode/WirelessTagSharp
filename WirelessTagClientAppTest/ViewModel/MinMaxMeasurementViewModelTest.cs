@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using WirelessTagClientApp.ViewModels;
 
@@ -7,23 +7,23 @@ namespace WirelessTagClientApp.Test.ViewModel
     /// <summary>
     /// Unit tests for the <see cref="MinMaxMeasurementViewModel"/> class
     /// </summary>
-    [TestClass]
+    
     public class MinMaxMeasurementViewModelTest
     {
-        [TestMethod]
+        [Fact]
         public void Ctor_Should_Initialise_Properties_To_Expected_Values()
         {
             // act
             var target = new MinMaxMeasurementViewModel();
 
             // assert
-            Assert.AreEqual(-1, target.TagId);
-            Assert.IsNotNull(target.Minimum);
-            Assert.IsNotNull(target.Maximum);
-            Assert.AreEqual(-1, target.Count);
+            Assert.Equal(-1, target.TagId);
+           Assert.NotNull(target.Minimum);
+           Assert.NotNull(target.Maximum);
+            Assert.Equal(-1, target.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void Difference_Getter_Should_ReturnDifferenceInTemperatures()
         {
             // act
@@ -34,10 +34,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             };
 
             // assert
-            Assert.AreEqual(35d, target.Difference);
+            Assert.Equal(35d, target.Difference);
         }
 
-        [TestMethod]
+        [Fact]
         public void DifferenceF_Getter_Should_ReturnDifferenceInTemperatures()
         {
             // act
@@ -48,7 +48,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             };
 
             // assert
-            Assert.AreEqual(180d, target.DifferenceF);
+            Assert.Equal(180d, target.DifferenceF);
         }
     }
 }

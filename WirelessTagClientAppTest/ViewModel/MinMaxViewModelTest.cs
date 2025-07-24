@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,20 +7,20 @@ using WirelessTagClientAppTest.TestHelpers;
 
 namespace WirelessTagClientApp.Test.ViewModel
 {
-    [TestClass]
+    
     public class MinMaxViewModelTest
     {
-        [TestMethod]
+        [Fact]
         public void Class_Should_Implement_INotifyPropertyChanged()
         {
             // act
             var target = new MinMaxViewModel();
 
             // assert
-            Assert.IsInstanceOfType(target, typeof(INotifyPropertyChanged));
+            Assert.IsAssignableFrom<INotifyPropertyChanged>(target);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ctor_Should_Initialise_Properties_To_Expected_Values()
         {
             // arrange
@@ -30,18 +30,18 @@ namespace WirelessTagClientApp.Test.ViewModel
             var target = new MinMaxViewModel(parent);
 
             // assert
-            Assert.IsNotNull(target.Data);
-            Assert.AreEqual(DateTime.MinValue, target.LastUpdated);
-            Assert.AreEqual(TemperatureUnits.Celsius, target.TemperatureUnits);
-            Assert.IsNotNull(target.CopyCommand);
-            Assert.IsNotNull(target.CopyRawDataCommand);
-            Assert.IsNotNull(target.ToggleTemperatureUnitsCommand);
-            Assert.IsNotNull(target.RefreshCommand);
-            Assert.IsNotNull(target.RawDataCache);
-            Assert.AreSame(parent, target.ParentViewModel);
+            Assert.NotNull(target.Data);
+            Assert.Equal(DateTime.MinValue, target.LastUpdated);
+            Assert.Equal(TemperatureUnits.Celsius, target.TemperatureUnits);
+            Assert.NotNull(target.CopyCommand);
+            Assert.NotNull(target.CopyRawDataCommand);
+            Assert.NotNull(target.ToggleTemperatureUnitsCommand);
+            Assert.NotNull(target.RefreshCommand);
+            Assert.NotNull(target.RawDataCache);
+            Assert.Same(parent, target.ParentViewModel);
         }
 
-        [TestMethod]
+        [Fact]
         public void Data_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange
@@ -55,7 +55,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("Data");
         }
 
-        [TestMethod]
+        [Fact]
         public void TemperatureUnits_Setter_Should_Fire_PropertyChanged_Events()
         {
             // arrange
@@ -71,7 +71,7 @@ namespace WirelessTagClientApp.Test.ViewModel
             observer.AssertPropertyChangedEvent("IsTemperatureFahrenheit");
         }
 
-        [TestMethod]
+        [Fact]
         public void TemperatureUnits_SetterFarenheit_Should_SetAssociatedProperties()
         {
             // arrange
@@ -81,11 +81,11 @@ namespace WirelessTagClientApp.Test.ViewModel
             target.TemperatureUnits = TemperatureUnits.Farenheit;
 
             // assert
-            Assert.IsFalse(target.IsTemperatureCelsius);
-            Assert.IsTrue(target.IsTemperatureFahrenheit);
+            Assert.False(target.IsTemperatureCelsius);
+            Assert.True(target.IsTemperatureFahrenheit);
         }
 
-        [TestMethod]
+        [Fact]
         public void TemperatureUnits_SetterCelsius_Should_SetAssociatedProperties()
         {
             // arrange
@@ -95,11 +95,11 @@ namespace WirelessTagClientApp.Test.ViewModel
             target.TemperatureUnits = TemperatureUnits.Celsius;
 
             // assert
-            Assert.IsTrue(target.IsTemperatureCelsius);
-            Assert.IsFalse(target.IsTemperatureFahrenheit);
+            Assert.True(target.IsTemperatureCelsius);
+            Assert.False(target.IsTemperatureFahrenheit);
         }
 
-        [TestMethod]
+        [Fact]
         public void LastUpdated_Setter_Should_Fire_PropertyChanged_Event()
         {
             // arrange

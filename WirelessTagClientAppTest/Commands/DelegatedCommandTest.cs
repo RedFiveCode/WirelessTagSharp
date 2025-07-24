@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using System;
 using System.Windows.Input;
@@ -11,27 +11,26 @@ namespace WirelessTagClientApp.Test.Commands
     /// <summary>
     /// Unit tests for the <see cref="DelegatedCommand"/> class.
     /// </summary>
-    [TestClass]
+    
     public class DelegatedCommandTest
     {
-        [TestMethod]
+        [Fact]
         public void DelegatedCommand_Implements_ICommand()
         {
             var target = new DelegatedCommand();
 
-            Assert.IsInstanceOfType(target.Command, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target.Command);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void Register_Null_ThrowsArgumentNullException()
         {
             var target = new DelegatedCommand();
 
-            target.Register(ViewModels.MainWindowViewModel.ViewMode.MinMaxView, null);
+            Assert.Throws<ArgumentNullException>(() => target.Register(ViewModels.MainWindowViewModel.ViewMode.MinMaxView, null));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_NullParameter_Returns_False()
         {
             // arrange
@@ -41,10 +40,10 @@ namespace WirelessTagClientApp.Test.Commands
             var result = target.Command.CanExecute(null);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_NoCommandsRegistered_Returns_False()
         {
             // arrange
@@ -59,10 +58,10 @@ namespace WirelessTagClientApp.Test.Commands
             var result = target.Command.CanExecute(viewModel);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_CommandNotRegistered_Returns_False()
         {
             // arrange
@@ -80,10 +79,10 @@ namespace WirelessTagClientApp.Test.Commands
             var result = target.Command.CanExecute(viewModel);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_CallsDelegatedCanExecute_WithActiveViewModel()
         {
             // arrange
@@ -101,7 +100,7 @@ namespace WirelessTagClientApp.Test.Commands
             var result = target.Command.CanExecute(viewModel);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.True(result);
 
             // should call the expected command for the active view to do the CanExecute work
             summaryViewCommand.Verify(x => x.CanExecute(It.Is<ViewModelBase>(vm => vm == viewModel.ActiveViewModel)), Times.Once);
@@ -110,7 +109,7 @@ namespace WirelessTagClientApp.Test.Commands
             minMaxViewCommand.Verify(x => x.CanExecute(It.IsAny<object>()), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void Execute_CallsDelegatedExecute_WithActiveViewModel()
         {
             // arrange
@@ -135,8 +134,7 @@ namespace WirelessTagClientApp.Test.Commands
             minMaxViewCommand.Verify(x => x.Execute(It.IsAny<object>()), Times.Never());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Execute_NoCommandsRegistered_Throws_InvalidOperationException()
         {
             // arrange
@@ -148,7 +146,7 @@ namespace WirelessTagClientApp.Test.Commands
             viewModel.Mode = MainWindowViewModel.ViewMode.SummaryView;
 
             // act - should throw
-            target.Command.Execute(viewModel);
+            Assert.Throws<InvalidOperationException>(() => target.Command.Execute(viewModel));
         }
 
         private Mock<ICommand> CreateMockedCommand()

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using System;
 using System.Windows.Input;
@@ -11,18 +11,18 @@ namespace WirelessTagClientApp.Test.Commands
     /// <summary>
     /// Unit tests for the <see cref="CopyAllTagsCommand"/> class.
     /// </summary>
-    [TestClass]
+    
     public class CopyAllTagsCommandTest
     {
-        [TestMethod]
+        [Fact]
         public void Command_Implements_ICommand()
         {
             var target = new CopyAllTagsCommand();
 
-            Assert.IsInstanceOfType(target.Command, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target.Command);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_Null_Should_Return_False()
         {
             var target = new CopyAllTagsCommand();
@@ -30,10 +30,10 @@ namespace WirelessTagClientApp.Test.Commands
 
             var result = target.Command.CanExecute(viewModel);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_Tags_Null_Should_Return_False()
         {
             var target = new CopyAllTagsCommand();
@@ -44,23 +44,23 @@ namespace WirelessTagClientApp.Test.Commands
 
             var result = target.Command.CanExecute(viewModel);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_Data_Empty_Should_Return_False()
         {
             var target = new CopyAllTagsCommand();
             var viewModel = new AllTagsViewModel();
 
-            Assert.AreEqual(0, viewModel.Tags.Count);
+            Assert.Equal(0, viewModel.Tags.Count);
 
             var result = target.Command.CanExecute(viewModel);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Execute_Should_WriteToClipboard()
         {
             var mock = CreateMockClipboardWriter();
@@ -72,7 +72,7 @@ namespace WirelessTagClientApp.Test.Commands
             mock.Verify(x => x.WriteText(It.IsAny<string>()), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void Execute_Should_WriteExpectedDataToClipboard()
         {
             var mock = CreateMockClipboardWriter();

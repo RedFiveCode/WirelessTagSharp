@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System.Windows.Input;
 using WirelessTagClientApp.Common;
 
@@ -7,18 +7,17 @@ namespace WirelessTagClientApp.Test.Common
     /// <summary>
     /// Unit tests for the <see cref="RelayCommandT"/> class
     /// </summary>
-    [TestClass]
     public class RelayCommandTTest
     {
-        [TestMethod]
+        [Fact]
         public void RelayCommandT_Implements_ICommand()
         {
             var target = new RelayCommandT<ExampleViewModel>(p => Execute(p));
 
-            Assert.IsInstanceOfType(target, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target);
         }
 
-        [TestMethod]
+        [Fact]
         public void RelayCommandT_Execute_CallsExecuteDelegate()
         {
             // arrange
@@ -34,10 +33,10 @@ namespace WirelessTagClientApp.Test.Common
             target.Execute(vm);
 
             // assert
-            Assert.IsTrue(executeCalled);
+            Assert.True(executeCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public void RelayCommandT_Execute_ParameterIsIncorrectType_ReturnsExpectedValue()
         {
             // arrange
@@ -56,11 +55,11 @@ namespace WirelessTagClientApp.Test.Common
             target.Execute(this);
 
             // assert
-            Assert.IsTrue(executeCalled);
-            Assert.IsTrue(executeParameterIsNull);
+            Assert.True(executeCalled);
+            Assert.True(executeParameterIsNull);
         }
 
-        [TestMethod]
+        [Fact]
         public void RelayCommandT_Execute_ParameterIsCorrectType_ReturnsExpectedValue()
         {
             // arrange
@@ -79,11 +78,11 @@ namespace WirelessTagClientApp.Test.Common
             target.Execute(vm);
 
             // assert
-            Assert.IsTrue(executeCalled);
-            Assert.IsFalse(executeParameterIsNull);
+            Assert.True(executeCalled);
+            Assert.False(executeParameterIsNull);
         }
 
-        [TestMethod]
+        [Fact]
         public void RelayCommandT_CanExecute_CallsCanExecuteDelegate()
         {
             // arrange
@@ -102,10 +101,10 @@ namespace WirelessTagClientApp.Test.Common
             var result = target.CanExecute(vm);
 
             // assert
-            Assert.IsTrue(_canExecuteCalled);
+            Assert.True(_canExecuteCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public void RelayCommandT_CanExecute_ReturnsExpectedValue()
         {
             // arrange
@@ -116,10 +115,10 @@ namespace WirelessTagClientApp.Test.Common
             var result = target.CanExecute(vm);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void RelayCommandT_CanExecute_ParameterIsIncorrectType_ReturnsExpectedValue()
         {
             // arrange
@@ -140,12 +139,12 @@ namespace WirelessTagClientApp.Test.Common
             var result = target.CanExecute(this);
 
             // assert
-            Assert.IsTrue(result);
-            Assert.IsTrue(_canExecuteCalled);
-            Assert.IsTrue(_canExecuteParameterIsNull);
+            Assert.True(result);
+            Assert.True(_canExecuteCalled);
+            Assert.True(_canExecuteParameterIsNull);
         }
 
-        [TestMethod]
+        [Fact]
         public void RelayCommandT_CanExecute_ParameterIsCorrectType_ReturnsExpectedValue()
         {
             // arrange
@@ -166,9 +165,9 @@ namespace WirelessTagClientApp.Test.Common
             var result = target.CanExecute(vm);
 
             // assert
-            Assert.IsTrue(result);
-            Assert.IsTrue(_canExecuteCalled);
-            Assert.IsFalse(_canExecuteParameterIsNull);
+            Assert.True(result);
+            Assert.True(_canExecuteCalled);
+            Assert.False(_canExecuteParameterIsNull);
         }
 
         private bool CanExecute(ExampleViewModel p)

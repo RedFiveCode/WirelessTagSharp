@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -14,10 +14,10 @@ using System.Linq;
 
 namespace WirelessTagClientApp.Test.Commands
 {
-    [TestClass]
+    
     public class RefreshAllTagsCommandTest
     {
-        [TestInitialize]
+        
         public void TestSetup()
         {
             // Ensure we have a SynchronizationContext for task continuations in the view-model;
@@ -27,7 +27,7 @@ namespace WirelessTagClientApp.Test.Commands
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
         }
 
-        [TestMethod]
+        [Fact]
         public void Command_Implements_ICommand()
         {
             var clientMock = CreateAsyncClientMock();
@@ -35,10 +35,10 @@ namespace WirelessTagClientApp.Test.Commands
 
             var target = new RefreshAllTagsCommand(clientMock.Object, options);
 
-            Assert.IsInstanceOfType(target.Command, typeof(ICommand));
+            Assert.IsAssignableFrom<ICommand>(target.Command);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanExecute_Returns_True()
         {
             // arrange
@@ -54,10 +54,10 @@ namespace WirelessTagClientApp.Test.Commands
 
             // assert
             var innerViewModel = viewModel.ActiveViewModel;
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Execute_RefreshesListOfTagsInViewModel()
         {
             // arrange
@@ -73,12 +73,12 @@ namespace WirelessTagClientApp.Test.Commands
             await target.ExecuteAsync(viewModel);
 
             // assert
-            Assert.IsNotNull(viewModel.Tags);
-            Assert.AreEqual(1, viewModel.Tags.Count);
-            Assert.AreEqual(1, viewModel.Tags[0].Id);
+           Assert.NotNull(viewModel.Tags);
+            Assert.Equal(1, viewModel.Tags.Count);
+            Assert.Equal(1, viewModel.Tags[0].Id);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Execute_AlreadyHaveSomeData_RefreshesListOfTagsInViewModel_AndMaintainsPreviousTagViewMode()
         {
             // arrange
@@ -106,13 +106,13 @@ namespace WirelessTagClientApp.Test.Commands
             await target.ExecuteAsync(viewModel);
 
             // assert
-            Assert.IsNotNull(viewModel.Tags);
-            Assert.AreEqual(1, viewModel.Tags.Count);
-            Assert.AreEqual(1, viewModel.Tags[0].Id);
-            Assert.AreEqual(previousViewMode, viewModel.Tags[0].Mode);
+           Assert.NotNull(viewModel.Tags);
+            Assert.Equal(1, viewModel.Tags.Count);
+            Assert.Equal(1, viewModel.Tags[0].Id);
+            Assert.Equal(previousViewMode, viewModel.Tags[0].Mode);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Execute_Calls_Client_GetTagList()
         {
             // arrange
@@ -134,10 +134,10 @@ namespace WirelessTagClientApp.Test.Commands
             await target.ExecuteAsync(viewModel);
 
             // assert
-            Assert.IsTrue(getTagListCalled);
+            Assert.True(getTagListCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Execute_Sets_LastUpdated_Property_OnParentViewModel()
         {
             // arrange
@@ -159,7 +159,7 @@ namespace WirelessTagClientApp.Test.Commands
             observer.AssertPropertyChangedEvent("LastUpdated");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Execute_SetsIsBusy_Property_OnParentViewModel()
         {
             // arrange
