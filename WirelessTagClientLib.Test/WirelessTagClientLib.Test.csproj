@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\CacheLoaderTest.cs" />
     <Compile Include="Client\WirelessTagAsyncClientTest.cs" />
     <Compile Include="TestHelpers\AssertHelper.cs" />
     <Compile Include="Mapper\MapperTest.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Client\WirelessTagClientTest.cs" />
     <Compile Include="Client\WirelessTagJsonClientTest.cs" />
     <Compile Include="TestHelpers\TestHelper.cs" />
+    <Compile Include="Utils\DateTimeChunkerTest.cs" />
     <Compile Include="Utils\HttpStatusExceptionTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,11 +122,26 @@
     <PackageReference Include="System.Diagnostics.DiagnosticSource">
       <Version>8.0.1</Version>
     </PackageReference>
+    <PackageReference Include="System.IO.Abstractions">
+      <Version>22.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers">
+      <Version>22.0.15</Version>
+    </PackageReference>
     <PackageReference Include="System.Reflection.Metadata">
       <Version>8.0.1</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
       <Version>8.0.5</Version>
+    </PackageReference>
+    <PackageReference Include="TestableIO.System.IO.Abstractions">
+      <Version>22.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers">
+      <Version>22.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers">
+      <Version>22.0.15</Version>
     </PackageReference>
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.3">
