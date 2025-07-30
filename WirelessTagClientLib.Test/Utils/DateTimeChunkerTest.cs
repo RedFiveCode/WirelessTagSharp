@@ -13,8 +13,8 @@ namespace WirelessTagClientLib.Test.Utils
             var from = DateTime.Now;
             var to = from.AddDays(-10);
 
-            // act; should throw, use ToList to force enumeration, otherwise not evaluated
-            Assert.Throws<ArgumentException>(() => DateTimeChunker.SplitDateTimeRange(from, to, TimeSpan.FromDays(1)).ToList());
+            // act; should throw
+            Assert.Throws<ArgumentException>(() => DateTimeChunker.SplitDateTimeRange(from, to, TimeSpan.FromDays(1)));
         }
 
         [Theory]
@@ -26,8 +26,8 @@ namespace WirelessTagClientLib.Test.Utils
             var from = DateTime.Now;
             var to = from.AddDays(10);
 
-            // act; should throw, use ToList to force enumeration, otherwise not evaluated
-            Assert.Throws<ArgumentOutOfRangeException>(() => DateTimeChunker.SplitDateTimeRange(from, to, TimeSpan.FromDays(span)).ToList());
+            // act; should throw
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateTimeChunker.SplitDateTimeRange(from, to, TimeSpan.FromDays(span)));
         }
 
         [Fact]
@@ -41,14 +41,13 @@ namespace WirelessTagClientLib.Test.Utils
             var results =  DateTimeChunker.SplitDateTimeRange(from, to, TimeSpan.FromDays(5));
 
             // assert
-            var resultsList = results.ToList();
-
-            Assert.Equal(3, resultsList.Count); // 2 chunks of 5 days each plus remainder
+            Assert.NotNull(results);    
+            Assert.Equal(3, results.Count); // 2 chunks of 5 days each plus remainder
 
             var start = new DateTime(2025, 1, 1);
-            AssertDateTimeRange(resultsList[0], new DateTime(2025, 1, 1), new DateTime(2025, 1, 5, 23, 59, 59).AddTicks(9999999L));
-            AssertDateTimeRange(resultsList[1], new DateTime(2025, 1, 6), new DateTime(2025, 1, 10, 23, 59, 59).AddTicks(9999999L));
-            AssertDateTimeRange(resultsList[2], new DateTime(2025, 1, 11), new DateTime(2025, 1, 12, 23, 59, 59).AddTicks(9999999L));
+            AssertDateTimeRange(results[0], new DateTime(2025, 1, 1), new DateTime(2025, 1, 5, 23, 59, 59).AddTicks(9999999L));
+            AssertDateTimeRange(results[1], new DateTime(2025, 1, 6), new DateTime(2025, 1, 10, 23, 59, 59).AddTicks(9999999L));
+            AssertDateTimeRange(results[2], new DateTime(2025, 1, 11), new DateTime(2025, 1, 12, 23, 59, 59).AddTicks(9999999L));
         }
 
         [Fact]
@@ -62,12 +61,11 @@ namespace WirelessTagClientLib.Test.Utils
             var results = DateTimeChunker.SplitDateTimeRange(from, to, TimeSpan.FromDays(5));
 
             // assert
-            var resultsList = results.ToList();
-
-            Assert.Single(resultsList); // only one chunk since the range is less than 5 days
+            Assert.NotNull(results);
+            Assert.Single(results); // only one chunk since the range is less than 5 days
 
             var start = new DateTime(2025, 1, 1);
-            AssertDateTimeRange(resultsList[0], new DateTime(2025, 1, 1), new DateTime(2025, 1, 3, 23, 59, 59).AddTicks(9999999L));
+            AssertDateTimeRange(results[0], new DateTime(2025, 1, 1), new DateTime(2025, 1, 3, 23, 59, 59).AddTicks(9999999L));
         }
 
         private void AssertDateTimeRange((DateTime Start, DateTime End) result, DateTime expectedStart, DateTime expectedEnd)

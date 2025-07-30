@@ -26,7 +26,7 @@ namespace WirelessTagClientLib
         /// <returns></returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="from"/> is after <paramref name="to"/></exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="interval"/> is less than or equal to zero</exception>
-        public static IEnumerable<(DateTime Start, DateTime End)> SplitDateTimeRange(DateTime from, DateTime to, TimeSpan interval)
+        public static List<(DateTime Start, DateTime End)> SplitDateTimeRange(DateTime from, DateTime to, TimeSpan interval)
         {
             if (from > to)
             {
@@ -37,6 +37,8 @@ namespace WirelessTagClientLib
             {
                 throw new ArgumentOutOfRangeException("Interval must be greater than zero", nameof(interval));
             }
+
+            var results = new List<(DateTime Start, DateTime End)>();
 
             var currentStart = from.Date;
             var finish = to.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
@@ -54,11 +56,13 @@ namespace WirelessTagClientLib
                 // Round up the end time to 23:59:59.9999999 (end of day)
                 currentEnd = currentEnd.Date.AddDays(1).AddTicks(-1);
 
-                yield return (currentStart, currentEnd);
+                results.Add((currentStart, currentEnd));
 
                 // Move to the next chunk start
                 currentStart = currentEnd.AddTicks(1); // Add 1 tick to avoid overlap
             }
+
+            return results;
         }
     }
 }
