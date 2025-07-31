@@ -41,98 +41,88 @@ namespace WirelessTagClientLib.Client
         {
             // TODO ThrowIf.Argument.IsNull(folder, nameof(folder));
 
-            try
+            // Load tags from the client
+            var tagInfo = await GetTagInfoAsync(tagId);
+            if (tagInfo == null)
             {
-                // Load tags from the client
-                var tagInfo = await GetTagInfoAsync(tagId);
-                if (tagInfo == null)
-                {
-                    throw new ArgumentOutOfRangeException($"Tag with Id {tagId} not found.");
-                }
-
-                var measurements = new List<Measurement>();
-
-                // split time range into smaller chunks starting at midnight of the beginning of the specified date range
-                var start = from.Date;
-                var finish = to.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-                var timechunks = DateTimeChunker.SplitDateTimeRange(from.Date, to.Date, ChunkInterval);
-
-                Console.WriteLine($"From {start} to {finish} in {timechunks.Count()} chunks of {ChunkInterval.TotalDays} days...");
-
-                foreach (var chunk in timechunks)
-                {
-                    if (Verbose)
-                    {
-                        Console.Write($"Tag {tagId} : Getting data from {chunk.Start} to {chunk.End}...");
-                    }
-
-                    // fetch the data from the client
-                    var stopwatch = Stopwatch.StartNew();
-                    var data = await _client.GetTemperatureRawDataAsync(tagId, chunk.Start, chunk.End);
-                    stopwatch.Stop();
-
-                    if (data != null && data.Any())
-                    {
-                        if (Verbose)
-                        {
-                            Console.WriteLine($"{data.Count:n0} measurements in {stopwatch.Elapsed}");
-                        }
-
-                        // Add the fetched data to the measurements list
-                        measurements.AddRange(data);
-                    }
-                    else
-                    {
-                        if (Verbose)
-                        {
-                            Console.WriteLine("no data");
-                        }
-                    }
-
-                    // wait between requests unless the last chunk
-                    if (chunk != timechunks.Last())
-                    {
-                        // Wait for a specified time before the next request
-                        if (Verbose)
-                        {
-                            Console.Write($"Waiting ({WaitInterval})...");
-                        }
-
-                        await Task.Delay(WaitInterval);
-
-                        if (Verbose)
-                        {
-                            Console.WriteLine("ok");
-                        }
-                    }
-                }
-
-                // Serialize and save the data to the cache file
-                if (measurements.Any())
-                {
-                    // Ensure the folder exists
-                    if (!_fileSystem.Directory.Exists(folder))
-                    {
-                        _fileSystem.Directory.CreateDirectory(folder);
-                    }
-
-                    var filename = GetCacheFilename(folder, tagInfo);
-
-                    if (Verbose)
-                    {
-                        Console.WriteLine($"Writing {measurements.Count:n0} measurements to {filename}...");
-                    }
-
-                    WriteCacheFile(filename, measurements);
-                }
-               
-
+                throw new ArgumentOutOfRangeException($"Tag with Id {tagId} not found.");
             }
-            catch (Exception ex)
+
+            var measurements = new List<Measurement>();
+
+            // split time range into smaller chunks starting at midnight of the beginning of the specified date range
+            var start = from.Date;
+            var finish = to.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+            var timechunks = DateTimeChunker.SplitDateTimeRange(from.Date, to.Date, ChunkInterval);
+
+            Console.WriteLine($"From {start} to {finish} in {timechunks.Count()} chunks of {ChunkInterval.TotalDays} days...");
+
+            foreach (var chunk in timechunks)
             {
-                // Handle exceptions, e.g., log them
-                Console.WriteLine($"Error loading cache: {ex.Message}");
+                if (Verbose)
+                {
+                    Console.Write($"Tag {tagId} : Getting data from {chunk.Start} to {chunk.End}...");
+                }
+
+                // fetch the data from the client
+                var stopwatch = Stopwatch.StartNew();
+                var data = await _client.GetTemperatureRawDataAsync(tagId, chunk.Start, chunk.End);
+                stopwatch.Stop();
+
+                if (data != null && data.Any())
+                {
+                    if (Verbose)
+                    {
+                        Console.WriteLine($"{data.Count:n0} measurements in {stopwatch.Elapsed}");
+                    }
+
+                    // Add the fetched data to the measurements list
+                    measurements.AddRange(data);
+                }
+                else
+                {
+                    if (Verbose)
+                    {
+                        Console.WriteLine("no data");
+                    }
+                }
+
+                // wait between requests unless the last chunk
+                if (chunk != timechunks.Last())
+                {
+                    // Wait for a specified time before the next request
+                    if (Verbose)
+                    {
+                        Console.Write($"Waiting ({WaitInterval})...");
+                    }
+
+                    await Task.Delay(WaitInterval);
+
+                    if (Verbose)
+                    {
+                        Console.WriteLine("ok");
+                    }
+                }
+            }
+
+            // Serialize and save the data to the cache file
+            if (measurements.Any())
+            {
+                // Ensure the folder exists
+                if (!_fileSystem.Directory.Exists(folder))
+                {
+                    _fileSystem.Directory.CreateDirectory(folder);
+                }
+
+                var filename = GetCacheFilename(folder, tagInfo);
+
+                if (Verbose)
+                {
+                    Console.WriteLine($"Writing {measurements.Count:n0} measurements to {filename}...");
+                }
+
+                WriteCacheFile(filename, measurements);
             }
         }
 
