@@ -49,6 +49,19 @@ namespace WirelessTagClientLib.Test.Client
         }
 
         [Fact]
+        public async Task LoadCacheAsync_FolderNull_ThrowsArgumentNullException()
+        {
+            // arrange
+            var tagId = 1;
+            var from = new DateTime(2025, 1, 1);
+            var to = new DateTime(2025, 1, 31);
+
+            // act; should throw
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _sut.LoadCacheAsync(tagId, null, from, to));
+        }
+
+
+        [Fact]
         public async Task LoadCacheAsync_Calls_GetTagListAsync()
         {
             // arrange
@@ -105,7 +118,7 @@ namespace WirelessTagClientLib.Test.Client
             var from = new DateTime(2025, 1, 1);
             var to = new DateTime(2025, 1, 31);
 
-            // act
+            // act; should throw
             await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _sut.LoadCacheAsync(tagId, folder, from, to));
 
             // assert 

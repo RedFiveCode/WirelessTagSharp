@@ -37,9 +37,19 @@ namespace WirelessTagClientLib.Client
 
         public bool Verbose { get; set; } = false;
 
+        /// <summary>
+        /// Load the cache for a specific tag and time range.
+        /// </summary>
+        /// <param name="tagId">Tag id</param>
+        /// <param name="folder">Cache folder name</param>
+        /// <param name="from">Start of time interval</param>
+        /// <param name="to">End of time interval (inclusive)</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="folder"/> is null</exception>"
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="folder"/></exception>
         public async Task LoadCacheAsync(int tagId, string folder, DateTime from, DateTime to)
         {
-            // TODO ThrowIf.Argument.IsNull(folder, nameof(folder));
+            ThrowIf.Argument.IsNull(folder, nameof(folder));
 
             // Load tags from the client
             var tagInfo = await GetTagInfoAsync(tagId);
