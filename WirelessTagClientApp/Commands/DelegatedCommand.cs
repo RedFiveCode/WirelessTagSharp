@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WirelessTagClientApp.Common;
-using WirelessTagClientApp.Utils;
 using WirelessTagClientApp.ViewModels;
+using WirelessTagClientLib;
 
 namespace WirelessTagClientApp.Commands
 {

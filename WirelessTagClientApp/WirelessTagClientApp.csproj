@@ -98,7 +98,6 @@
     <Compile Include="Converters\HumanizeTimeSpanValueConverter.cs" />
     <Compile Include="Utils\EnumHelper.cs" />
     <Compile Include="Utils\TemperatureConvertor.cs" />
-    <Compile Include="Utils\ThrowIf.cs" />
     <Compile Include="Utils\TimeInterval.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AllTagsViewModel.cs" />

@@ -1,8 +1,7 @@
 ﻿using System;
 using Xunit;
-using WirelessTagClientApp.Utils;
 
-namespace WirelessTagClientApp.Test.Utils
+namespace WirelessTagClientLib.Test.Utils
 {
     /// <summary>
     /// Unit tests for <see cref="ThrowIf"/> class.

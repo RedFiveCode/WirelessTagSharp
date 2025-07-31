@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WirelessTagClientApp.Utils
+namespace WirelessTagClientLib
 {
     /// <summary>
     /// Dedicated exception helper class.

@@ -76,7 +76,6 @@
     <Compile Include="Utils\CSVWriterTest.cs" />
     <Compile Include="Utils\EnumHelperTest.cs" />
     <Compile Include="Utils\TemperatureConvertorTest.cs" />
-    <Compile Include="Utils\ThrowIfTest.cs" />
     <Compile Include="Utils\TimeIntervalHelperTest.cs" />
     <Compile Include="ViewModel\MeasurementViewModelTest.cs" />
     <Compile Include="ViewModel\MinMaxMeasurementViewModelTest.cs" />

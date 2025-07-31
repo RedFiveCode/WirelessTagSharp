@@ -74,6 +74,7 @@
     <Compile Include="Client\WirelessTagJsonClient.cs" />
     <Compile Include="Interfaces\IWirelessTagJsonClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ThrowIf.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
