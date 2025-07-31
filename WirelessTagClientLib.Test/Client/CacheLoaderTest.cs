@@ -65,7 +65,7 @@ namespace WirelessTagClientLib.Test.Client
         }
 
         [Fact]
-        public async Task LoadCacheAsync_Calls_GetTemperatureRawDataAsync()
+        public async Task LoadCacheAsync_Calls_GetTemperatureRawDataAsync_AtLeastOnce()
         {
             // arrange
             var tagId = 1;
@@ -81,7 +81,23 @@ namespace WirelessTagClientLib.Test.Client
         }
 
         [Fact]
-        public async Task LoadCacheAsync_TagNotFound_DoesNotCallGetTemperatureRawDataAsync()
+        public async Task LoadCacheAsync_Calls_GetTemperatureRawDataAsync_Once()
+        {
+            // arrange
+            var tagId = 1;
+            var folder = @"C:\root\subFolder";
+            var from = new DateTime(2025, 1, 1);
+            var to = new DateTime(2025, 1, 3); // interval is smaller than ChunkInterval (5 days)
+
+            // act
+            await _sut.LoadCacheAsync(tagId, folder, from, to);
+
+            // assert 
+            _clientMock.Verify(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task LoadCacheAsync_TagNotFound_ThrowsArgumentOutOfRangeException()
         {
             // arrange
             var tagId = 999;
@@ -90,10 +106,34 @@ namespace WirelessTagClientLib.Test.Client
             var to = new DateTime(2025, 1, 31);
 
             // act
-            await _sut.LoadCacheAsync(tagId, folder, from, to);
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _sut.LoadCacheAsync(tagId, folder, from, to));
 
             // assert 
             _clientMock.Verify(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Never());
+        }
+
+        [Fact]
+        public async Task LoadCacheAsync_NoData_DoesNotWriteToCacheFile()
+        {
+            // arrange
+            var tagId = 1;
+            var folder = @"C:\root\subFolder";
+            var from = new DateTime(2025, 1, 1);
+            var to = new DateTime(2025, 1, 31);
+
+            _clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                       .Returns(Task.FromResult(new List<DTO.Measurement>()
+                       {
+                           // empty list
+                       }));
+
+            // act
+            await _sut.LoadCacheAsync(tagId, folder, from, to);
+
+            // assert 
+            var cacheFile = @"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json";
+
+            Assert.False(_mockfileSystem.File.Exists(cacheFile), "Cache file was not created");
         }
 
         [Fact]
@@ -152,6 +192,28 @@ namespace WirelessTagClientLib.Test.Client
 
             // assert 
             Assert.True(_mockfileSystem.Directory.Exists(folder), "Cache folder was not created");
+        }
+
+        [Fact]
+        public async Task LoadCacheAsync_FolderExists_UpdatesFolder()
+        {
+            // arrange
+            var tagId = 1;
+            var folder = @"C:\root\subFolder";
+            var from = new DateTime(2025, 1, 1);
+            var to = new DateTime(2025, 1, 31);
+
+            _mockfileSystem.Directory.CreateDirectory(folder);
+            _mockfileSystem.File.WriteAllText(@"C:\root\subFolder\22222222-2222-2222-2222-222222222222.cache.json",
+                                               "This is an existing file to ensure the folder exists");
+
+            // act
+            await _sut.LoadCacheAsync(tagId, folder, from, to);
+
+            // assert 
+            Assert.True(_mockfileSystem.Directory.Exists(folder), "Cache folder was not created");
+
+            Assert.True(_mockfileSystem.File.Exists(@"C:\root\subFolder\22222222-2222-2222-2222-222222222222.cache.json"));
         }
 
     }
