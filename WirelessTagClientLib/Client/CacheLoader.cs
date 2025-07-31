@@ -156,7 +156,7 @@ namespace WirelessTagClientLib.Client
                 Formatting = Formatting.Indented
             };
 
-            using (var stream = _fileSystem.FileStream.New(filename, FileMode.CreateNew))
+            using (var stream = _fileSystem.FileStream.New(filename, FileMode.Create, FileAccess.Write))
             {
                 using (var tw = new StreamWriter(stream, Encoding.UTF8))
                 {

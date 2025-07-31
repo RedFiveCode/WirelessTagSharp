@@ -116,7 +116,30 @@ namespace WirelessTagClientLib.Test.Client
         }
 
         [Fact]
-        public async Task LoadCacheAsync_CreateFolder()
+        public async Task LoadCacheAsync_CacheFileExists_OverwritesCacheFile()
+        {
+            // arrange
+            var tagId = 1;
+            var folder = @"C:\root\subFolder";
+            var from = new DateTime(2025, 1, 1);
+            var to = new DateTime(2025, 1, 31);
+
+            var cacheFile = @"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json";
+
+            _mockfileSystem.Directory.CreateDirectory(folder);
+            _mockfileSystem.File.WriteAllText(cacheFile, "Dummy data");
+
+            // act
+            await _sut.LoadCacheAsync(tagId, folder, from, to);
+
+            // assert 
+            Assert.True(_mockfileSystem.File.Exists(cacheFile), "Cache file was not created");
+            Assert.True(_mockfileSystem.FileInfo.New(cacheFile).Length > 0, "Cache file should not be empty");
+            Assert.StartsWith("[", _mockfileSystem.File.ReadAllText(cacheFile));
+        }
+
+        [Fact]
+        public async Task LoadCacheAsync_FolderDoesNotExist_CreatesFolder()
         {
             // arrange
             var tagId = 1;
