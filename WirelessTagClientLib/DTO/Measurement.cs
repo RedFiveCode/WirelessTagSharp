@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 
 namespace WirelessTagClientLib.DTO
@@ -13,6 +14,17 @@ namespace WirelessTagClientLib.DTO
         {
             Time = time;
             Temperature = temperature;
+        }
+
+        [JsonConstructor()]
+
+        public Measurement(DateTime time, double temperature, double humidity, int lux, double battery)
+        {
+            Time = time;
+            Temperature = temperature;
+            Humidity = humidity;
+            Lux = lux;
+            Battery = battery;
         }
 
         /// <summary>
