@@ -16,7 +16,7 @@ namespace WirelessTagClientApp.Test.ViewModel
     public class MainWindowViewModelTest
     {
         
-        public void TestSetup()
+        public MainWindowViewModelTest()
         {
             // Ensure we have a SynchronizationContext for task continuations in the view-model;
             // WPF has this by default, but unit tests do not, otherwise we get an InvalidOperationException

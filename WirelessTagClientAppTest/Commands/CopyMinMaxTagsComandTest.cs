@@ -56,7 +56,7 @@ namespace WirelessTagClientApp.Test.Commands
             var target = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
             var viewModel = new MinMaxViewModel();
 
-            Assert.Equal(0, viewModel.Data.Count);
+            Assert.Empty(viewModel.Data);
 
             var result = target.Command.CanExecute(viewModel);
 

@@ -53,7 +53,7 @@ namespace WirelessTagClientApp.Test.Commands
             var target = new CopyAllTagsCommand();
             var viewModel = new AllTagsViewModel();
 
-            Assert.Equal(0, viewModel.Tags.Count);
+            Assert.Empty(viewModel.Tags);
 
             var result = target.Command.CanExecute(viewModel);
 

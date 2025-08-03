@@ -58,7 +58,7 @@ namespace WirelessTagClientLib.Test
         }
         public static void AssertDoubleListContains(List<double> list, double value)
         {
-            Assert.True(list.Any(d => IsNear(d, value)));
+            Assert.Contains(list, d => IsNear(d, value));
         }
     }
 }

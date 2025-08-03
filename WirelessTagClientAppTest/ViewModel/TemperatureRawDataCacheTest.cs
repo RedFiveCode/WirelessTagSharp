@@ -121,7 +121,7 @@ namespace WirelessTagClientApp.Test.ViewModel
 
             // assert
             var data = target.GetData(tagId);
-            Assert.Equal(1, data.Count());
+            Assert.Single(data);
 
             AssertValue(data.First(), 2023, 1, 1, 20);
         }
@@ -411,8 +411,8 @@ namespace WirelessTagClientApp.Test.ViewModel
             var allData = target.GetAllData();
 
             // assert
-           Assert.NotNull(allData);
-            Assert.Equal(0, allData.Count());
+            Assert.NotNull(allData);
+            Assert.Empty(allData);
         }
 
         [Fact]
@@ -463,10 +463,10 @@ namespace WirelessTagClientApp.Test.ViewModel
             // assert
             Assert.Equal(4, allData.Count);
             // The order is not guaranteed, so check that all expected values are present
-            Assert.True(allData.Any(d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 1) && d.Temperature == 10));
-            Assert.True(allData.Any(d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 2) && d.Temperature == 11));
-            Assert.True(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 1) && d.Temperature == 20));
-            Assert.True(allData.Any(d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 2) && d.Temperature == 21));
+            Assert.Contains(allData, d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 1) && d.Temperature == 10);
+            Assert.Contains(allData, d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 2) && d.Temperature == 11);
+            Assert.Contains(allData, d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 1) && d.Temperature == 20);
+            Assert.Contains(allData, d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 2) && d.Temperature == 21);
         }
 
         private Measurement CreateTemperatureDataPoint(int year, int month, int day, double temperature)

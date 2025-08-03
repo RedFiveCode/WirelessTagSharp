@@ -37,8 +37,8 @@ namespace WirelessTagClientApp.Test.Common
 
             var result = ViewModelFactory.CreateTagViewModelList(tags);
 
-           Assert.NotNull(result);
-            Assert.Equal(0, result.Count);
+            Assert.NotNull(result);
+            Assert.Empty(result);
         }
 
         [Fact]
@@ -51,8 +51,8 @@ namespace WirelessTagClientApp.Test.Common
 
             var result = ViewModelFactory.CreateTagViewModelList(tags);
 
-           Assert.NotNull(result);
-            Assert.Equal(1, result.Count);
+            Assert.NotNull(result);
+            Assert.Single(result);
 
             Assert.Equal(1, result[0].Id);
             Assert.Equal("My tag name", result[0].Name);
@@ -77,8 +77,8 @@ namespace WirelessTagClientApp.Test.Common
 
             var result = ViewModelFactory.CreateTagViewModelList(tags, TagViewModel.ViewMode.VerboseDetails);
 
-           Assert.NotNull(result);
-            Assert.Equal(1, result.Count);
+            Assert.NotNull(result);
+            Assert.Single(result);
             Assert.Equal(TagViewModel.ViewMode.VerboseDetails, result[0].Mode);
         }
 

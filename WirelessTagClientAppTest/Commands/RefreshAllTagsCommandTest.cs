@@ -18,7 +18,7 @@ namespace WirelessTagClientApp.Test.Commands
     public class RefreshAllTagsCommandTest
     {
         
-        public void TestSetup()
+        public RefreshAllTagsCommandTest()
         {
             // Ensure we have a SynchronizationContext for task continuations in the view-model;
             // WPF has this by default, but unit tests do not, otherwise we get an InvalidOperationException
@@ -73,8 +73,8 @@ namespace WirelessTagClientApp.Test.Commands
             await target.ExecuteAsync(viewModel);
 
             // assert
-           Assert.NotNull(viewModel.Tags);
-            Assert.Equal(1, viewModel.Tags.Count);
+            Assert.NotNull(viewModel.Tags);
+            Assert.Single(viewModel.Tags);
             Assert.Equal(1, viewModel.Tags[0].Id);
         }
 
@@ -106,8 +106,8 @@ namespace WirelessTagClientApp.Test.Commands
             await target.ExecuteAsync(viewModel);
 
             // assert
-           Assert.NotNull(viewModel.Tags);
-            Assert.Equal(1, viewModel.Tags.Count);
+            Assert.NotNull(viewModel.Tags);
+            Assert.Single(viewModel.Tags);
             Assert.Equal(1, viewModel.Tags[0].Id);
             Assert.Equal(previousViewMode, viewModel.Tags[0].Mode);
         }

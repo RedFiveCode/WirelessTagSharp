@@ -31,7 +31,7 @@ namespace WirelessTagClientApp.Test.Converters
 
             // assert
             Assert.IsAssignableFrom<string>(result);
-            Assert.True(result.ToString().EndsWith("ago"));
+            Assert.EndsWith("ago", result.ToString());
         }
 
         [Fact]
