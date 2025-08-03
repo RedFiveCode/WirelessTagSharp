@@ -10,14 +10,14 @@ using Xunit;
 
 namespace WirelessTagClientLib.Test.Client
 {
-    public class CacheLoaderTest
+    public class CacheWriterTest
     {
         private readonly Mock<IWirelessTagAsyncClient> _clientMock;
         private readonly Mock<IFileSystem> _fileSystemMock;
         private readonly MockFileSystem _mockfileSystem;
-        private readonly CacheLoader _sut;
+        private readonly CacheWriter _sut;
 
-        public CacheLoaderTest()
+        public CacheWriterTest()
         {
             _clientMock = new Mock<IWirelessTagAsyncClient>();
             _fileSystemMock = new Mock<IFileSystem>();
@@ -41,7 +41,7 @@ namespace WirelessTagClientLib.Test.Client
                             }
                        }));
 
-            _sut = new CacheLoader(_clientMock.Object, _mockfileSystem)
+            _sut = new CacheWriter(_clientMock.Object, _mockfileSystem)
             {
                 ChunkInterval = TimeSpan.FromDays(5),
                 WaitInterval = TimeSpan.FromSeconds(0),
@@ -59,7 +59,6 @@ namespace WirelessTagClientLib.Test.Client
             // act; should throw
             await Assert.ThrowsAsync<ArgumentNullException>(() => _sut.LoadCacheAsync(tagId, null, from, to));
         }
-
 
         [Fact]
         public async Task LoadCacheAsync_Calls_GetTagListAsync()
