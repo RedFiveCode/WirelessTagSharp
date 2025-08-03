@@ -51,7 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\CacheLoaderTest.cs" />
+    <Compile Include="Client\CacheWriterTest.cs" />
+    <Compile Include="Client\CacheReaderTest.cs" />
     <Compile Include="Client\WirelessTagAsyncClientTest.cs" />
     <Compile Include="TestHelpers\AssertHelper.cs" />
     <Compile Include="Mapper\MapperTest.cs" />

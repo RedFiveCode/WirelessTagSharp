@@ -44,7 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\CacheLoader.cs" />
+    <Compile Include="Client\CacheWriter.cs" />
+    <Compile Include="Client\CacheReader.cs" />
     <Compile Include="Utils\DateTimeChunker.cs" />
     <Compile Include="Client\WirelessTagAsyncClient.cs" />
     <Compile Include="Info\WirelessTagConstants.cs" />
