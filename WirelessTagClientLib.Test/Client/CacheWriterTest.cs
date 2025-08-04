@@ -143,7 +143,7 @@ namespace WirelessTagClientLib.Test.Client
             await _sut.LoadCacheAsync(tagId, folder, from, to);
 
             // assert 
-            var cacheFile = @"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json";
+            var cacheFile = @"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json.gz";
 
             Assert.False(_mockfileSystem.File.Exists(cacheFile), "Cache file was not created");
         }
@@ -161,7 +161,7 @@ namespace WirelessTagClientLib.Test.Client
             await _sut.LoadCacheAsync(tagId, folder, from, to);
 
             // assert 
-            var cacheFile = @"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json";
+            var cacheFile = @"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json.gz";
 
             Assert.True(_mockfileSystem.File.Exists(cacheFile), "Cache file was not created");
             Assert.True(_mockfileSystem.FileInfo.New(cacheFile).Length > 0, "Cache file should not be empty");
@@ -176,7 +176,7 @@ namespace WirelessTagClientLib.Test.Client
             var from = new DateTime(2025, 1, 1);
             var to = new DateTime(2025, 1, 31);
 
-            var cacheFile = @"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json";
+            var cacheFile = @"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json.gz";
 
             _mockfileSystem.Directory.CreateDirectory(folder);
             _mockfileSystem.File.WriteAllText(cacheFile, "Dummy data");
@@ -187,7 +187,7 @@ namespace WirelessTagClientLib.Test.Client
             // assert 
             Assert.True(_mockfileSystem.File.Exists(cacheFile), "Cache file was not created");
             Assert.True(_mockfileSystem.FileInfo.New(cacheFile).Length > 0, "Cache file should not be empty");
-            Assert.StartsWith("[", _mockfileSystem.File.ReadAllText(cacheFile));
+            //Assert.StartsWith("[", _mockfileSystem.File.ReadAllText(cacheFile));
         }
 
         [Fact]
@@ -216,7 +216,7 @@ namespace WirelessTagClientLib.Test.Client
             var to = new DateTime(2025, 1, 31);
 
             _mockfileSystem.Directory.CreateDirectory(folder);
-            _mockfileSystem.File.WriteAllText(@"C:\root\subFolder\22222222-2222-2222-2222-222222222222.cache.json",
+            _mockfileSystem.File.WriteAllText(@"C:\root\subFolder\22222222-2222-2222-2222-222222222222.cache.json.gz",
                                                "This is an existing file to ensure the folder exists");
 
             // act
@@ -225,7 +225,7 @@ namespace WirelessTagClientLib.Test.Client
             // assert 
             Assert.True(_mockfileSystem.Directory.Exists(folder), "Cache folder was not created");
 
-            Assert.True(_mockfileSystem.File.Exists(@"C:\root\subFolder\22222222-2222-2222-2222-222222222222.cache.json"));
+            Assert.True(_mockfileSystem.File.Exists(@"C:\root\subFolder\22222222-2222-2222-2222-222222222222.cache.json.gz"));
         }
 
     }

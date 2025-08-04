@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
+using System.IO.Compression;
+using System.Text;
 using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientLib.Client
@@ -57,16 +59,7 @@ namespace WirelessTagClientLib.Client
                 return new List<Measurement>(); // empty list
             }
 
-            var json = _fileSystem.File.ReadAllText(filename);
-
-            var settings = new JsonSerializerSettings
-            {
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                Formatting = Formatting.Indented
-            };
-
-            return JsonConvert.DeserializeObject<List<Measurement>>(json, settings);
+            return ReadCacheFile(filename);
         }
 
         private string GetCacheFilename(string folder, TagInfo tag)
@@ -77,9 +70,34 @@ namespace WirelessTagClientLib.Client
             }
 
             // Create a filename based on the tag's UUID and the date range
-            var filename = $"{tag.Uuid}.cache.json";
+            var filename = $"{tag.Uuid}.cache.json.gz";
 
             return Path.Combine(folder, filename);
+        }
+
+        private List<Measurement> ReadCacheFile(string filename)
+        {
+            var serializer = new JsonSerializer
+            {
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                Formatting = Formatting.Indented,
+            };
+
+            using (var stream = _fileSystem.FileStream.New(filename, FileMode.Open, FileAccess.Read))
+            {
+                using (var compressor = new GZipStream(stream, CompressionMode.Decompress))
+                {
+                    using (var tw = new StreamReader(compressor, Encoding.UTF8))
+                    {
+                        // Serialize the data to the file
+                        using (var reader = new JsonTextReader(tw))
+                        {
+                            return serializer.Deserialize<List<Measurement>>(reader);
+                        }
+                    }
+                }
+            }
         }
     }
 }

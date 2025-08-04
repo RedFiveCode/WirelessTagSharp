@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -122,6 +123,8 @@ namespace WirelessTagClientLib.Client
                 throw new ArgumentOutOfRangeException($"Tag with Id {tagId} not found.");
             }
 
+            Console.WriteLine($"Tag {tagId} : '{tagInfo.Name}' ({tagInfo.Uuid})");
+
             var measurements = new List<Measurement>();
 
             // split time range into smaller chunks starting at midnight of the beginning of the specified date range
@@ -216,7 +219,7 @@ namespace WirelessTagClientLib.Client
             }
 
             // Create a filename based on the tag's UUID and the date range
-            var filename = $"{tag.Uuid}.cache.json";
+            var filename = $"{tag.Uuid}.cache.json.gz";
 
             return Path.Combine(folder, filename);
         }
@@ -232,12 +235,15 @@ namespace WirelessTagClientLib.Client
 
             using (var stream = _fileSystem.FileStream.New(filename, FileMode.Create, FileAccess.Write))
             {
-                using (var tw = new StreamWriter(stream, Encoding.UTF8))
+                using (var compressor = new GZipStream(stream, CompressionMode.Compress))
                 {
-                    // Serialize the data to the file
-                    using (JsonWriter writer = new JsonTextWriter(tw))
+                    using (var tw = new StreamWriter(compressor, Encoding.UTF8))
                     {
-                        serializer.Serialize(writer, data);
+                        // Serialize the data to the file
+                        using (var writer = new JsonTextWriter(tw))
+                        {
+                            serializer.Serialize(writer, data);
+                        }
                     }
                 }
             }

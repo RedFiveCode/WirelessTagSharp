@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using WirelessTagClientLib.Client;
 using WirelessTagClientLib.DTO;
 using Xunit;
+using System.IO.Compression;
+using System.Text;
 
 namespace WirelessTagClientLib.Test.Client
 {
@@ -55,16 +57,16 @@ namespace WirelessTagClientLib.Test.Client
         public void ReadCache_CacheFileExists_Returns_ExpectedList()
         {
             // arrange
-            var data = new List<Measurement>
+            var measurements = new List<Measurement>
             {
                 new Measurement(new DateTime(2025, 1, 1, 12, 0, 0), -2d, 45d, -1, 2.95d),
                 new Measurement(new DateTime(2025, 1, 1, 12, 15, 0), 2.5d, 45d, -1, 2.9d)
             };
 
-            var json = SerialiseData(data);
+            var data = SerialiseData(measurements);
 
             _mockfileSystem.AddDirectory(@"C:\root\subFolder");
-            _mockfileSystem.AddFile(@"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json", new MockFileData(json));
+            _mockfileSystem.AddFile(@"C:\root\subFolder\11111111-1111-1111-1111-111111111111.cache.json.gz", new MockFileData(data));
 
             // act
             var results = _sut.ReadCache(@"C:\root\subFolder", _tagInfo);
@@ -73,23 +75,37 @@ namespace WirelessTagClientLib.Test.Client
             Assert.NotNull(results);
             Assert.Equal(2, results.Count);
 
-            Assert.Equal(data[0].Time, results[0].Time);
-            Assert.Equal(data[0].Temperature, results[0].Temperature);
+            Assert.Equal(measurements[0].Time, results[0].Time);
+            Assert.Equal(measurements[0].Temperature, results[0].Temperature);
 
-            Assert.Equal(data[1].Time, results[1].Time);
-            Assert.Equal(data[1].Temperature, results[1].Temperature);
+            Assert.Equal(measurements[1].Time, results[1].Time);
+            Assert.Equal(measurements[1].Temperature, results[1].Temperature);
         }
 
-        private static string SerialiseData(List<Measurement> data)
+        private static byte[] SerialiseData(List<Measurement> measurements)
         {
-            var settings = new JsonSerializerSettings
+            var serializer = new JsonSerializer()
             {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 Formatting = Formatting.Indented
             };
 
-            return JsonConvert.SerializeObject(data, settings);
+            using (var stream = new MemoryStream())
+            {
+                using (var compressor = new GZipStream(stream, CompressionMode.Compress))
+                {
+                    using (var tw = new StreamWriter(compressor, Encoding.UTF8))
+                    {
+                        using (var writer = new JsonTextWriter(tw))
+                        {
+                            serializer.Serialize(writer, measurements);
+                        }
+                    }
+                }
+
+                return stream.ToArray();
+            }
         }
 
         [Fact]
