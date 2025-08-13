@@ -10,7 +10,6 @@ namespace WirelessTagClientApp.Test.ViewModel
     /// <summary>
     /// Unit tests for the TemperatureRawDataCache class
     /// </summary>
-    
     public class TemperatureRawDataCacheTest
     {
         [Fact]
@@ -467,6 +466,47 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.Contains(allData, d => d.TagId == tagId1 && d.Time == new DateTime(2023, 1, 2) && d.Temperature == 11);
             Assert.Contains(allData, d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 1) && d.Temperature == 20);
             Assert.Contains(allData, d => d.TagId == tagId2 && d.Time == new DateTime(2023, 2, 2) && d.Temperature == 21);
+        }
+
+        [Fact]
+        public void GetData_TagNotFound_ReturnsEmptyList()
+        {
+            // arrange
+            var target = new TemperatureRawDataCache();
+
+            // act
+            var allData = target.GetData(99);
+
+            // assert
+            Assert.NotNull(allData);
+            Assert.Empty(allData);
+        }
+
+        [Fact]
+        public void GetData_MatchingTag_ReturnsExpectedList()
+        {
+            // arrange
+            const int tagId = 42;
+            var data = new List<Measurement>()
+            {
+                CreateTemperatureDataPoint(2023, 1, 1, 10),
+                CreateTemperatureDataPoint(2023, 1, 2, 11)
+            };
+
+            var target = new TemperatureRawDataCache();
+            target.Update(tagId, data);
+
+            // act
+            var results = target.GetData(tagId).ToList();
+
+            // assert
+            Assert.NotNull(results);
+            Assert.NotEmpty(results);
+            Assert.Equal(2, results.Count);
+
+            AssertValue(results[0], 2023, 1, 1, 10);
+            AssertValue(results[1], 2023, 1, 2, 11);
+
         }
 
         private Measurement CreateTemperatureDataPoint(int year, int month, int day, double temperature)

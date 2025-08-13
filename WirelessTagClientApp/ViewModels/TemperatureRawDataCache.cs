@@ -105,7 +105,7 @@ namespace WirelessTagClientApp.ViewModels
         /// </summary>
         public IEnumerable<Measurement> GetData(int tagId)
         {
-            return _rawDataMap[tagId];
+            return _rawDataMap.ContainsKey(tagId) ? _rawDataMap[tagId] : Enumerable.Empty<Measurement>();
         }
 
         /// <summary>
