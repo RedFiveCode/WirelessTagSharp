@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using WirelessTagClientApp.Utils;
 
 namespace WirelessTagClientApp.ViewModels
@@ -6,6 +7,7 @@ namespace WirelessTagClientApp.ViewModels
     /// <summary>
     /// Stores a temperature measurement (temperature and timestamp)
     /// </summary>
+    [DebuggerDisplay("Temperature={Temperature}, Timestamp={Timestamp}, IsToday={IsToday}")]
     public class TemperatureMeasurement
     {
         public TemperatureMeasurement() : this(0d, DateTime.MinValue) { }
