@@ -7,6 +7,13 @@ namespace WirelessTagClientApp.Utils
     /// </summary>
     public class TimeIntervalHelper
     {
+        /// <summary>
+        /// Get date range based on starting date and interval.
+        /// </summary>
+        /// <param name="dt">Starting date</param>
+        /// <param name="interval">Interval</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static Tuple<DateTime, DateTime> GetTimeRange(DateTime dt, TimeInterval interval)
         {
             if (interval == TimeInterval.Today)
