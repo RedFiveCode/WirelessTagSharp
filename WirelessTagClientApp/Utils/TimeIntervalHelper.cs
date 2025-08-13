@@ -32,10 +32,17 @@ namespace WirelessTagClientApp.Utils
                 return new Tuple<DateTime, DateTime>(from, to);
             }
 
-            if (interval == TimeInterval.Last7Days || interval == TimeInterval.Last30Days)
+            if (interval == TimeInterval.Last7Days)
             {
-                int daysAgo = (int)interval;
-                var from = dt.Date.AddDays(-daysAgo);
+                var from = dt.Date.AddDays(-7);
+                var to = dt.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+                return new Tuple<DateTime, DateTime>(from, to);
+            }
+
+            if (interval == TimeInterval.Last30Days)
+            {
+                var from = dt.Date.AddDays(-30);
                 var to = dt.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
 
                 return new Tuple<DateTime, DateTime>(from, to);
