@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace WirelessTagClientApp.ViewModels
 {
     /// <summary>
     /// Stores minimum and maximum temperature measurement over a period of time 
     /// </summary>
+    [DebuggerDisplay("Tag={TagId}, Interval={Interval}, Minimum={Minimum}, Maximum={Maximum}")]
     public class MinMaxMeasurementViewModel
     {
         public MinMaxMeasurementViewModel()
