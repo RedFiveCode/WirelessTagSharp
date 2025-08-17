@@ -95,8 +95,8 @@ namespace WirelessTagClientCache
                     var latest = data.Max(m => m.Time);
                     var cacheFileNoPath = Path.GetFileName(cacheFile);
 
-                    ColorConsole.Write($"{earliest}   {latest}   {data.Count,7:N0}   ", ConsoleColor.Green);
-                    ColorConsole.Write($"{cacheFileNoPath}   ", ConsoleColor.Blue);
+                    ColorConsole.Write($"{earliest}  {latest}  {data.Count,7:N0}  ", ConsoleColor.Green);
+                    ColorConsole.Write($"{cacheFileNoPath}  ", ConsoleColor.Blue);
                     ColorConsole.WriteLine($"{tag.SlaveId} ({tag.Name})", ConsoleColor.Yellow);
                 }
             }
