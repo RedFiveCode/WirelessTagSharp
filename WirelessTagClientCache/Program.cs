@@ -93,8 +93,7 @@ namespace WirelessTagClientCache
                 {
                     var earliest = data.Min(m => m.Time);
                     var latest = data.Max(m => m.Time);
-                    var cacheFileNoPath = reader.GetCacheFilename(options.Folder, tag);
-                    cacheFile = Path.GetFileName(cacheFile);
+                    var cacheFileNoPath = Path.GetFileName(cacheFile);
 
                     ColorConsole.Write($"{earliest}   {latest}   {data.Count,7:N0}   ", ConsoleColor.Green);
                     ColorConsole.Write($"{cacheFileNoPath}   ", ConsoleColor.Blue);
