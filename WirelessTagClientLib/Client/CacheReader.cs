@@ -52,17 +52,14 @@ namespace WirelessTagClientLib.Client
                 throw new DirectoryNotFoundException($"Cache folder '{folder}' does not exist.");
             }
 
-            var filename = GetCacheFilename(folder, tag);
+            var reader = new CacheFileReaderWriter(_fileSystem);
 
-            if (!_fileSystem.File.Exists(filename))
-            {
-                return new List<Measurement>(); // empty list
-            }
+            var filename = reader.GetCacheFilename(folder, tag);
 
-            return ReadCacheFile(filename);
+            return reader.ReadCacheFile(filename);
         }
 
-        private string GetCacheFilename(string folder, TagInfo tag)
+        public string GetCacheFilename(string folder, TagInfo tag)
         {
             if (tag == null)
             {

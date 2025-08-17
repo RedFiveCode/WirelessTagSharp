@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.IO.Abstractions;
-using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WirelessTagClientLib.DTO;
 
@@ -18,6 +14,8 @@ namespace WirelessTagClientLib.Client
     /// </summary>
     public class CacheWriter
     {
+        // IMPORTANT
+        //
         // We need to get historic temperature measurements for all the tags and a time span...
         //
         // We can create tasks/async await to send a request to get temperature data for a given tag and time span
@@ -41,7 +39,7 @@ namespace WirelessTagClientLib.Client
         // where there are too many measurements in a time span can result in
         // a further Server crash due to the size of the data attempted to be returned.
         // HttpStatusException / HttpStatusCode.InternalServerError AT THE SERVER 
-        // "Error during serialization or deserialiszation using the JSON JavaScript
+        // "Error during serialization or deserialisation using the JSON JavaScript
         //  The length of the string exceeds the value set on the maxJsonLength property"
         //
         // So we have to find a workable balance between these two possible Server errors,
@@ -192,14 +190,16 @@ namespace WirelessTagClientLib.Client
                     _fileSystem.Directory.CreateDirectory(folder);
                 }
 
-                var filename = GetCacheFilename(folder, tagInfo);
+                var writer = new CacheFileReaderWriter(_fileSystem);
+
+                var filename = writer.GetCacheFilename(folder, tagInfo);
 
                 if (Verbose)
                 {
                     Console.WriteLine($"Writing {measurements.Count:n0} measurements to {filename}...");
                 }
 
-                WriteCacheFile(filename, measurements);
+                writer.WriteCacheFile(filename, measurements);
             }
         }
 
@@ -209,44 +209,6 @@ namespace WirelessTagClientLib.Client
 
             // Find the tag with the specified ID
             return tags.FirstOrDefault(tag => tag.SlaveId == tagId);
-        }
-
-        private string GetCacheFilename(string folder, TagInfo tag)
-        {
-            if (tag == null)
-            {
-                throw new ArgumentNullException(nameof(tag), "Tag cannot be null");
-            }
-
-            // Create a filename based on the tag's UUID and the date range
-            var filename = $"{tag.Uuid}.cache.json.gz";
-
-            return Path.Combine(folder, filename);
-        }
-
-        private void WriteCacheFile(string filename, List<Measurement> data)
-        {
-            var serializer = new JsonSerializer()
-            {
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                Formatting = Formatting.Indented
-            };
-
-            using (var stream = _fileSystem.FileStream.New(filename, FileMode.Create, FileAccess.Write))
-            {
-                using (var compressor = new GZipStream(stream, CompressionMode.Compress))
-                {
-                    using (var tw = new StreamWriter(compressor, Encoding.UTF8))
-                    {
-                        // Serialize the data to the file
-                        using (var writer = new JsonTextWriter(tw))
-                        {
-                            serializer.Serialize(writer, data);
-                        }
-                    }
-                }
-            }
         }
     }
 }

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\CacheFileReaderWriter.cs" />
     <Compile Include="Client\CacheWriter.cs" />
     <Compile Include="Client\CacheReader.cs" />
     <Compile Include="Utils\DateTimeChunker.cs" />
