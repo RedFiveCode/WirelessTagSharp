@@ -13,14 +13,12 @@ namespace WirelessTagClientLib.Test.Client
     public class CacheWriterTest
     {
         private readonly Mock<IWirelessTagAsyncClient> _clientMock;
-        private readonly Mock<IFileSystem> _fileSystemMock;
         private readonly MockFileSystem _mockfileSystem;
         private readonly CacheWriter _sut;
 
         public CacheWriterTest()
         {
             _clientMock = new Mock<IWirelessTagAsyncClient>();
-            _fileSystemMock = new Mock<IFileSystem>();
             _mockfileSystem = new MockFileSystem();
 
             _clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
@@ -187,7 +185,6 @@ namespace WirelessTagClientLib.Test.Client
             // assert 
             Assert.True(_mockfileSystem.File.Exists(cacheFile), "Cache file was not created");
             Assert.True(_mockfileSystem.FileInfo.New(cacheFile).Length > 0, "Cache file should not be empty");
-            //Assert.StartsWith("[", _mockfileSystem.File.ReadAllText(cacheFile));
         }
 
         [Fact]
