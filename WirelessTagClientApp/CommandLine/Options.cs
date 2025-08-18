@@ -15,5 +15,8 @@ namespace WirelessTagClientApp
 
         [Option('t', "token", Required = true, HelpText = "Access token; see https://wirelesstag.net/eth/oauth2_apps.html")]
         public string AccessToken { get; set; }
+
+        [Option('c', "cacheFolder", Required = false, HelpText = "Cache folder")]
+        public string CacheFolder { get; set; } = @"..\..\..\_cache";
     }
 }

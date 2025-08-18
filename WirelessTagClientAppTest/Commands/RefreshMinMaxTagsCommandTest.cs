@@ -29,7 +29,7 @@ namespace WirelessTagClientApp.Test.Commands
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 
             _clientMock = CreateAsyncClientMock();
-            _target = new RefreshMinMaxTagsCommand(_clientMock.Object);
+            _target = new RefreshMinMaxTagsCommand(_clientMock.Object, null);
         }
 
         [Fact]
