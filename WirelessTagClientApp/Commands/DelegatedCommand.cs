@@ -65,7 +65,7 @@ namespace WirelessTagClientApp.Commands
             var command = GetCommandForViewMode(p);
             if (command == null)
             {
-                throw new InvalidOperationException($"No comamnd is registered for view-model mode {p.Mode}");
+                throw new InvalidOperationException($"No command is registered for view-model mode {p.Mode}");
             }
 
             // pass inner view-model to the command
