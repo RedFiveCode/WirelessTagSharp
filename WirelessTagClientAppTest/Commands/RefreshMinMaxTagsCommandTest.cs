@@ -11,7 +11,6 @@ using WirelessTagClientApp.ViewModels;
 using WirelessTagClientAppTest.TestHelpers;
 using WirelessTagClientLib;
 using WirelessTagClientLib.DTO;
-using System.IO;
 
 namespace WirelessTagClientApp.Test.Commands
 {
@@ -171,6 +170,45 @@ namespace WirelessTagClientApp.Test.Commands
         }
 
         [Fact]
+        public async Task ExecuteAsync_Should_Call_CacheFileReaderWriter_ReadCacheFile()
+        {
+            // arrange
+            var parentViewModel = new MainWindowViewModel();
+            var viewModel = new MinMaxViewModel(parentViewModel, _cacheReaderWriterMock.Object);
+
+            // act
+            await _target.ExecuteAsync(viewModel);
+
+            // assert
+            _cacheReaderWriterMock.Verify(x => x.ReadCacheFile(It.IsAny<string>()), Times.AtLeastOnce);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_Should_Call_CacheFileReaderWriter_ReadCacheFile_ForEachTag()
+        {
+            // arrange
+            var mockCacheReader = new Mock<ICacheFileReaderWriter>();
+
+            var parentViewModel = new MainWindowViewModel();
+            var viewModel = new MinMaxViewModel(parentViewModel, _cacheReaderWriterMock.Object);
+
+            // act
+            await _target.ExecuteAsync(viewModel);
+
+            // assert
+            _cacheReaderWriterMock.Verify(x => x.ReadCacheFile(It.IsAny<string>()), Times.AtLeastOnce);
+
+            var readCacheInvocations = _cacheReaderWriterMock.Invocations
+                .Where(i => i.Method.Name == nameof(ICacheFileReaderWriter.ReadCacheFile))
+                .Select(i => i.Arguments[0].ToString())
+                .ToList();
+
+            Assert.Equal(2, readCacheInvocations.Count); // should have read cache for two tags
+            Assert.Contains(@"c:\rootFolder\subFolder\cache-1.json.gz", readCacheInvocations);
+            Assert.Contains(@"c:\rootFolder\subFolder\cache-2.json.gz", readCacheInvocations);
+        }
+
+        [Fact]
         public async Task ExecuteAsync_Should_UpdateViewModel_ForEachTag()
         {
             // arrange
@@ -274,7 +312,7 @@ namespace WirelessTagClientApp.Test.Commands
             AssertContainsDataForTag(viewModel, 1, TimeInterval.Last7Days, minTemperature, maxTemperature); // today is included in the last 7, 30 etc days
             AssertContainsDataForTag(viewModel, 1, TimeInterval.Last30Days, minTemperature, maxTemperature);
             AssertContainsDataForTag(viewModel, 1, TimeInterval.ThisYear, minTemperature, maxTemperature);
-            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, minTemperature, maxTemperature);
+            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, 1.5, maxTemperature); // cache has 1.5 @ 1-jan-2020
         }
 
         [Fact]
@@ -314,7 +352,7 @@ namespace WirelessTagClientApp.Test.Commands
             AssertContainsDataForTag(viewModel, 1, TimeInterval.Last7Days, minTemperature, maxTemperature); // yesterday is included in the last 7, 30 etc days
             AssertContainsDataForTag(viewModel, 1, TimeInterval.Last30Days, minTemperature, maxTemperature);
             AssertContainsDataForTag(viewModel, 1, TimeInterval.ThisYear, minTemperature, maxTemperature);
-            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, minTemperature, maxTemperature);
+            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, 1.5, maxTemperature); // cache has 1.5 @ 1-jan-2020
         }
 
         [Fact]
@@ -354,7 +392,7 @@ namespace WirelessTagClientApp.Test.Commands
             AssertContainsDataForTag(viewModel, 1, TimeInterval.Last7Days, minTemperature, maxTemperature); // the day this week is included in the last 7, 30 etc days
             AssertContainsDataForTag(viewModel, 1, TimeInterval.Last30Days, minTemperature, maxTemperature);
             AssertContainsDataForTag(viewModel, 1, TimeInterval.ThisYear, minTemperature, maxTemperature);
-            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, minTemperature, maxTemperature);
+            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, 1.5, maxTemperature); // cache has 1.5 @ 1-jan-2020
         }
 
         [Fact]
@@ -396,7 +434,7 @@ namespace WirelessTagClientApp.Test.Commands
             AssertNotContainsDataForTag(viewModel, 1, TimeInterval.Last7Days);
             AssertContainsDataForTag(viewModel, 1, TimeInterval.Last30Days, minTemperature, maxTemperature);
             AssertContainsDataForTag(viewModel, 1, TimeInterval.ThisYear, minTemperature, maxTemperature);
-            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, minTemperature, maxTemperature);
+            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, 1.5, maxTemperature); // cache has 1.5 @ 1-jan-2020
         }
 
         [Fact]
@@ -442,7 +480,7 @@ namespace WirelessTagClientApp.Test.Commands
             AssertNotContainsDataForTag(viewModel, 1, TimeInterval.Last7Days);
             AssertNotContainsDataForTag(viewModel, 1, TimeInterval.Last30Days);
             AssertContainsDataForTag(viewModel, 1, TimeInterval.ThisYear, minTemperature, maxTemperature);
-            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, minTemperature, maxTemperature);
+            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, 1.5, maxTemperature); // cache has 1.5 @ 1-jan-2020
         }
 
         [Fact]
@@ -485,7 +523,7 @@ namespace WirelessTagClientApp.Test.Commands
             AssertNotContainsDataForTag(viewModel, 1, TimeInterval.Last7Days);
             AssertNotContainsDataForTag(viewModel, 1, TimeInterval.Last30Days);
             AssertNotContainsDataForTag(viewModel, 1, TimeInterval.ThisYear);
-            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, minTemperature, maxTemperature);
+            AssertContainsDataForTag(viewModel, 1, TimeInterval.All, 1.5, maxTemperature); // cache has 1.5 @ 1-jan-2020
         }
 
         [Fact]
@@ -640,6 +678,30 @@ namespace WirelessTagClientApp.Test.Commands
                       });
 
             return clientMock;
+        }
+
+        private Mock<ICacheFileReaderWriter> CreateCacheReaderMock()
+        {
+            var mock = new Mock<ICacheFileReaderWriter>();
+
+            mock.Setup(x => x.GetCacheFilename(It.IsAny<string>(), It.IsAny<TagInfo>()))
+                .Returns(@"c:\rootFolder\subFolder\cache.json.gz");
+
+            // cache filename identifies the associated tag
+            mock.Setup(x => x.GetCacheFilename(It.IsAny<string>(), It.IsAny<TagInfo>()))
+
+                .Returns((string folder, TagInfo tag) =>
+                {
+                    return $@"c:\rootFolder\subFolder\cache-{tag.SlaveId}.json.gz"; // for example "cache-1.json.gz"
+                });
+
+            mock.Setup(x => x.ReadCacheFile(It.IsAny<string>()))
+                .Returns(new List<Measurement>
+                { 
+                    new Measurement(new DateTime(2020, 1, 1), 1.5d) // intentionally different value to identify cached data
+                });
+
+            return mock;
         }
 
         private void AssertCacheContainsDataForTag(MinMaxViewModel viewModel, int tagId, DateTime expectedTimestamp, double expectedTemperature)
