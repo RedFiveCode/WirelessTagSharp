@@ -4,6 +4,7 @@ using WirelessTagClientApp.Commands;
 using System.Windows.Input;
 using System;
 using System.Threading.Tasks;
+using WirelessTagClientLib;
 
 namespace WirelessTagClientApp.ViewModels
 {
@@ -25,7 +26,7 @@ namespace WirelessTagClientApp.ViewModels
         /// <summary>
         /// ctor
         /// </summary>
-        public MinMaxViewModel(MainWindowViewModel parentViewModel = null)
+        public MinMaxViewModel(MainWindowViewModel parentViewModel = null, ICacheFileReaderWriter cacheReaderWrite = null)
         {
             _parentViewModel = parentViewModel;
 
@@ -34,7 +35,7 @@ namespace WirelessTagClientApp.ViewModels
             _copyCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.MinMaxSummary);
             _copyRawDataCommand = new CopyMinMaxTagsCommand(CopyMinMaxTagsCommand.DataSource.RawData);
             _toggleUnitsCommand = new ToggleTemperatureUnitsCommand();
-            _refreshCommand = new RefreshMinMaxTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
+            _refreshCommand = new RefreshMinMaxTagsCommand(parentViewModel?.Client, cacheReaderWrite, parentViewModel?.Options);
 
             _rawDataCache = new TemperatureRawDataCache();
             _temperatureUnits = TemperatureUnits.Celsius;

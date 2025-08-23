@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.Common;
 using WirelessTagClientLib;
+using WirelessTagClientLib.Client;
 
 namespace WirelessTagClientApp.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly IWirelessTagAsyncClient _client;
+        private readonly ICacheFileReaderWriter _cacheReader;
         private readonly Options _options;
 
         private DateTime _lastUpdated;
@@ -59,9 +62,11 @@ namespace WirelessTagClientApp.ViewModels
             _isError = false;
             _errorMessage = String.Empty;
 
+            _cacheReader = new CacheFileReaderWriter(new FileSystem());
+
             _viewModelMap = new Dictionary<ViewMode, ViewModelBase>();
             var summaryViewModel = new AllTagsViewModel(this);
-            var minMaxViewModel = new MinMaxViewModel(this);
+            var minMaxViewModel = new MinMaxViewModel(this, _cacheReader);
 
             _viewModelMap[ViewMode.SummaryView] = summaryViewModel;
             _viewModelMap[ViewMode.MinMaxView] = minMaxViewModel;

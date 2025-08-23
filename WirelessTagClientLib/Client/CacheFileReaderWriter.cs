@@ -9,7 +9,7 @@ using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientLib.Client
 {
-    public class CacheFileReaderWriter
+    public class CacheFileReaderWriter : ICacheFileReaderWriter
     {
         private readonly IFileSystem _fileSystem;
 
@@ -26,17 +26,10 @@ namespace WirelessTagClientLib.Client
         /// <exception cref="ArgumentNullException"></exception>
         public CacheFileReaderWriter(IFileSystem fileSystem)
         {
-            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem), "File system cannot be null");  
+            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem), "File system cannot be null");
         }
 
-        /// <summary>
-        /// Gets the name of the cache file for a specific tag in the specified folder.
-        /// </summary>
-        /// <param name="folder"></param>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="folder"/> is null or empty</exception>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="tag"/> is null</exception>
+        /// <inheritdoc/>
         public string GetCacheFilename(string folder, TagInfo tag)
         {
             if (string.IsNullOrWhiteSpace(folder))
@@ -55,11 +48,7 @@ namespace WirelessTagClientLib.Client
             return Path.Combine(folder, filename);
         }
 
-        /// <summary>
-        /// Writes the cache file for a specific tag with the provided data.
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="data"></param>
+        /// <inheritdoc/>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="filename"/> is null or empty</exception>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="data"/> is null</exception>
         public void WriteCacheFile(string filename, List<Measurement> data)
@@ -97,14 +86,7 @@ namespace WirelessTagClientLib.Client
             }
         }
 
-        /// <summary>
-        /// Reads the cache file for a specific tag.
-        /// </summary>
-        /// <remarks>
-        /// Returns an empty list if the file does not exist or is empty.
-        /// </remarks>
-        /// <param name="filename"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="filename"/> is null or empty</exception>
         public List<Measurement> ReadCacheFile(string filename)
         {

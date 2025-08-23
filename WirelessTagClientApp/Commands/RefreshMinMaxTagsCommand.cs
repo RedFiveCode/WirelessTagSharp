@@ -1,15 +1,11 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Abstractions;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using WirelessTagClientApp.Common;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientLib;
-using WirelessTagClientLib.Client;
 using WirelessTagClientLib.DTO;
 
 
@@ -18,15 +14,17 @@ namespace WirelessTagClientApp.Commands
     public class RefreshMinMaxTagsCommand
     {
         private readonly IWirelessTagAsyncClient _client;
+        private readonly ICacheFileReaderWriter _cacheReaderWriter;
         private readonly string _cacheFolder;
 
         private Dictionary<int, List<Measurement>> _cachedData;
 
         public IAsyncCommand<MinMaxViewModel> Command { get; private set; }
 
-        public RefreshMinMaxTagsCommand(IWirelessTagAsyncClient client, Options options)
+        public RefreshMinMaxTagsCommand(IWirelessTagAsyncClient client, ICacheFileReaderWriter cacheReaderWriter, Options options)
         {
             _client = client;
+            _cacheReaderWriter = cacheReaderWriter;
             Command = new AsyncCommand<MinMaxViewModel>(p => ExecuteAsync(p), p => CanExecute(p));
 
             _cachedData = new Dictionary<int, List<Measurement>>();
@@ -245,16 +243,14 @@ namespace WirelessTagClientApp.Commands
 
         private List<Measurement> GetCachedDataForTag(TagInfo tag, string cacheFolder)
         {
-            // if cache folder is specified, read older data before this year from cache
+            // if cache folder is specified, read older data from before this year from cache
             if (String.IsNullOrEmpty(cacheFolder))
             {
                 return new List<Measurement>(); // empty list
             }
 
-            var reader = new CacheFileReaderWriter();
-
-            var cacheFile = reader.GetCacheFilename(cacheFolder, tag);
-            var data = reader.ReadCacheFile(cacheFile);
+            var cacheFile = _cacheReaderWriter.GetCacheFilename(cacheFolder, tag);
+            var data = _cacheReaderWriter.ReadCacheFile(cacheFile);
 
             Console.WriteLine($"Tag {tag.SlaveId} : Read {data.Count:N0} measurements from cache");
 

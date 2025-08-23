@@ -24,6 +24,12 @@ namespace WirelessTagClientLib.Test.Client
             _sut = new CacheFileReaderWriter(_mockfileSystem);
         }
 
+        [Fact]
+        public void Class_Implements_Interface()
+        {
+            // act
+            Assert.IsAssignableFrom<ICacheFileReaderWriter>(_sut);
+        }
 
         [Fact]
         public void GetCacheFilename_FolderNull_ThrowsArgumentNullException()

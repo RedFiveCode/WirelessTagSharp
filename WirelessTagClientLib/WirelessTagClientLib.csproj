@@ -47,6 +47,7 @@
     <Compile Include="Client\CacheFileReaderWriter.cs" />
     <Compile Include="Client\CacheWriter.cs" />
     <Compile Include="Client\CacheReader.cs" />
+    <Compile Include="Interfaces\ICacheFileReaderWriter.cs" />
     <Compile Include="Utils\DateTimeChunker.cs" />
     <Compile Include="Client\WirelessTagAsyncClient.cs" />
     <Compile Include="Info\WirelessTagConstants.cs" />

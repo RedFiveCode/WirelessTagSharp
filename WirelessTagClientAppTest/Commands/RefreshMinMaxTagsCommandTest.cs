@@ -11,6 +11,7 @@ using WirelessTagClientApp.ViewModels;
 using WirelessTagClientAppTest.TestHelpers;
 using WirelessTagClientLib;
 using WirelessTagClientLib.DTO;
+using System.IO;
 
 namespace WirelessTagClientApp.Test.Commands
 {
@@ -18,6 +19,7 @@ namespace WirelessTagClientApp.Test.Commands
     public class RefreshMinMaxTagsCommandTest
     {
         private readonly Mock<IWirelessTagAsyncClient> _clientMock;
+        private readonly Mock<ICacheFileReaderWriter> _cacheReaderWriterMock;
         private readonly RefreshMinMaxTagsCommand _target;
 
         public RefreshMinMaxTagsCommandTest()
@@ -29,7 +31,14 @@ namespace WirelessTagClientApp.Test.Commands
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 
             _clientMock = CreateAsyncClientMock();
-            _target = new RefreshMinMaxTagsCommand(_clientMock.Object, null);
+            _cacheReaderWriterMock = CreateCacheReaderMock();
+
+            var options = new Options
+            {
+                CacheFolder = @"c:\rootFolder\cache"
+            };
+
+            _target = new RefreshMinMaxTagsCommand(_clientMock.Object, _cacheReaderWriterMock.Object, options);
         }
 
         [Fact]
