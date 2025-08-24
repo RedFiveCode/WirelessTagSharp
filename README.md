@@ -2,7 +2,8 @@
 Wireless Sensor Tags are produced by Cao Gadgets LLC (https://www.wirelesstag.net) and monitor temperature, humidity, light etc.
 
 This project provides a C# API running on Windows to a subset of the available REST json endpoints,
-and an example console application to fetch and display temperature sensor information.
+an example console application to fetch and display temperature sensor information,
+and a WPF GUI application to display temperature and humidity information (Windows only).
 
 ## Scope
 This project provides a C# API to a subset of the available REST json endpoints.
@@ -16,7 +17,8 @@ The following C# APIs are available:
 
 
 ## Technical
-This is a library and console application written in C# for the .net framework version 4.7.2.
+This is a library and console application written in C# originally for the .net framework version 4.7.2,
+and now for .net 9 (Windows only for the gui app, but the library and console apps should be cross platform).
 
 It uses the following NuGet packages/files:
 * [RestSharp](https://restsharp.dev/)
@@ -24,7 +26,7 @@ It uses the following NuGet packages/files:
 * [Command Line Parser](https://github.com/commandlineparser/commandline)
 * [Moq](https://github.com/moq/moq4)
 
-Includes unit tests (MSTest).
+Includes unit tests (XUnit).
 
 ## Examples
 ![Example output](docs/Example.png)
@@ -136,7 +138,7 @@ Once successfully authenticated, then API calls can be made for the duration of 
 ## Author and License
 RedFiveCode (https://github.com/RedFiveCode)
 
-Copyright (c) 2014-2024 RedFiveCode (https://github.com/RedFiveCode) All rights reserved.
+Copyright (c) 2014-2025 RedFiveCode (https://github.com/RedFiveCode) All rights reserved.
 
 Released under MIT License (see License.txt file).
 
@@ -150,8 +152,8 @@ Windows is a trademark of the Microsoft group of companies.
 ## Further work
 * Add further APIs. See <TBA> for instructions.
 * Test with further tag type beyond types: 12 (Temperature) and 13 (Temperature and Humidity).
-* Port to .net core?
-* Rich client application in WPF or Windows Forms?
+* Further views in the WPF app
+
 
 ## Warranty
 The author(s) accept no liability or responsibility for any data loss or corruption or damage to sensor tags caused by the use of this application or libraries.
