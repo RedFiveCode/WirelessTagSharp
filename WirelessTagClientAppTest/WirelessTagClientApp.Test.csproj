@@ -1,137 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2CE11CCD-4310-4FC1-8936-92C2E7BD114B}</ProjectGuid>
+	<TargetFramework>net9.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WirelessTagClientApp.Test</RootNamespace>
-    <AssemblyName>WirelessTagClientApp.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Commands\ToggleTemperatureUnitsCommandTest.cs" />
-    <Compile Include="Commands\ToggleViewCommandTest.cs" />
-    <Compile Include="Commands\RefreshAllTagsCommandTest.cs" />
-    <Compile Include="Commands\NavigateHyperlinkCommandTest.cs" />
-    <Compile Include="Commands\AboutCommandTest.cs" />
-    <Compile Include="Commands\ChangeViewCommandTest.cs" />
-    <Compile Include="Commands\RefreshMinMaxTagsCommandTest.cs" />
-    <Compile Include="Commands\RefreshViewCommandTest.cs" />
-    <Compile Include="Commands\CopyMinMaxTagsComandTest.cs" />
-    <Compile Include="Commands\DelegatedCommandTest.cs" />
-    <Compile Include="Commands\CopyAllTagsCommandTest.cs" />
-    <Compile Include="Common\RelayCommandTTest.cs" />
-    <Compile Include="Common\ViewModelFactoryTest.cs" />
-    <Compile Include="Converters\BooleanToVisibilityConverterTest.cs" />
-    <Compile Include="Converters\ColumnWidthConverterTest.cs" />
-    <Compile Include="Converters\EnumToVisibilityConverterTest.cs" />
-    <Compile Include="Converters\EmptyStringConverterTest.cs" />
-    <Compile Include="Converters\HumanizeTimeSpanValueConverterTest.cs" />
-    <Compile Include="Converters\TimeIntervalValueConverterTest.cs" />
-    <Compile Include="TestHelpers\PropertyChangedObserver.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\CSVWriterTest.cs" />
-    <Compile Include="Utils\EnumHelperTest.cs" />
-    <Compile Include="Utils\TemperatureConvertorTest.cs" />
-    <Compile Include="Utils\TimeIntervalHelperTest.cs" />
-    <Compile Include="Utils\OptionsExtensionTest.cs" />
-    <Compile Include="ViewModel\MeasurementViewModelTest.cs" />
-    <Compile Include="ViewModel\MinMaxMeasurementViewModelTest.cs" />
-    <Compile Include="ViewModel\TagViewModelTest.cs" />
-    <Compile Include="ViewModel\AllTagsViewModelTest.cs" />
-    <Compile Include="ViewModel\MainWindowViewModelTest.cs" />
-    <Compile Include="ViewModel\AboutViewModelTest.cs" />
-    <Compile Include="ViewModel\MinMaxViewModelTest.cs" />
-    <Compile Include="ViewModel\MeasurmentComparerTest.cs" />
-    <Compile Include="ViewModel\TemperatureRawDataCacheTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WirelessTagClientApp\WirelessTagClientApp.csproj">
-      <Project>{dba8d2c4-b8f9-452f-9ff8-b5b304735787}</Project>
-      <Name>WirelessTagClientApp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WirelessTagClientLib\WirelessTagClientLib.csproj">
-      <Project>{acbf5e08-4582-4980-bcb1-60bcf93bbf93}</Project>
-      <Name>WirelessTagClientLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AsyncAwaitBestPractices.MVVM">
-      <Version>8.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="Moq">
-      <Version>4.20.72</Version>
-    </PackageReference>
-    <PackageReference Include="MSTest.TestAdapter">
-      <Version>3.6.1</Version>
-    </PackageReference>
-    <PackageReference Include="MSTest.TestFramework">
-      <Version>3.6.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Diagnostics.DiagnosticSource">
-      <Version>8.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.IO.Abstractions.TestingHelpers">
-      <Version>22.0.15</Version>
-    </PackageReference>
-    <PackageReference Include="System.Reflection.Metadata">
-      <Version>8.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Text.Json">
-      <Version>8.0.5</Version>
-    </PackageReference>
+    <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="8.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.1" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.8" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="22.0.15" />
+    <PackageReference Include="System.Reflection.Metadata" Version="9.0.8" />
+    <PackageReference Include="System.Text.Json" Version="9.0.8" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\WirelessTagClientApp\WirelessTagClientApp.csproj" />
+    <ProjectReference Include="..\WirelessTagClientLib\WirelessTagClientLib.csproj" />
+  </ItemGroup>
 </Project>
