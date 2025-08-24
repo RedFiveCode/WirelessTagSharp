@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -19,9 +20,19 @@ namespace WirelessTagClientApp
         {
             InitializeComponent();
 
-            // parse command line
-            var args = Environment.GetCommandLineArgs();
-            options = Parser.Default.ParseArguments<Options>(args).Value;
+            // Build configuration
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
+            // Bind section to class
+            var options = config.GetSection("Options").Get<Options>();
+
+
+            //// parse command line
+            //var args = Environment.GetCommandLineArgs();
+            //options = Parser.Default.ParseArguments<Options>(args).Value;
 
             viewModel = new MainWindowViewModel(options);
             viewModel.IsBusy = true;

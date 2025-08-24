@@ -1,22 +1,18 @@
-﻿using CommandLine;
-
-namespace WirelessTagClientApp
+﻿namespace WirelessTagClientApp
 {
     /// <summary>
-    /// Stores command line options
+    /// Application options
     /// </summary>
     public class Options
     {
-        [Option('u', "user", Required = false, HelpText = "User name")]
-        public string Username { get; set; }
-
-        [Option('p', "password", Required = false, HelpText = "Password")]
-        public string Password { get; set; }
-
-        [Option('t', "token", Required = true, HelpText = "Access token; see https://wirelesstag.net/eth/oauth2_apps.html")]
+        /// <summary>
+        /// Access token; see https://wirelesstag.net/eth/oauth2_apps.html"
+        /// </summary>
         public string AccessToken { get; set; }
 
-        [Option('c', "cacheFolder", Required = false, HelpText = "Cache folder")]
+        /// <summary>
+        /// Cache folder; either relative path of rooted path
+        /// </summary>
         public string CacheFolder { get; set; } = @"..\..\..\_cache";
     }
 }
