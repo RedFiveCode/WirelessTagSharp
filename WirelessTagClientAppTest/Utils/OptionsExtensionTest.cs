@@ -92,8 +92,7 @@ namespace WirelessTagClientApp.Test
 
             // assert
 
-            Assert.StartsWith(@"C:\Users\", result); // check if it starts with a rooted path
-            Assert.EndsWith(@"cacheFolder", result);
+            Assert.Equal(expectedFolder, result); // check that it starts with a rooted path
         }
 
         [Fact]
