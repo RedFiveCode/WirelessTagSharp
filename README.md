@@ -128,6 +128,7 @@ Some of the  Wireless Sensor Tags JSON Web Service API Documentation requires lo
 ## Security considerations
 Requires OAuth2 access token; see [here](https://wirelesstag.net/eth/oauth2_apps.html).
 The access token is passed into the client layer using command line parameters in clear text.
+For the gui app, the access token is stored in the appSettings.json file in clear text.
 
 Connects to the REST service on the internet at https://www.mytaglist.com
 
