@@ -67,10 +67,7 @@ namespace WirelessTagClientApp.Commands
             // UI thread ???
             if (responseTask.Status == TaskStatus.RanToCompletion)
             {
-                // keep existing view mode of tags
-                var originalViewMode = (viewModel.Tags.Any() ? viewModel.Tags.First().Mode : default(TagViewModel.ViewMode));
-
-                viewModel.Tags = ViewModelFactory.CreateTagViewModelList(responseTask.Result, originalViewMode);
+                viewModel.Tags = ViewModelFactory.CreateTagViewModelList(responseTask.Result);
             }
             else
             {

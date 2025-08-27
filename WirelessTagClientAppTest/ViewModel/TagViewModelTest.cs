@@ -26,7 +26,6 @@ namespace WirelessTagClientApp.Test.ViewModel
             var target = new TagViewModel();
 
             // assert
-            Assert.Equal(TagViewModel.ViewMode.Temperature, target.Mode);
             Assert.Equal(0, target.Id);
             Assert.Equal(String.Empty, target.Name);
             Assert.Equal(String.Empty, target.Description);
@@ -39,20 +38,6 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.Equal(0d, target.BatteryVoltage);
             Assert.Equal(0d, target.BatteryRemaining);
             Assert.False(target.IsHumidityTag);
-        }
-
-        [Fact]
-        public void Mode_Setter_Should_Fire_PropertyChanged_Event()
-        {
-            // arrange
-            var target = new TagViewModel();
-            var observer = new PropertyChangedObserver(target);
-
-            // act
-            target.Mode = TagViewModel.ViewMode.Humidity;
-
-            // assert
-            observer.AssertPropertyChangedEvent("Mode");
         }
 
         [Fact]

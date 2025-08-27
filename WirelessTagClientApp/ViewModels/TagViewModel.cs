@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using WirelessTagClientApp.Common;
 using WirelessTagClientApp.Utils;
 
@@ -11,7 +10,6 @@ namespace WirelessTagClientApp.ViewModels
     [DebuggerDisplay("Tag={Name}, Temperature={Temperature}")]
     public class TagViewModel : ViewModelBase
     {
-        private ViewMode _mode;
         private string _name;
         private string _description;
         private int _id;
@@ -24,28 +22,10 @@ namespace WirelessTagClientApp.ViewModels
         private double _batteryRemaining;
         private bool _isHumidityTag;
 
-        public enum ViewMode { Temperature = 0, TemperatureF, Humidity, BatteryVoltage, BatteryPercent, VerboseDetails }
-
         public TagViewModel()
         {
             Name = String.Empty;
             Description = String.Empty;
-            Mode = ViewMode.Temperature;
-        }
-
-        /// <summary>
-        /// Get/set the view mode (temperature, humidity, etc)
-        /// </summary>
-        public ViewMode Mode
-        {
-            get { return _mode; }
-
-            set
-            {
-                _mode = value;
-
-                NotifyPropertyChanged();
-            }
         }
 
         /// <summary>

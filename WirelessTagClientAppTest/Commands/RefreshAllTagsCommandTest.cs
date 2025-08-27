@@ -79,7 +79,7 @@ namespace WirelessTagClientApp.Test.Commands
         }
 
         [Fact]
-        public async Task Execute_AlreadyHaveSomeData_RefreshesListOfTagsInViewModel_AndMaintainsPreviousTagViewMode()
+        public async Task Execute_AlreadyHaveSomeData_RefreshesListOfTagsInViewModel()
         {
             // arrange
             var clientMock = CreateAsyncClientMock();
@@ -95,12 +95,9 @@ namespace WirelessTagClientApp.Test.Commands
             {
                 Id = 1,
                 Name = "my tag",
-                Mode = TagViewModel.ViewMode.VerboseDetails
             };
 
             viewModel.Tags.Add(tagViewModel);
-
-            var previousViewMode = tagViewModel.Mode;
 
             // act - await async operations returning
             await target.ExecuteAsync(viewModel);
@@ -109,7 +106,6 @@ namespace WirelessTagClientApp.Test.Commands
             Assert.NotNull(viewModel.Tags);
             Assert.Single(viewModel.Tags);
             Assert.Equal(1, viewModel.Tags[0].Id);
-            Assert.Equal(previousViewMode, viewModel.Tags[0].Mode);
         }
 
         [Fact]

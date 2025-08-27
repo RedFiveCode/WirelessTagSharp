@@ -64,22 +64,6 @@ namespace WirelessTagClientApp.Test.Common
             Assert.Equal(75, result[0].BatteryRemaining); // should multiply by 100 so scaled 0 to 100
             Assert.Equal(42, result[0].SignalStrength);
             Assert.Equal(new DateTime(2022, 1, 1), result[0].LastCommunication);
-            Assert.Equal(TagViewModel.ViewMode.Temperature, result[0].Mode);
-        }
-
-        [Fact]
-        public void CreateTagViewModelList_Should_Return_ValidObject_WithExistingMode()
-        {
-            List<TagInfo> tags = new List<TagInfo>()
-            {
-                CreateTagInfo()
-            };
-
-            var result = ViewModelFactory.CreateTagViewModelList(tags, TagViewModel.ViewMode.VerboseDetails);
-
-            Assert.NotNull(result);
-            Assert.Single(result);
-            Assert.Equal(TagViewModel.ViewMode.VerboseDetails, result[0].Mode);
         }
 
         [Fact]
