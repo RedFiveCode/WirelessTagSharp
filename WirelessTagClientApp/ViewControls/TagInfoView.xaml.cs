@@ -3,11 +3,11 @@
 namespace WirelessTagClientApp.ViewControls
 {
     /// <summary>
-    /// Interaction logic for TagView.xaml
+    /// Interaction logic for TagInfoView.xaml
     /// </summary>
-    public partial class TagCurrentView : UserControl
+    public partial class TagInfoView : UserControl
     {
-        public TagCurrentView()
+        public TagInfoView()
         {
             InitializeComponent();
         }

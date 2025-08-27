@@ -140,7 +140,7 @@
                             <local:TagBatteryPercentageView
                                 Visibility="{Binding Path=DataContext.Mode, RelativeSource={RelativeSource AncestorType=UserControl}, ConverterParameter=BatteryPercent, Converter={StaticResource enumVisibilityConverter}}" />
 
-                            <local:TagCurrentView
+                            <local:TagInfoView
                                 Visibility="{Binding Path=DataContext.Mode, RelativeSource={RelativeSource AncestorType=UserControl}, ConverterParameter=VerboseDetails, Converter={StaticResource enumVisibilityConverter}}" />
                         </StackPanel>
                     </DataTemplate>
