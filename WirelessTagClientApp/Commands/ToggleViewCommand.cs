@@ -2,6 +2,7 @@
 using WirelessTagClientApp.Common;
 using WirelessTagClientApp.Utils;
 using WirelessTagClientApp.ViewModels;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WirelessTagClientApp.Commands
 {
@@ -30,11 +31,8 @@ namespace WirelessTagClientApp.Commands
 
         private void ToggleView(AllTagsViewModel viewModel)
         {
-            foreach (var tag in viewModel.Tags)
-            {
-                tag.Mode = (_direction == Direction.Next ? EnumHelper.NextEnum<TagViewModel.ViewMode>(tag.Mode)
-                                                        : EnumHelper.PreviousEnum<TagViewModel.ViewMode>(tag.Mode));
-            }
+            viewModel.Mode = (_direction == Direction.Next ? EnumHelper.NextEnum<AllTagsViewModel.ViewMode>(viewModel.Mode)
+                                                           : EnumHelper.PreviousEnum<AllTagsViewModel.ViewMode>(viewModel.Mode));
         }
 
         /// <summary>

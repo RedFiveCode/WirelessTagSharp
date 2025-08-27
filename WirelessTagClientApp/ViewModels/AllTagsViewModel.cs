@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Linq;
 using WirelessTagClientApp.Commands;
 using WirelessTagClientApp.Common;
 
@@ -18,8 +19,11 @@ namespace WirelessTagClientApp.ViewModels
         private readonly ToggleViewCommand _togglePreviousViewCommand;
         private readonly CopyAllTagsCommand _copyCommand;
         private readonly RefreshAllTagsCommand _refreshCommand;
+        private ViewMode _viewMode;
         private ObservableCollection<TagViewModel> _tagList;
         private DateTime _lastUpdated;
+
+        public enum ViewMode { Temperature = 0, TemperatureF, Humidity, BatteryVoltage, BatteryPercent, VerboseDetails }
 
         /// <summary>
         /// Ctor
@@ -35,6 +39,23 @@ namespace WirelessTagClientApp.ViewModels
             _togglePreviousViewCommand = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
             _copyCommand = new CopyAllTagsCommand();
             _refreshCommand = new RefreshAllTagsCommand(parentViewModel?.Client, parentViewModel?.Options);
+
+            _viewMode = ViewMode.Temperature;
+        }
+
+        /// <summary>
+        /// Get/set the view mode (temperature, humidity, etc)
+        /// </summary>
+        public ViewMode Mode
+        {
+            get { return _viewMode; }
+
+            set
+            {
+                _viewMode = value;
+
+                NotifyPropertyChanged();
+            }
         }
 
         public async Task RefreshAsync()

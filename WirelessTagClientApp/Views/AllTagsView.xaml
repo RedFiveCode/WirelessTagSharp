@@ -4,13 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WirelessTagClientApp.ViewControls"
+             xmlns:localConv="clr-namespace:WirelessTagClientApp.Converters"
              xmlns:converters="clr-namespace:ValueConverters;assembly=ValueConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-   
+
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
+            <localConv:EnumToVisibilityConverter x:Key="enumVisibilityConverter" />
+            <localConv:EmptyStringConverter x:Key="emptyStringConverter" />
+            <localConv:HumanizeTimeSpanValueConverter x:Key="timespanConverter" />
+
+            <!-- TextBlock style - not all tags support humidity sensor, so hide if not supported -->
+            <Style TargetType="{x:Type TextBlock}" x:Key="humidityStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=IsHumidityTag}" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=IsHumidityTag}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
 
             <ContextMenu x:Key="contextMenu" >
                 <MenuItem 
@@ -26,9 +42,9 @@
                     Header="Copy"
                     Command="{Binding Path=CopyCommand}"
                     CommandParameter="{Binding}" >
-                        <MenuItem.Icon>
-                            <Image Source="/Images/Copy.png" Width="16" Height="16" SnapsToDevicePixels="True" />
-                        </MenuItem.Icon>
+                    <MenuItem.Icon>
+                        <Image Source="/Images/Copy.png" Width="16" Height="16" SnapsToDevicePixels="True" />
+                    </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem 
@@ -54,9 +70,9 @@
                         <Image Source="/WirelessTagClientApp;component/Images/FlagPurple.png" Width="16" Height="16" SnapsToDevicePixels="True" />
                     </MenuItem.Icon>
                 </MenuItem>
-                
+
                 <Separator />
-                
+
                 <MenuItem 
                     Header="About..."
                     Command="{Binding Path=ParentViewModel.AboutCommand}">
@@ -92,19 +108,41 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        
+
         <ScrollViewer 
             Grid.Row="0"
             VerticalScrollBarVisibility="Auto">
 
-        
             <!-- Data context is ObservableCollection of TagViewModel -->
-        
+
             <ItemsControl ItemsSource="{Binding Path=Tags}">
                 <ItemsControl.ItemTemplate>
 
                     <DataTemplate>
-                        <local:TagCurrentView Margin="6" />
+                        <!-- Data context is TagViewModel -->
+                        
+                        <StackPanel 
+                            Margin="6"
+                            Orientation="Vertical">
+                            
+                            <local:TagTemperatureView
+                                Visibility="{Binding Path=DataContext.Mode, RelativeSource={RelativeSource AncestorType=UserControl}, ConverterParameter=Temperature, Converter={StaticResource enumVisibilityConverter}}" />
+
+                            <local:TagTemperatureFahrenheitView
+                                Visibility="{Binding Path=DataContext.Mode, RelativeSource={RelativeSource AncestorType=UserControl}, ConverterParameter=TemperatureF, Converter={StaticResource enumVisibilityConverter}}" />
+
+                            <local:TagHumidityView
+                                Visibility="{Binding Path=DataContext.Mode, RelativeSource={RelativeSource AncestorType=UserControl}, ConverterParameter=Humidity, Converter={StaticResource enumVisibilityConverter}}" />
+
+                            <local:TagBatteryVoltageView
+                                Visibility="{Binding Path=DataContext.Mode, RelativeSource={RelativeSource AncestorType=UserControl}, ConverterParameter=BatteryVoltage, Converter={StaticResource enumVisibilityConverter}}" />
+
+                            <local:TagBatteryPercentageView
+                                Visibility="{Binding Path=DataContext.Mode, RelativeSource={RelativeSource AncestorType=UserControl}, ConverterParameter=BatteryPercent, Converter={StaticResource enumVisibilityConverter}}" />
+
+                            <local:TagCurrentView
+                                Visibility="{Binding Path=DataContext.Mode, RelativeSource={RelativeSource AncestorType=UserControl}, ConverterParameter=VerboseDetails, Converter={StaticResource enumVisibilityConverter}}" />
+                        </StackPanel>
                     </DataTemplate>
 
                 </ItemsControl.ItemTemplate>
@@ -115,7 +153,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-        
+
         </ScrollViewer>
 
 

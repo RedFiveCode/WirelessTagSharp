@@ -19,97 +19,84 @@ namespace WirelessTagClientApp.Test.Commands
         }
 
         [Fact]
-        public void ToggleViewCommand_SetsViewMode_ForAllTags()
+        public void ToggleViewCommand_SetsViewMode()
         {
             // arrange
             var target = new ToggleViewCommand();
-            var viewModel = new AllTagsViewModel();
-            viewModel.Tags.Add(new TagViewModel() { Id = 1, Mode = TagViewModel.ViewMode.Temperature });
-            viewModel.Tags.Add(new TagViewModel() { Id = 2, Mode = TagViewModel.ViewMode.Temperature });
-
-            Assert.Equal(TagViewModel.ViewMode.Temperature, viewModel.Tags[0].Mode);
-            Assert.Equal(TagViewModel.ViewMode.Temperature, viewModel.Tags[1].Mode);
-
+            var viewModel = new AllTagsViewModel()
+            {
+                Mode = AllTagsViewModel.ViewMode.Temperature
+            };
 
             // act
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.Equal(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[0].Mode);
-            Assert.Equal(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[1].Mode);
+            Assert.Equal(AllTagsViewModel.ViewMode.TemperatureF, viewModel.Mode);
         }
 
         [Fact]
         public void ToggleViewCommand_SetsNextViewMode_And_WrapsRound()
         {
             // arrange
-            var viewModes = (TagViewModel.ViewMode[])Enum.GetValues(typeof(TagViewModel.ViewMode));
+            var viewModes = (AllTagsViewModel.ViewMode[])Enum.GetValues(typeof(AllTagsViewModel.ViewMode));
             var orderedViewModes = viewModes.ToArray().OrderBy(x => x);
-            var first = orderedViewModes.First(); // TagViewModel.ViewMode.Temperature
-            var last = orderedViewModes.Last(); // TagViewModel.ViewMode.VerboseDetails
-
-
-            var tagViewModel = new TagViewModel() { Id = 1, Mode = TagViewModel.ViewMode.Temperature };
+            var first = orderedViewModes.First(); // ViewMode.Temperature
+            var last = orderedViewModes.Last(); // ViewMode.VerboseDetails
 
             var target = new ToggleViewCommand();
-            var viewModel = new AllTagsViewModel();
+            var viewModel = new AllTagsViewModel()
+            {
+                Mode = last
+            };
           
-            viewModel.Tags.Add(tagViewModel);
-
-            tagViewModel.Mode = last; // TagViewModel.ViewMode.VerboseDetails
-
             // act
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.Equal(first, tagViewModel.Mode);
+            Assert.Equal(first, viewModel.Mode);
         }
 
         [Fact]
         public void ToggleViewCommand_SetsPreviousViewMode_ForAllTags()
         {
             // arrange
+            var viewModes = (AllTagsViewModel.ViewMode[])Enum.GetValues(typeof(AllTagsViewModel.ViewMode));
+            var orderedViewModes = viewModes.ToArray().OrderBy(x => x);
+            var first = orderedViewModes.First(); // ViewMode.Temperature
+            var last = orderedViewModes.Last(); // ViewMode.VerboseDetails
+
             var target = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
-            var viewModel = new AllTagsViewModel();
-            viewModel.Tags.Add(new TagViewModel() { Id = 1, Mode = TagViewModel.ViewMode.TemperatureF });
-            viewModel.Tags.Add(new TagViewModel() { Id = 2, Mode = TagViewModel.ViewMode.TemperatureF });
-
-            Assert.Equal(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[0].Mode);
-            Assert.Equal(TagViewModel.ViewMode.TemperatureF, viewModel.Tags[1].Mode);
-
+            var viewModel = new AllTagsViewModel()
+            {
+                Mode = first // Temperature
+            };
 
             // act
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.Equal(TagViewModel.ViewMode.Temperature, viewModel.Tags[0].Mode);
-            Assert.Equal(TagViewModel.ViewMode.Temperature, viewModel.Tags[1].Mode);
+            Assert.Equal(last, viewModel.Mode); // VerboseDetails
         }
 
         [Fact]
         public void ToggleViewCommand_SetsPreviousViewMode_And_WrapsRound()
         {
             // arrange
-            var viewModes = (TagViewModel.ViewMode[])Enum.GetValues(typeof(TagViewModel.ViewMode));
+            var viewModes = (AllTagsViewModel.ViewMode[])Enum.GetValues(typeof(AllTagsViewModel.ViewMode));
             var orderedViewModes = viewModes.ToArray().OrderBy(x => x);
             var first = orderedViewModes.First(); // TagViewModel.ViewMode.Temperature
             var last = orderedViewModes.Last(); // TagViewModel.ViewMode.VerboseDetails
 
-
-            var tagViewModel = new TagViewModel() { Id = 1, Mode = TagViewModel.ViewMode.Temperature };
-
             var target = new ToggleViewCommand(ToggleViewCommand.Direction.Previous);
             var viewModel = new AllTagsViewModel();
 
-            viewModel.Tags.Add(tagViewModel);
-
-            tagViewModel.Mode = first;
 
             // act
             target.Command.Execute(viewModel);
 
             // assert
-            Assert.Equal(last, tagViewModel.Mode);
+            Assert.Equal(last, viewModel.Mode);
         }
     }
 }

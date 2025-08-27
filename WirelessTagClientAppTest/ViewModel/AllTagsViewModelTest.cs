@@ -33,12 +33,27 @@ namespace WirelessTagClientApp.Test.ViewModel
             Assert.NotNull(target.Tags);
             Assert.Empty(target.Tags);
             Assert.Equal(DateTime.MinValue, target.LastUpdated);
+            Assert.Equal(AllTagsViewModel.ViewMode.Temperature, target.Mode);
 
             Assert.NotNull(target.ToggleNextViewCommand);
             Assert.NotNull(target.TogglePreviousViewCommand);
             Assert.NotNull(target.CopyCommand);
             Assert.NotNull(target.RefreshCommand);
             Assert.Same(parentViewModel, target.ParentViewModel);
+        }
+
+        [Fact]
+        public void Mode_Setter_Should_Fire_PropertyChanged_Event()
+        {
+            // arrange
+            var target = new AllTagsViewModel();
+            var observer = new PropertyChangedObserver(target);
+
+            // act
+            target.Mode = AllTagsViewModel.ViewMode.VerboseDetails;
+
+            // assert
+            observer.AssertPropertyChangedEvent("Mode");
         }
 
         [Fact]
