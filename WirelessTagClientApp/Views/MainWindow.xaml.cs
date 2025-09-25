@@ -1,6 +1,4 @@
-﻿using CommandLine;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using Microsoft.Extensions.Configuration;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
