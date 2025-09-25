@@ -81,7 +81,7 @@ namespace WirelessTagClientApp.Test.Commands
             var viewModel = new MinMaxViewModel(parentViewModel);
 
             _clientMock.Setup(x => x.GetTagListAsync())
-                      .ReturnsAsync(new List<TagInfo>()); // empty list
+                       .ReturnsAsync(new List<TagInfo>()); // empty list
 
             // act
             await _target.ExecuteAsync(viewModel);
@@ -294,13 +294,10 @@ namespace WirelessTagClientApp.Test.Commands
             Assert.DoesNotContain(measurements, m => m.Time > DateTime.Now); // data should not be in the future, especially today's data
 
             _clientMock.Setup(x => x.GetTagListAsync())
-                .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = tagId, Name = "My tag" } });
+                       .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = tagId, Name = "My tag" } });
 
             _clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-                      .ReturnsAsync((int id, DateTime from, DateTime to) =>
-                      {
-                          return measurements;
-                      });
+                       .ReturnsAsync(measurements);
 
             // act
             await _target.ExecuteAsync(viewModel);
@@ -334,13 +331,10 @@ namespace WirelessTagClientApp.Test.Commands
             Assert.DoesNotContain(measurements, m => m.Time > DateTime.Now); // data should not be in the future, especially today's data
 
             _clientMock.Setup(x => x.GetTagListAsync())
-                .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = tagId, Name = "My tag" } });
+                       .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = tagId, Name = "My tag" } });
 
             _clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-                      .ReturnsAsync((int id, DateTime from, DateTime to) =>
-                      {
-                          return measurements;
-                      });
+                       .ReturnsAsync(measurements);
 
             // act
             await _target.ExecuteAsync(viewModel);
@@ -377,10 +371,7 @@ namespace WirelessTagClientApp.Test.Commands
                        .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = tagId, Name = "My tag" } });
 
             _clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-                      .ReturnsAsync((int id, DateTime from, DateTime to) =>
-                      {
-                          return measurements;
-                      });
+                       .ReturnsAsync(measurements);
 
             // act
             await _target.ExecuteAsync(viewModel);
@@ -419,10 +410,7 @@ namespace WirelessTagClientApp.Test.Commands
                        .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = tagId, Name = "My tag" } });
 
             _clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-                       .ReturnsAsync((int id, DateTime from, DateTime to) =>
-                      {
-                          return measurements;
-                      });
+                       .ReturnsAsync(measurements);
 
             // act
             await _target.ExecuteAsync(viewModel);
@@ -465,10 +453,7 @@ namespace WirelessTagClientApp.Test.Commands
                        .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = tagId, Name = "My tag" } });
 
             _clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-                       .ReturnsAsync((int id, DateTime from, DateTime to) =>
-                      {
-                          return measurements;
-                      });
+                       .ReturnsAsync(measurements);
 
             // act
             await _target.ExecuteAsync(viewModel);
@@ -508,10 +493,7 @@ namespace WirelessTagClientApp.Test.Commands
                        .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = tagId, Name = "My tag" } });
 
             _clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-                       .ReturnsAsync((int id, DateTime from, DateTime to) =>
-                      {
-                          return measurements;
-                      });
+                       .ReturnsAsync(measurements);
 
             // act
             await _target.ExecuteAsync(viewModel);
@@ -577,10 +559,7 @@ namespace WirelessTagClientApp.Test.Commands
                        .ReturnsAsync(new List<TagInfo> { new TagInfo { SlaveId = tagId, Name = "TestTag" } });
 
             _clientMock.Setup(x => x.GetTemperatureRawDataAsync(tagId, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-                       .ReturnsAsync((int id, DateTime from, DateTime to) =>
-                      {
-                          return measurements;
-                      });
+                       .ReturnsAsync(measurements);
 
             var parentViewModel = new MainWindowViewModel();
             var viewModel = new MinMaxViewModel(parentViewModel);
@@ -666,10 +645,10 @@ namespace WirelessTagClientApp.Test.Commands
             var clientMock = new Mock<IWirelessTagAsyncClient>();
 
             clientMock.Setup(x => x.LoginAsync(It.IsAny<string>(), It.IsAny<string>()))
-                 .ReturnsAsync(true);
+                      .ReturnsAsync(true);
 
             clientMock.Setup(x => x.GetTagListAsync())
-                .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = 1, Name = "Tag one" }, new TagInfo() { SlaveId = 2, Name = "Tag two" } });
+                      .ReturnsAsync(new List<TagInfo>() { new TagInfo() { SlaveId = 1, Name = "Tag one" }, new TagInfo() { SlaveId = 2, Name = "Tag two" } });
 
             clientMock.Setup(x => x.GetTemperatureRawDataAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                       .ReturnsAsync(new List<Measurement>()
