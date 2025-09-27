@@ -145,8 +145,8 @@ namespace WirelessTagClientApp.Test.Commands
             var expectedFrom = DateTime.Today.Date; // start of today
             var expectedTo = expectedFrom.AddHours(23).AddMinutes(59).AddSeconds(59); // end of today
 
-            _clientMock.Verify(x => x.GetTemperatureRawDataAsync(1, expectedFrom, expectedTo), Times.AtLeastOnce);
-            _clientMock.Verify(x => x.GetTemperatureRawDataAsync(2, expectedFrom, expectedTo), Times.AtLeastOnce);
+            _clientMock.Verify(x => x.GetTemperatureRawDataAsync(1, It.IsAny<DateTime>(), expectedTo), Times.AtLeastOnce);
+            _clientMock.Verify(x => x.GetTemperatureRawDataAsync(2, It.IsAny<DateTime>(), expectedTo), Times.AtLeastOnce);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace WirelessTagClientApp.Test.Commands
             var today = DateTime.Today.Date;
 
             var expectedFrom = new DateTime(today.Year, 1, 1); // start of this year
-            var expectedTo = today.AddDays(-1).AddHours(23).AddMinutes(59).AddSeconds(59); // end of yesterday
+            var expectedTo = today.AddHours(23).AddMinutes(59).AddSeconds(59); // end of yesterday
 
             _clientMock.Verify(x => x.GetTemperatureRawDataAsync(1, expectedFrom, expectedTo), Times.AtLeastOnce);
             _clientMock.Verify(x => x.GetTemperatureRawDataAsync(2, expectedFrom, expectedTo), Times.AtLeastOnce);
@@ -519,7 +519,7 @@ namespace WirelessTagClientApp.Test.Commands
             var measurements = CreateMeasurementsList(today, 10, 12);
 
             _clientMock.Setup(x => x.GetTagListAsync()).ReturnsAsync(new List<TagInfo> { new TagInfo { SlaveId = tagId, Name = "TestTag" } });
-            _clientMock.Setup(x => x.GetTemperatureRawDataAsync(tagId, today, today.AddHours(23).AddMinutes(59).AddSeconds(59)))
+            _clientMock.Setup(x => x.GetTemperatureRawDataAsync(tagId, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                        .ReturnsAsync(measurements);
 
             var parentViewModel = new MainWindowViewModel();
