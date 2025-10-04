@@ -126,7 +126,7 @@
 
             <TextBlock
                 Grid.Row="5"
-                Grid.Column="0">Signal Strength:</TextBlock>
+                Grid.Column="0">Signal strength:</TextBlock>
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="2">
