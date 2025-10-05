@@ -1,9 +1,7 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using WirelessTagClientApp.Common;
+using WirelessTagClientApp.Extensions;
 using WirelessTagClientApp.ViewModels;
 using WirelessTagClientLib;
 using WirelessTagClientLib.DTO;
@@ -79,6 +77,8 @@ namespace WirelessTagClientApp.Commands
 
         private async Task GetDataAndRefreshViewModelForTag(MinMaxViewModel viewModel, TagInfo tag)
         {
+            var baselineTimestamp = new DateTime(2015, 1, 1);
+
             // IMPORTANT
             //
             // Balances spamming the server with requests for many requests with short time intervals
@@ -139,48 +139,31 @@ namespace WirelessTagClientApp.Commands
 
             var tagId = tag.SlaveId;
 
-            // get data for today
-            //var measurementsToday = await GetTodayDataForTag(tagId);
-
-            //viewModel.RawDataCache.Update(tagId, measurementsToday);
-
-            // get recent data (this year); only do this once as should not have changed
-            //var now = DateTime.Now.Date;
-            ////var yesterday = now.AddDays(-1).AddHours(23).AddMinutes(59).AddSeconds(59); // end of yesterday
-            //var endOfToday = now.AddHours(23).AddMinutes(59).AddSeconds(59); // end of today
-
-            //if (viewModel.RawDataCache.ContainsDataForTag(tagId, new DateTime(now.Year, 1, 1), yesterday))
-            //{
-            //    Console.WriteLine($"Tag {tagId} : Already has data for this year; skipping");
-            //}
-            //else
-            //{
-            //    var measurementsRecent = await GetRecentDataForTag(tagId);
-            //    viewModel.RawDataCache.Update(tagId, measurementsRecent);
-            //}
-
-            // TODO
-            // first time round - get data from start of year to end of today
-            // second time round - get data from start of today to end of today
-
-            var measurementsRecent = await GetRecentDataForTagIncludingToday(tagId);
-            viewModel.RawDataCache.Update(tagId, measurementsRecent);
-
-            // read older data before this year from disc cache
+            // use older data from cache; likely data from before this year
             if (!_cachedData.ContainsKey(tagId))
             {
-                var cachedData = GetCachedDataForTag(tag, _cacheFolder);
-                _cachedData[tag.SlaveId] = cachedData; // if no cached data for this tag, then returns an empty list
-            }
-
-            // use older data from cache
-            if (_cachedData.ContainsKey(tagId))
-            {
-                var data = _cachedData[tagId];
+                // assume if there is a key in the cache, then there is some data as well and not an empty list of measurements
+                var data = GetCachedDataForTag(tag, _cacheFolder);
+                _cachedData[tagId] = data; // if no cached data for this tag, then returns an empty list
 
                 Console.WriteLine($"Tag {tagId} : Using {data.Count:N0} cached data points");
                 viewModel.RawDataCache.Update(tagId, data);
             }
+
+            // get most recent data point; if no data in the cache for the current tag, then returns null
+            var latestMeasurement = viewModel.RawDataCache.GetLatestData(tagId);
+
+            // Get data after the most recent data point
+            // Requery data for today to get more recent measurements;
+            // and get overlap/duplicate measurements. which the cache will resolve
+            // if no data in the cache for the current tag, then use arbitrary starting date to query from
+            var from = latestMeasurement != null ? latestMeasurement.Time : baselineTimestamp;
+
+            var to = DateTime.Now.Date.RoundUp();
+
+            var measurementsRecent = await GetDataForTag(tagId, from, to);
+
+            viewModel.RawDataCache.Update(tagId, measurementsRecent);
 
             // update time interval buckets
             var timeIntervals = new[]
@@ -209,53 +192,20 @@ namespace WirelessTagClientApp.Commands
 
         private async Task<List<Measurement>> GetDataForTag(int tagId, DateTime from, DateTime to)
         {
-            Console.WriteLine($"Tag {tagId} : Getting data for {from} to {to}...");
+            Debug.WriteLine($"Tag {tagId} : Getting data for {from} to {to}...");
 
             var data = await _client.GetTemperatureRawDataAsync(tagId, from, to);
 
             if (data != null && data.Any())
             {
-                Console.WriteLine($"Tag {tagId} : Read {data.Count} data points");
+                Debug.WriteLine($"Tag {tagId} : Read {data.Count} data points");
             }
             else
             {
-                Console.WriteLine($"Tag {tagId} : *No data*");
+                Debug.WriteLine($"Tag {tagId} : *No data*");
             }
 
             return data;
-        }
-
-        /// <summary>
-        /// Get data for today
-        /// </summary>
-        private async Task<List<Measurement>> GetTodayDataForTag(int tagId)
-        {
-            var today = DateTime.Now.Date;
-            var from = today.Date;
-            var to = today.Date.AddHours(23).AddMinutes(59).AddSeconds(59); // end of today
-
-            return await GetDataForTag(tagId, from, to);
-        }
-
-        /// <summary>
-        /// Get recent data (1st January this year through to end of yesterday)
-        /// </summary>
-        private async Task<List<Measurement>> GetRecentDataForTag(int tagId)
-        {
-            var today = DateTime.Now.Date;
-            var from = new DateTime(today.Year, 1, 1); // start of year
-            var to = today.Date.AddDays(-1).AddHours(23).AddMinutes(59).AddSeconds(59); // end of yesterday
-
-            return await GetDataForTag(tagId, from, to);
-        }
-
-        private async Task<List<Measurement>> GetRecentDataForTagIncludingToday(int tagId)
-        {
-            var today = DateTime.Now.Date;
-            var from = new DateTime(today.Year, 1, 1); // start of year
-            var to = today.Date.AddHours(23).AddMinutes(59).AddSeconds(59); // end of today
-
-            return await GetDataForTag(tagId, from, to);
         }
 
         private List<Measurement> GetCachedDataForTag(TagInfo tag, string cacheFolder)
@@ -269,7 +219,7 @@ namespace WirelessTagClientApp.Commands
             var cacheFile = _cacheReaderWriter.GetCacheFilename(cacheFolder, tag);
             var data = _cacheReaderWriter.ReadCacheFile(cacheFile);
 
-            Console.WriteLine($"Tag {tag.SlaveId} : Read {data.Count:N0} measurements from cache");
+            Debug.WriteLine($"Tag {tag.SlaveId} : Read {data.Count:N0} measurements from cache");
 
             return data;
         }

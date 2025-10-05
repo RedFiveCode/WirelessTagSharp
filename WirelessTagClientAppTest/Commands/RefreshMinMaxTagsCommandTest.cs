@@ -142,8 +142,8 @@ namespace WirelessTagClientApp.Test.Commands
             await _target.ExecuteAsync(viewModel);
 
             // assert; verify that GetTemperatureRawDataAsync is called for each of the two tags
-            var expectedFrom = DateTime.Today.Date; // start of today
-            var expectedTo = expectedFrom.AddHours(23).AddMinutes(59).AddSeconds(59); // end of today
+            var today = DateTime.Today.Date; // start of today
+            var expectedTo = today.AddHours(23).AddMinutes(59).AddSeconds(59); // end of today
 
             _clientMock.Verify(x => x.GetTemperatureRawDataAsync(1, It.IsAny<DateTime>(), expectedTo), Times.AtLeastOnce);
             _clientMock.Verify(x => x.GetTemperatureRawDataAsync(2, It.IsAny<DateTime>(), expectedTo), Times.AtLeastOnce);
@@ -162,8 +162,8 @@ namespace WirelessTagClientApp.Test.Commands
             // assert; verify that GetTemperatureRawDataAsync is called for each of the two tags
             var today = DateTime.Today.Date;
 
-            var expectedFrom = new DateTime(today.Year, 1, 1); // start of this year
-            var expectedTo = today.AddHours(23).AddMinutes(59).AddSeconds(59); // end of yesterday
+            var expectedFrom = new DateTime(2020, 1, 1); // most recent measurement in cache is 1.5 @ 1-jan-2020
+            var expectedTo = today.AddHours(23).AddMinutes(59).AddSeconds(59); // end of today
 
             _clientMock.Verify(x => x.GetTemperatureRawDataAsync(1, expectedFrom, expectedTo), Times.AtLeastOnce);
             _clientMock.Verify(x => x.GetTemperatureRawDataAsync(2, expectedFrom, expectedTo), Times.AtLeastOnce);
