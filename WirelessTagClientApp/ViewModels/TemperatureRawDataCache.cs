@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using WirelessTagClientLib.DTO;
+﻿using WirelessTagClientLib.DTO;
 
 namespace WirelessTagClientApp.ViewModels
 {
@@ -157,6 +154,19 @@ namespace WirelessTagClientApp.ViewModels
             var finish = to.Date.AddHours(23).AddMinutes(59).AddSeconds(59); // to be inclusive need to extend to the end of the day
 
             return _rawDataMap[tagId].Any(d => d.Time >= start && d.Time <= finish);
+        }
+
+        /// <summary>
+        /// Returns the most recent measurement for for the specified tagId, or null if no measurements
+        /// </summary>
+        public Measurement? GetLatestData(int tagId)
+        {
+            if (!_rawDataMap.ContainsKey(tagId) || !_rawDataMap[tagId].Any())
+            {
+                return null;
+            }
+
+            return _rawDataMap[tagId].MaxBy(m => m.Time);
         }
 
         /// <summary>

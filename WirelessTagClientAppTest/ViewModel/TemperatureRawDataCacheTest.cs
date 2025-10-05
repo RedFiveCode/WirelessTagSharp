@@ -509,6 +509,41 @@ namespace WirelessTagClientApp.Test.ViewModel
 
         }
 
+        [Fact]
+        public void GetLatestData_Miss_ReturnsNull()
+        {
+            // arrange
+            var target = new TemperatureRawDataCache(); // empty cache
+
+            // act
+            var result = target.GetLatestData(42);
+
+            // assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void GetLatestData_Hit_ReturnsExpectedMeasurement()
+        {
+            // arrange
+            const int tagId = 42;
+            var data = new List<Measurement>()
+            {
+                CreateTemperatureDataPoint(2020, 1, 1, 20),
+                CreateTemperatureDataPoint(2025, 1, 1, 25)
+            };
+
+            var target = new TemperatureRawDataCache();
+            target.Update(tagId, data);
+
+            // act
+            var result = target.GetLatestData(tagId);
+
+            // assert
+            Assert.NotNull(result);
+            AssertValue(result, 2025, 1, 1, 25d);
+        }
+
         private Measurement CreateTemperatureDataPoint(int year, int month, int day, double temperature)
         {
             return new Measurement(new DateTime(year, month, day), temperature);
