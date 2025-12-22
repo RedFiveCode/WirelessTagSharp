@@ -112,7 +112,7 @@ namespace WirelessTagClientLib.Client
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="folder"/></exception>
         public async Task LoadCacheAsync(int tagId, string folder, DateTime from, DateTime to)
         {
-            ThrowIf.Argument.IsNull(folder, nameof(folder));
+            ArgumentNullException.ThrowIfNull(folder, nameof(folder));
 
             // Load tags from the client
             var tagInfo = await GetTagInfoAsync(tagId);

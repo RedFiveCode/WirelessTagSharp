@@ -57,7 +57,9 @@ namespace WirelessTagClientApp.Utils
         /// <param name="columnName">Optional column name for header.</param>
         public void AddColumn(Func<T, string> expression, string columnName)
         {
-            ThrowIf.Argument.IsNull(expression, nameof(expression));
+            ArgumentNullException.ThrowIfNull(expression, nameof(expression));
+            ArgumentNullException.ThrowIfNullOrEmpty(columnName, nameof(columnName));
+
             _expressionList.Add(expression);
 
             // append optional column _name for header
@@ -78,7 +80,7 @@ namespace WirelessTagClientApp.Utils
 
         public string WriteCSV(IList<T> list)
         {
-            ThrowIf.Argument.IsNull(list, nameof(list));
+            ArgumentNullException.ThrowIfNull(list, nameof(list));
 
             var builder = new StringBuilder();
 

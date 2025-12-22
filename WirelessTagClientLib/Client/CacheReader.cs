@@ -41,11 +41,8 @@ namespace WirelessTagClientLib.Client
         /// <exception cref="DirectoryNotFoundException"></exception>
         public List<Measurement> ReadCache(string folder, TagInfo tag)
         {
-            if (string.IsNullOrWhiteSpace(folder))
-            {
-                throw new ArgumentNullException(nameof(folder), "Folder cannot be null or empty");
-            }
-            ThrowIf.Argument.IsNull(tag, nameof(tag));
+            ArgumentException.ThrowIfNullOrWhiteSpace(folder, nameof(folder));
+            ArgumentNullException.ThrowIfNull(tag, nameof(tag));
 
             if (!_fileSystem.Directory.Exists(folder))
             {

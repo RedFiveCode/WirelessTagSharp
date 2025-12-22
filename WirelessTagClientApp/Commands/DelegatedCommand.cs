@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using WirelessTagClientApp.Common;
 using WirelessTagClientApp.ViewModels;
-using WirelessTagClientLib;
 
 namespace WirelessTagClientApp.Commands
 {
@@ -37,7 +34,7 @@ namespace WirelessTagClientApp.Commands
         /// <param name="command"></param>
         public void Register(MainWindowViewModel.ViewMode mode, ICommand command)
         {
-            ThrowIf.Argument.IsNull(command, nameof(command));
+            ArgumentNullException.ThrowIfNull(command, nameof(command));
 
             _commandMap[mode] = command;
         }
