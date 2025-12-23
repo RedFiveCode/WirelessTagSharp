@@ -164,6 +164,9 @@ namespace WirelessTagClientCache
                 return;
             }
 
+
+            ColorConsole.WriteLine("Earliest              Latest                  Count  Cache file                                         Id Name", ConsoleColor.White);
+
             foreach (var tag in tags)
             {
                 var cacheFile = reader.GetCacheFilename(options.Folder, tag);
