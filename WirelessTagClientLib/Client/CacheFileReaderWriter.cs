@@ -42,7 +42,7 @@ namespace WirelessTagClientLib.Client
                 throw new ArgumentNullException(nameof(tag), "Tag cannot be null");
             }
 
-            // Create a filename based on the tag's UUID and the date range
+            // Create a filename based on the tag's UUID
             var filename = $"{tag.Uuid}.cache.json.gz";
 
             return Path.Combine(folder, filename);
@@ -63,12 +63,7 @@ namespace WirelessTagClientLib.Client
                 throw new ArgumentNullException(nameof(data), "Data cannot be null");
             }
 
-            var serializer = new JsonSerializer()
-            {
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                Formatting = Formatting.Indented
-            };
+            var serializer = CreateSeriaizer();
 
             using (var stream = _fileSystem.FileStream.New(filename, FileMode.Create, FileAccess.Write))
             {
@@ -100,13 +95,7 @@ namespace WirelessTagClientLib.Client
                 return new List<Measurement>(); // empty list
             }
 
-
-            var serializer = new JsonSerializer
-            {
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                Formatting = Formatting.Indented,
-            };
+            var serializer = CreateSeriaizer();
 
             using (var stream = _fileSystem.FileStream.New(filename, FileMode.Open, FileAccess.Read))
             {
@@ -124,5 +113,14 @@ namespace WirelessTagClientLib.Client
             }
         }
 
+        private static JsonSerializer CreateSeriaizer()
+        {
+            return new JsonSerializer
+            {
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                Formatting = Formatting.Indented,
+            };
+        }
     }
 }
