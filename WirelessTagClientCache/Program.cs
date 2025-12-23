@@ -53,12 +53,7 @@ namespace WirelessTagClientCache
 
             var client = new WirelessTagAsyncClient(options.AccessToken);
 
-            var loader = new CacheLoader(client)
-            {
-                Verbose = options.Verbose,
-                ChunkInterval = options.ChunkSize > 0 ? TimeSpan.FromDays(options.ChunkSize) : TimeSpan.FromDays(100),
-                WaitInterval = options.WaitInterval > 0 ? TimeSpan.FromSeconds(options.WaitInterval) : TimeSpan.FromSeconds(30)
-            };
+            var loader = CreateCacheLoader(client, options.Verbose, options.ChunkSize, options.WaitInterval);
 
             await loader.LoadCacheAsync(options.TagId, options.Folder, options.From, options.To);
 
@@ -106,12 +101,7 @@ namespace WirelessTagClientCache
             var from = latest.AddSeconds(1); // start just after the latest cached measurement
             var to = options.To;
 
-            var loader = new CacheLoader(client)
-            {
-                Verbose = options.Verbose,
-                ChunkInterval = options.ChunkSize > 0 ? TimeSpan.FromDays(options.ChunkSize) : TimeSpan.FromDays(100),
-                WaitInterval = options.WaitInterval > 0 ? TimeSpan.FromSeconds(options.WaitInterval) : TimeSpan.FromSeconds(30)
-            };
+            var loader = CreateCacheLoader(client, options.Verbose, options.ChunkSize, options.WaitInterval);
 
             await loader.UpdateCacheAsync(options.TagId, options.Folder, from, to);
 
@@ -141,6 +131,16 @@ namespace WirelessTagClientCache
             ColorConsole.Write($"{earliest}  {latest}  {cachedData.Count,7:N0}  ", ConsoleColor.Green);
             ColorConsole.Write($"{cacheFileNoPath}  ", ConsoleColor.Blue);
             ColorConsole.WriteLine($"{tag.SlaveId} ({tag.Name})", ConsoleColor.Yellow);
+        }
+
+        private static CacheLoader CreateCacheLoader(IWirelessTagAsyncClient client, bool verbose, int chunkSize, int waitInterval)
+        {
+            return new CacheLoader(client)
+            {
+                Verbose = verbose,
+                ChunkInterval = chunkSize > 0 ? TimeSpan.FromDays(chunkSize) : TimeSpan.FromDays(100),
+                WaitInterval = waitInterval > 0 ? TimeSpan.FromSeconds(waitInterval) : TimeSpan.FromSeconds(30)
+            };
         }
 
         private static async Task CacheRead(ShowOptions options)
