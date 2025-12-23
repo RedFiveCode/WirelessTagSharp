@@ -32,15 +32,8 @@ namespace WirelessTagClientLib.Client
         /// <inheritdoc/>
         public string GetCacheFilename(string folder, TagInfo tag)
         {
-            if (string.IsNullOrWhiteSpace(folder))
-            {
-                throw new ArgumentNullException(nameof(folder), "Folder cannot be null or empty");
-            }
-
-            if (tag == null)
-            {
-                throw new ArgumentNullException(nameof(tag), "Tag cannot be null");
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(folder, nameof(folder));
+            ArgumentNullException.ThrowIfNull(tag, nameof(tag));
 
             // Create a filename based on the tag's UUID
             var filename = $"{tag.Uuid}.cache.json.gz";
@@ -53,15 +46,8 @@ namespace WirelessTagClientLib.Client
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="data"/> is null</exception>
         public void WriteCacheFile(string filename, List<Measurement> data)
         {
-            if (string.IsNullOrWhiteSpace(filename))
-            {
-                throw new ArgumentNullException(nameof(filename), "Filename cannot be null or empty");
-            }
-
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data), "Data cannot be null");
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(filename, nameof(filename));
+            ArgumentNullException.ThrowIfNull(data, nameof(data));
 
             var serializer = CreateSeriaizer();
 
@@ -85,10 +71,7 @@ namespace WirelessTagClientLib.Client
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="filename"/> is null or empty</exception>
         public List<Measurement> ReadCacheFile(string filename)
         {
-            if (string.IsNullOrWhiteSpace(filename))
-            {
-                throw new ArgumentNullException(nameof(filename), "Filename cannot be null or empty");
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(filename, nameof(filename));
 
             if (!_fileSystem.File.Exists(filename))
             {
