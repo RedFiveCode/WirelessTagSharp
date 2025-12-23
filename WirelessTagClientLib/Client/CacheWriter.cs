@@ -121,7 +121,7 @@ namespace WirelessTagClientLib.Client
                 throw new ArgumentOutOfRangeException($"Tag with Id {tagId} not found.");
             }
 
-            Console.WriteLine($"Tag {tagId} : '{tagInfo.Name}' ({tagInfo.Uuid})");
+            Console.WriteLine($"Tag {tagId} : {tagInfo.Uuid} '{tagInfo.Name}'");
 
             var measurements = new List<Measurement>();
 
@@ -131,7 +131,7 @@ namespace WirelessTagClientLib.Client
 
             var timechunks = DateTimeChunker.SplitDateTimeRange(from.Date, to.Date, ChunkInterval);
 
-            Console.WriteLine($"From {start} to {finish} in {timechunks.Count()} chunks of {ChunkInterval.TotalDays} days...");
+            Console.WriteLine($"Tag {tagId} : From {start} to {finish} in {timechunks.Count()} chunks of {ChunkInterval.TotalDays} days...");
 
             foreach (var chunk in timechunks)
             {
@@ -193,6 +193,127 @@ namespace WirelessTagClientLib.Client
                 var writer = new CacheFileReaderWriter(_fileSystem);
 
                 var filename = writer.GetCacheFilename(folder, tagInfo);
+
+                if (Verbose)
+                {
+                    Console.WriteLine($"Writing {measurements.Count:n0} measurements to {filename}...");
+                }
+
+                writer.WriteCacheFile(filename, measurements);
+            }
+        }
+
+        /// <summary>
+        /// Update the cache for a specific tag and time range, keeping any data already in the cache.
+        /// </summary>
+        /// <param name="tagId">Tag id</param>
+        /// <param name="folder">Cache folder name</param>
+        /// <param name="from">Start of time interval</param>
+        /// <param name="to">End of time interval (inclusive)</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="folder"/> is null</exception>"
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="folder"/></exception>
+        public async Task UpdateCacheAsync(int tagId, string folder, DateTime from, DateTime to)
+        {
+            ArgumentNullException.ThrowIfNull(folder, nameof(folder));
+
+            // Load tags from the client
+            var tagInfo = await GetTagInfoAsync(tagId);
+            if (tagInfo == null)
+            {
+                throw new ArgumentOutOfRangeException($"Tag with Id {tagId} not found.");
+            }
+
+            //Console.WriteLine($"Tag {tagId} : '{tagInfo.Name}' ({tagInfo.Uuid})");
+
+            var measurements = new List<Measurement>();
+
+            // split time range into smaller chunks starting at midnight of the beginning of the specified date range
+            var start = from.Date;
+            var finish = to.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+            var timechunks = DateTimeChunker.SplitDateTimeRange(from.Date, to.Date, ChunkInterval);
+
+            Console.WriteLine($"Tag {tagId} : '{tagInfo.Name}' ({tagInfo.Uuid}) Updating from {start} to {finish} in {timechunks.Count()} chunks of {ChunkInterval.TotalDays} days...");
+
+            foreach (var chunk in timechunks)
+            {
+                if (Verbose)
+                {
+                    Console.Write($"Tag {tagId} : Getting data from {chunk.Start} to {chunk.End}...");
+                }
+
+                // fetch the data from the client
+                var stopwatch = Stopwatch.StartNew();
+                var data = await _client.GetTemperatureRawDataAsync(tagId, chunk.Start, chunk.End);
+                stopwatch.Stop();
+
+                if (data != null && data.Any())
+                {
+                    if (Verbose)
+                    {
+                        Console.WriteLine($"{data.Count:n0} measurements in {stopwatch.Elapsed}");
+                    }
+
+                    // Add the fetched data to the measurements list
+                    measurements.AddRange(data);
+                }
+                else
+                {
+                    if (Verbose)
+                    {
+                        Console.WriteLine("no data");
+                    }
+                }
+
+                // wait between requests unless the last chunk
+                if (chunk != timechunks.Last())
+                {
+                    // Wait for a specified time before the next request
+                    if (Verbose)
+                    {
+                        Console.Write($"Waiting ({WaitInterval})...");
+                    }
+
+                    await Task.Delay(WaitInterval);
+
+                    if (Verbose)
+                    {
+                        Console.WriteLine("ok");
+                    }
+                }
+            }
+
+            // Serialize and save the data to the cache file
+            if (measurements.Any())
+            {
+                // Ensure the folder exists
+                if (!_fileSystem.Directory.Exists(folder))
+                {
+                    _fileSystem.Directory.CreateDirectory(folder);
+                }
+
+                var writer = new CacheFileReaderWriter(_fileSystem);
+
+                var filename = writer.GetCacheFilename(folder, tagInfo);
+
+                var cachedData = writer.ReadCacheFile(filename);
+
+                if (cachedData != null && cachedData.Any())
+                {
+                    if (Verbose)
+                    {
+                        Console.WriteLine($"Merging {measurements.Count:n0} new measurements with {cachedData.Count:n0} cached measurements...");
+                    }
+
+                    // Merge new measurements with cached data, avoiding duplicates
+                    var allMeasurements = cachedData.Concat(measurements)
+                        .GroupBy(m => m.Time) // assuming Time is unique identifier for a measurement
+                        .Select(g => g.First()) // take the first measurement for each time
+                        .ToList();
+
+                    measurements = allMeasurements;
+                }   
 
                 if (Verbose)
                 {
