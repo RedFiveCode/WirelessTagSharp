@@ -10,8 +10,5 @@ namespace WirelessTagClientCache
 
         [Option('t', "token", Required = true, HelpText = "Access token; see https://wirelesstag.net/eth/oauth2_apps.html")]
         public string AccessToken { get; set; }
-
-        [Option('v', "verbose", Required = false, HelpText = "Enable verbose output.")]
-        public bool Verbose { get; set; }
     }
 }
