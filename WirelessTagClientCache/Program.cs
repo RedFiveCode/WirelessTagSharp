@@ -53,7 +53,7 @@ namespace WirelessTagClientCache
 
             var client = new WirelessTagAsyncClient(options.AccessToken);
 
-            var loader = new CacheWriter(client)
+            var loader = new CacheLoader(client)
             {
                 Verbose = options.Verbose,
                 ChunkInterval = options.ChunkSize > 0 ? TimeSpan.FromDays(options.ChunkSize) : TimeSpan.FromDays(100),
@@ -106,7 +106,7 @@ namespace WirelessTagClientCache
             var from = latest.AddSeconds(1); // start just after the latest cached measurement
             var to = options.To;
 
-            var loader = new CacheWriter(client)
+            var loader = new CacheLoader(client)
             {
                 Verbose = options.Verbose,
                 ChunkInterval = options.ChunkSize > 0 ? TimeSpan.FromDays(options.ChunkSize) : TimeSpan.FromDays(100),

@@ -12,7 +12,7 @@ namespace WirelessTagClientLib.Client
     /// CacheLoader is responsible for getting raw temperature measurement data from a Wireless Tag client
     /// in a controlled way to avoid overloading the server with requests and writing the data to a cache file for each tag.
     /// </summary>
-    public class CacheWriter
+    public class CacheLoader
     {
         // IMPORTANT
         //
@@ -76,10 +76,10 @@ namespace WirelessTagClientLib.Client
         private readonly IWirelessTagAsyncClient _client;
         private readonly IFileSystem _fileSystem;
 
-        public CacheWriter(IWirelessTagAsyncClient client) : this(client, new FileSystem())
+        public CacheLoader(IWirelessTagAsyncClient client) : this(client, new FileSystem())
         { }
 
-        public CacheWriter(IWirelessTagAsyncClient client, IFileSystem fileSystem)
+        public CacheLoader(IWirelessTagAsyncClient client, IFileSystem fileSystem)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client), "Client cannot be null");
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem), "FileSystem cannot be null");

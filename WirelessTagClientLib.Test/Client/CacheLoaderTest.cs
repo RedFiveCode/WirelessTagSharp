@@ -1,7 +1,6 @@
 ﻿using Moq;
 using System;
 using System.Collections.Generic;
-using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using WirelessTagClientLib.Client;
@@ -10,13 +9,13 @@ using Xunit;
 
 namespace WirelessTagClientLib.Test.Client
 {
-    public class CacheWriterTest
+    public class CacheLoaderTest
     {
         private readonly Mock<IWirelessTagAsyncClient> _clientMock;
         private readonly MockFileSystem _mockfileSystem;
-        private readonly CacheWriter _sut;
+        private readonly CacheLoader _sut;
 
-        public CacheWriterTest()
+        public CacheLoaderTest()
         {
             _clientMock = new Mock<IWirelessTagAsyncClient>();
             _mockfileSystem = new MockFileSystem();
@@ -39,7 +38,7 @@ namespace WirelessTagClientLib.Test.Client
                             }
                        }));
 
-            _sut = new CacheWriter(_clientMock.Object, _mockfileSystem)
+            _sut = new CacheLoader(_clientMock.Object, _mockfileSystem)
             {
                 ChunkInterval = TimeSpan.FromDays(5),
                 WaitInterval = TimeSpan.FromSeconds(0),
