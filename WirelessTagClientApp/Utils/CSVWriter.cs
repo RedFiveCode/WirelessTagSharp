@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WirelessTagClientLib;
+﻿using System.Text;
 
 namespace WirelessTagClientApp.Utils
 {
@@ -55,6 +51,7 @@ namespace WirelessTagClientApp.Utils
         /// </remarks>
         /// <param name="expression"></param>
         /// <param name="columnName">Optional column name for header.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="expression"/> is null</exception>
         public void AddColumn(Func<T, string> expression, string columnName)
         {
             ArgumentNullException.ThrowIfNull(expression, nameof(expression));
@@ -77,6 +74,12 @@ namespace WirelessTagClientApp.Utils
             }
         }
 
+        /// <summary>
+        /// Write CSV string for the provided list of items.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="list"/> is null</exception>
         public string WriteCSV(IList<T> list)
         {
             ArgumentNullException.ThrowIfNull(list, nameof(list));
