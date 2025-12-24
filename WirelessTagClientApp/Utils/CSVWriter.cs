@@ -58,7 +58,6 @@ namespace WirelessTagClientApp.Utils
         public void AddColumn(Func<T, string> expression, string columnName)
         {
             ArgumentNullException.ThrowIfNull(expression, nameof(expression));
-            ArgumentNullException.ThrowIfNullOrEmpty(columnName, nameof(columnName));
 
             _expressionList.Add(expression);
 
