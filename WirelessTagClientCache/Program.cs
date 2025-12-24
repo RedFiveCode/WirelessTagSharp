@@ -127,7 +127,7 @@ namespace WirelessTagClientCache
             var latest = cachedData.Max(m => m.Time);
             var cacheFileNoPath = Path.GetFileName(cacheFile);
 
-            ColorConsole.WriteLine($"Cached data:", ConsoleColor.White);
+            //ColorConsole.WriteLine($"Cached data:", ConsoleColor.White);
             ColorConsole.Write($"{earliest}  {latest}  {cachedData.Count,7:N0}  ", ConsoleColor.Green);
             ColorConsole.Write($"{cacheFileNoPath}  ", ConsoleColor.Blue);
             ColorConsole.WriteLine($"{tag.SlaveId} ({tag.Name})", ConsoleColor.Yellow);
@@ -174,13 +174,7 @@ namespace WirelessTagClientCache
 
                 if (data != null && data.Any()) // skip cache files with no data
                 {
-                    var earliest = data.Min(m => m.Time);
-                    var latest = data.Max(m => m.Time);
-                    var cacheFileNoPath = Path.GetFileName(cacheFile);
-
-                    ColorConsole.Write($"{earliest}  {latest}  {data.Count,7:N0}  ", ConsoleColor.Green);
-                    ColorConsole.Write($"{cacheFileNoPath}  ", ConsoleColor.Blue);
-                    ColorConsole.WriteLine($"{tag.SlaveId} ({tag.Name})", ConsoleColor.Yellow);
+                    DisplayCacheStats(tag, cacheFile, data);
                 }
             }
         }
