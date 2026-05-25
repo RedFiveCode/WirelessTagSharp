@@ -117,6 +117,8 @@ namespace WirelessTagClientCache
             // show updated cache stats
             Console.WriteLine();
             cachedData = reader.ReadCacheFile(cacheFile);
+
+            ColorConsole.WriteLine("Earliest              Latest                  Count  Cache file                                         Id Name", ConsoleColor.White);
             DisplayCacheStats(tag, cacheFile, cachedData);
             ColorConsole.WriteLine("Cache merging completed successfully", ConsoleColor.White);
         }
