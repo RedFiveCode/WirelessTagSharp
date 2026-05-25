@@ -7,7 +7,7 @@
     <Description>Populates offline measurement cache</Description>
     <Company>https://github.com/RedFiveCode</Company>
     <Product>WirelessTagClientCache</Product>
-    <Copyright>Copyright © 2014-2025 RedFiveCode %28https://github.com/RedFiveCode%29</Copyright>
+    <Copyright>Copyright © 2014-2026 RedFiveCode %28https://github.com/RedFiveCode%29</Copyright>
     <AssemblyVersion>1.0.%2a</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
