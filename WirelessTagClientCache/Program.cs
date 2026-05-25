@@ -25,7 +25,7 @@ namespace WirelessTagClientCache
                             {
                                 foreach (var error in errs)
                                 {
-                                    Console.WriteLine(error.ToString());
+                                    ColorConsole.WriteLine(error.ToString(), ConsoleColor.Red);
                                 }
                                 return Task.CompletedTask;
                             });
